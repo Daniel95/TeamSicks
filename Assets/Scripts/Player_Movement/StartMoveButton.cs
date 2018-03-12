@@ -4,16 +4,16 @@ using UnityEngine.UI;
 
 public class StartMoveButton : MonoBehaviour
 {
-	public static Action OnStartMoveButtonClicked;
+	public static Action ClickedEvent;
 
 	[SerializeField] private Button GenerateMovesButton;
 
 	public void ClickStartButton()
 	{
 		Debug.Log("Start Move Button Clicked");
-		if (OnStartMoveButtonClicked != null)
+		if (ClickedEvent != null)
 		{
-			OnStartMoveButtonClicked();
+			ClickedEvent();
 		}
 	}
 

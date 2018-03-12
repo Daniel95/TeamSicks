@@ -2,8 +2,7 @@
 using UnityEngine;
 using System.Linq;
 
-public class GameGrid : MonoBehaviour
-{
+public class GameGrid : MonoBehaviour {
 
     public static GameGrid Instance { get { return GetInstance(); } }
 
@@ -22,8 +21,7 @@ public class GameGrid : MonoBehaviour
 
 }
 
-public class Node
-{
+public class Node {
 
 
 }
@@ -39,15 +37,13 @@ public class LevelExample {
         { 0, 0, 0, 0, 0 }
     };
 
-    public void Test()
-    {
+    public void Test() {
         NodeType nodeType = (NodeType)testGrid[2, 2];
     }
 
 }
 
-public enum NodeType
-{
+public enum NodeType {
     Empty = 0,
     Player = 1,
     Obstacle = 2,

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectIdExample : MonoBehaviour {
+public class ObjectIdExample : MonoBehaviour
+{
 
     [ObjectIdRef] [SerializeField] private string objectId;
 

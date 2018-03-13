@@ -6,7 +6,11 @@ public class StartMoveButton : MonoBehaviour
 {
 	public static Action ClickedEvent;
 
-	[SerializeField] private Button GenerateMovesButton;
+    public static StartMoveButton Instance { get { return GetInstance(); } }
+
+    private static StartMoveButton instance;
+
+    [SerializeField] private Button startMoveButton;
 
 	public void ClickStartButton()
 	{
@@ -15,10 +19,21 @@ public class StartMoveButton : MonoBehaviour
 		{
 			ClickedEvent();
 		}
+        SetEnabled(false);
 	}
 
-	private void SetEnabled(bool enabled)
+	public void SetEnabled(bool enabled)
 	{
 		//Check if button is used or not (Greyed Out)
 	}
+
+    private static StartMoveButton GetInstance()
+    {
+        if(instance == null)
+        {
+            instance = FindObjectOfType<StartMoveButton>();
+        }
+        return instance;
+    }
+
 }

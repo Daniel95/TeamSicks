@@ -10,17 +10,8 @@ public class PlayerInput : MonoBehaviour
 
     private static PlayerInput instance;
 
-    private new bool enabled;
-
-    public void EnableInputs(bool _enable)
-    {
-        _enable = enabled;
-    }
-
     private void Update()
     {
-        if (!enabled) { return; }
-
         //Left
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {

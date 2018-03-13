@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class RandomDirections
+public class RandomDirection
 {
 	[SerializeField] private AxisType axisType;
 
-	public Vector2 ReturnDirections()
+	public Vector2 GetRandomDirection()
 	{
 		float randomValue = UnityEngine.Random.Range(-1f,1f);
 		int ceiledRandomValue = RoundingHelper.InvertOnNegativeCeil(randomValue);
@@ -26,4 +24,5 @@ public class RandomDirections
 
 		return direction;
 	}
+
 }

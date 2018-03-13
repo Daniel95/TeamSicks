@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class StartMoveButton : MonoBehaviour
 {
 	public static Action ClickedEvent;
@@ -19,13 +20,13 @@ public class StartMoveButton : MonoBehaviour
 		{
 			ClickedEvent();
 		}
-        SetEnabled(false);
-	}
+        SetInteractable(false);
+    }
 
-	public void SetEnabled(bool enabled)
+    public void SetInteractable(bool _interactable)
 	{
-		//Check if button is used or not (Greyed Out)
-	}
+        startMoveButton.interactable = _interactable;
+    }
 
     private static StartMoveButton GetInstance()
     {
@@ -34,6 +35,11 @@ public class StartMoveButton : MonoBehaviour
             instance = FindObjectOfType<StartMoveButton>();
         }
         return instance;
+    }
+
+    private void Awake()
+    {
+        startMoveButton = GetComponent<Button>();
     }
 
 }

@@ -12,8 +12,28 @@ public class MovesGenerator : MonoBehaviour
     private static int moves = 0;
     private static List<Vector2> directions = new List<Vector2>();
 
-	[SerializeField] private List<RandomMoves> randomMoves = new List<RandomMoves>();
-	[SerializeField] private List<RandomDirections> randomDirections = new List<RandomDirections>();
+	[SerializeField] private List<RandomMoveAmount> randomMoves = new List<RandomMoveAmount>();
+	[SerializeField] private List<RandomDirection> randomDirections = new List<RandomDirection>();
+
+    private void GeneratedMoves()
+    {   
+		moves = 0;
+
+		foreach (RandomMoveAmount _moves in randomMoves)
+		{
+			moves += _moves.GetRandomMoveAmount();
+		}
+		Debug.Log("Moves: " + moves);
+
+        directions.Clear();
+
+        foreach (RandomDirection _directions in randomDirections)
+		{
+			Vector2 containsDirections = _directions.GetRandomDirection();
+			directions.Add(containsDirections);
+			Debug.Log("Direction: " + containsDirections);
+		}
+	}
 
     private void OnEnable()
     {
@@ -25,20 +45,4 @@ public class MovesGenerator : MonoBehaviour
         StartMoveButton.ClickedEvent -= GeneratedMoves;
     }
 
-    private void GeneratedMoves()
-    {
-		moves = 0;
-		foreach (RandomMoves _moves in randomMoves)
-		{
-			moves += _moves.ReturnTotalMoves();
-		}
-		Debug.Log("Moves: " + moves);
-
-		foreach (RandomDirections _directions in randomDirections)
-		{
-			Vector2 containsDirections = _directions.ReturnDirections();
-			directions.Add(containsDirections);
-			Debug.Log("Direction: " + containsDirections);
-		}
-	}
 }

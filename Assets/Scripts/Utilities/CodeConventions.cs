@@ -39,13 +39,18 @@ public class CodeConventions : MonoBehaviour
     private int privateTest;
 
     /// <summary>
-    ///  No comments in code, only 
+    ///  No comments in code, only above the class
     /// </summary>
     public void PublicExample()
     {
         bool _testBool = false;
         if (_testBool)
             return;
+    }
+
+    private void TodoExample()
+    {
+        //TODO: You can add TODO's as comment in the code
     }
 
     private void PrivateExample() 

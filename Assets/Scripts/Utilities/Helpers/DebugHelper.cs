@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 public class DebugHelper
@@ -71,9 +72,7 @@ public class DebugHelper
 
     public static void ClearConsole()
     {
-        Type logEntries = Type.GetType("UnityEditorInternal.LogEntries,UnityEditor.dll");
-        MethodInfo clearMethod = logEntries.GetMethod("Clear", BindingFlags.Static | BindingFlags.Public);
-        clearMethod.Invoke(null, null);
+        typeof(Editor).Assembly.GetType("UnityEditorInternal.LogEntries").GetMethod("Clear", BindingFlags.Static | BindingFlags.Public).Invoke(null, null);
     }
 
     private static GameObject GetDebugVisualPrefab()

@@ -3,13 +3,6 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-//Needed functionality:
-//  Generate level from 2D Int array
-//  Generate "random" Level
-//  Return Bool IsOccupied
-//  
-//  
-
 public class GameGrid : MonoBehaviour
 {
     #region SingleTon
@@ -39,10 +32,9 @@ public class GameGrid : MonoBehaviour
 
     private void Awake()
     {
-        Level testClass = new Level();
+        Level level = new Level();
 
-        //TODO: add randommised level generation
-        Grid = CreateGrid(testClass.TestGrid);
+        Grid = CreateGrid(level.TestGrid);
     }
 
     private Dictionary<Vector2, Node> CreateGrid(int[,] _gridLayout)
@@ -53,48 +45,37 @@ public class GameGrid : MonoBehaviour
         {
             for (int j = 0; j < _gridLayout.GetLength(1); j++)
             {
-                Node _node;
-                GameObject[] _spawnList;
+                GameObject[] _spawnList = Spawnlist((NodeType)_gridLayout[i, j]);
+                Vector3 position = new Vector3(step * j, -step * i);
+                Node _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], position, Quaternion.identity, transform).GetComponent<Node>();
 
-                switch (_gridLayout[i, j])
-                {
-                    case 0:
-                        _spawnList = paths.PathsPrefabs;
-                        break;
-                    case 1:
-                        _spawnList = obstacles.ObstaclePrefabs;
-                        break;
-                    case 2:
-                        _spawnList = specials.SpecialsPrefabs;
-                        break;
-                    default:
-                        Debug.LogError("Triggered default");
-                        _spawnList = paths.PathsPrefabs;
-                        break;
-                }
-                Vector3 position = new Vector3(step * i, step * j);
-
-                _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], position, Quaternion.identity, transform).GetComponent<Node>();
-                
-                _grid.Add(new Vector2(i,j), _node);
-                _node.Type = ( NodeType)_gridLayout[i, j];
+                _grid.Add(new Vector2(j,i), _node);
             }
         }
 
         return _grid;
     }
 
-    private Dictionary<Vector2, Node> CreateRandomGrid(Vector2 _widthHeight)
+    private GameObject[] Spawnlist(NodeType nodeType)
     {
-        Dictionary<Vector2, Node> _grid = new Dictionary<Vector2, Node>();
-        for (int i = 0; i < _widthHeight.x; i++)
+        GameObject[] _spawnList;
+        switch (nodeType)
         {
-            for (int j = 0; j < _widthHeight.y; j++)
-            {
-                //TODO: random generation
-            }
+            case NodeType.Path:
+                _spawnList = paths.PathsPrefabs;
+                break;
+            case NodeType.Obstacle:
+                _spawnList = obstacles.ObstaclePrefabs;
+                break;
+            case NodeType.Special:
+                _spawnList = specials.SpecialsPrefabs;
+                break;
+            default:
+                Debug.LogError("Triggered default");
+                _spawnList = paths.PathsPrefabs;
+                break;
         }
-        return _grid;
+        return _spawnList;
     }
 
     public bool IsOccupied(Vector2 _positionToCheck)
@@ -110,12 +91,24 @@ public class GameGrid : MonoBehaviour
 
     public void AddOccupied(Vector2 _positionToAdd, NodeType _nodeType)
     {
-        Grid[_positionToAdd].Type = _nodeType;
+        GameObject[] _spawnList = Spawnlist(_nodeType);
+        Node _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], Grid[_positionToAdd].transform.position, Quaternion.identity, transform).GetComponent<Node>();
+
+        _node.name = "Test Object";
+
+        Destroy(Grid[_positionToAdd].gameObject);
+        Grid[_positionToAdd] = _node;
+
+        Debug.Log("Added");
     }
 
     public void removeOccupied(Vector2 _positionToRemove)
     {
-        Grid[_positionToRemove].Type = NodeType.Path;
+        Node _node = Instantiate(paths.PathsPrefabs[UnityEngine.Random.Range(0, paths.PathsPrefabs.Length - 1)], Grid[_positionToRemove].transform.position, Quaternion.identity, transform).GetComponent<Node>();
+
+        Destroy(Grid[_positionToRemove].gameObject);
+        Grid[_positionToRemove] = _node;
+        Debug.Log("Removed");
     }
 }
 

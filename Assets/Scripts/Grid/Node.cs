@@ -10,6 +10,6 @@ public class Node : MonoBehaviour
 public enum NodeType
 {
     Path = 0,
-    Special = 1,
-    Obstacle = 2,
+    Obstacle = 1,
+    Special = 2,
 }

@@ -555,10 +555,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1661359520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 033fadb602c522f438907c0829eac061, type: 3}
+  m_Script: {fileID: 11500000, guid: fb3a8fcbaba674541867e8d557cd722a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMoveButton: {fileID: 0}
+  startMoveButton: {fileID: 1661359522}
 --- !u!1 &2023579958
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,13 +583,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2023579958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f72a358765391d4a9a788dd8ea258f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8524ca22c269be74aa7e4896f5c3d1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   randomMoves:
   - maxValue: 6
     minValue: 1
+  - maxValue: 6
+    minValue: 1
   randomDirections:
+  - axisType: 0
   - axisType: 0
   - axisType: 1
 --- !u!4 &2023579960

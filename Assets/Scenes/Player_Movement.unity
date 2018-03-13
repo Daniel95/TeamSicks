@@ -690,7 +690,6 @@ MonoBehaviour:
     minValue: 1
   randomDirections:
   - axisType: 0
-  - axisType: 0
   - axisType: 1
 --- !u!4 &2023579960
 Transform:

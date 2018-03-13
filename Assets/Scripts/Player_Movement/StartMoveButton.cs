@@ -15,7 +15,6 @@ public class StartMoveButton : MonoBehaviour
 
 	public void ClickStartButton()
 	{
-		Debug.Log("Start Move Button Clicked");
 		if (ClickedEvent != null)
 		{
 			ClickedEvent();

@@ -16,7 +16,9 @@ public class MovesGenerator : MonoBehaviour
 	[SerializeField] private List<RandomDirection> randomDirections = new List<RandomDirection>();
 
     private void GeneratedMoves()
-    {   
+    {
+        Debug.Log("Move started");
+
 		moves = 0;
 
 		foreach (RandomMoveAmount _moves in randomMoves)
@@ -33,7 +35,7 @@ public class MovesGenerator : MonoBehaviour
 			directions.Add(containsDirections);
 			Debug.Log("Direction: " + containsDirections);
 		}
-	}
+    }
 
     private void OnEnable()
     {

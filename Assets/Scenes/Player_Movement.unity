@@ -589,6 +589,9 @@ MonoBehaviour:
   randomMoves:
   - maxValue: 6
     minValue: 1
+  randomDirections:
+  - axisType: 0
+  - axisType: 1
 --- !u!4 &2023579960
 Transform:
   m_ObjectHideFlags: 0

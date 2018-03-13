@@ -13,6 +13,7 @@ public class MovesGenerator : MonoBehaviour
     private static List<Vector2> directions = new List<Vector2>();
 
 	[SerializeField] private List<RandomMoves> randomMoves = new List<RandomMoves>();
+	[SerializeField] private List<RandomDirections> randomDirections = new List<RandomDirections>();
 
     private void OnEnable()
     {
@@ -29,8 +30,15 @@ public class MovesGenerator : MonoBehaviour
 		moves = 0;
 		foreach (RandomMoves _moves in randomMoves)
 		{
-			moves += _moves.ReturnValue();
+			moves += _moves.ReturnTotalMoves();
 		}
 		Debug.Log("Moves: " + moves);
+
+		foreach (RandomDirections _directions in randomDirections)
+		{
+			Vector2 containsDirections = _directions.ReturnDirections();
+			directions.Add(containsDirections);
+			Debug.Log("Direction: " + containsDirections);
+		}
 	}
 }

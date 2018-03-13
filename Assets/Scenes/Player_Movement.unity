@@ -589,8 +589,6 @@ MonoBehaviour:
   randomMoves:
   - maxValue: 6
     minValue: 1
-  - maxValue: 6
-    minValue: 1
 --- !u!4 &2023579960
 Transform:
   m_ObjectHideFlags: 0

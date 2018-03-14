@@ -8,13 +8,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnInput(Vector2 input)
     {
-        Vector2 gridPosition = nodeObject.ParentNode.GridPosition;
+        Vector2 nextGridPosition = nodeObject.ParentNode.GridPosition + input;
 
         if (MovesGenerator.Moves <= 0 || 
             !MovesGenerator.Directions.Contains(input) ||
-            GameGrid.Instance.IsOccupied(gridPosition)) { return; }
+            GameGrid.Instance.IsOccupied(nextGridPosition)) { return; }
 
-        transform.Translate(input);
+        nodeObject.UpdateGridPosition(nextGridPosition);
+        transform.position = nodeObject.ParentNode.transform.position;
+
         MovesGenerator.Moves--;
 		DisplayMoves.UpdateMoves();
 

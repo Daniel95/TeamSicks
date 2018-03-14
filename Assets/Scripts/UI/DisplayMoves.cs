@@ -6,7 +6,7 @@ public class DisplayMoves : MonoBehaviour {
 
 	public static Action UpdateMoves;
 
-	private string totalMoves = "Total Moves: ";
+	private string totalMoves = "0";
 	[SerializeField] private Text displayMovesText;
 
 	private void Awake()

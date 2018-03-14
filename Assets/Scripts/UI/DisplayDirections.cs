@@ -6,14 +6,17 @@ public class DisplayDirections : MonoBehaviour {
 
 	public static Action UpdateDirection;
 
-	[SerializeField] private Text directionText;
-	private string directionsString = "Directions: ";
+	[SerializeField] private Text horizontalText;
+	[SerializeField] private Text verticalText;
+	//private string directionsString = "Directions: ";
 	private string horizontalString = "";
 	private string verticalString = "";
 
 	private void Awake()
 	{
-		directionText.text = directionsString + "None";
+		horizontalText.text = "None";
+		verticalText.text = "None";
+
 	}
 
 	private void OnEnable()
@@ -33,6 +36,9 @@ public class DisplayDirections : MonoBehaviour {
 		if (MovesGenerator.Directions.Contains(Vector2.right)) { horizontalString = "Right"; }
 		if (MovesGenerator.Directions.Contains(Vector2.left)) { horizontalString = "Left"; }
 
-		directionText.text = directionsString + horizontalString + ", " + verticalString;
+		//directionText.text = directionsString + horizontalString + ", " + verticalString;
+
+		horizontalText.text = horizontalString;
+		verticalText.text = verticalString;
 	}	
 }

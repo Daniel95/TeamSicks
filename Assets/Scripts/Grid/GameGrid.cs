@@ -197,6 +197,16 @@ public class GameGrid : MonoBehaviour
     Obstacle = 4,
 */
 
+public enum NodeObjectType
+{
+    Null = 0,
+    Player = 1,
+    Special = 2,
+    Path = 3,
+    Obstacle = 4,
+    Finish = 5,
+}
+
 public class Level
 {
     private const int WIDTH = 12;
@@ -218,7 +228,7 @@ public class Level
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         { 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0},
         { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 5, 0},
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 

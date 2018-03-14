@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnInput(Vector2 input)
     {
+        Debug.Log(input);
+
         Vector2 nextGridPosition = nodeObject.ParentNode.GridPosition + input;
 
         if (MovesGenerator.Moves <= 0 || 

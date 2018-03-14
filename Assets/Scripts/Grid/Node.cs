@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public NodeType Type;
+    //[HideInInspector]
+    public List<NodeType> Type;
 }
 
 public enum NodeType
 {
-    Path = 0,
-    Obstacle = 1,
+    Null = 0,
+    Player = 1,
     Special = 2,
+    Path = 3,
+    Obstacle = 4,
 }

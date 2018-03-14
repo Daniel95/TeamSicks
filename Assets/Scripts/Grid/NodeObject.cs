@@ -7,4 +7,5 @@ public class NodeObject : MonoBehaviour
 
     private NodeObjectType nodeObjectType;
     private Node parentNode;
+
 }

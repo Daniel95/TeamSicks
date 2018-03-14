@@ -40,7 +40,7 @@ public class GameGrid : MonoBehaviour
 
     private Dictionary<Vector2, Node> CreateGrid(int[][,] _gridLayout)
     {
-        Dictionary<Vector2, Node> _grid = CreateEmptyNodes(10, 10);
+        Dictionary<Vector2, Node> _grid = CreateEmptyNodes(_gridLayout[0].GetLength(0), _gridLayout[0].GetLength(1));
 
         foreach (int[,] _currentGrid in _gridLayout)
         {
@@ -97,7 +97,7 @@ public class GameGrid : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                Vector3 _position = new Vector3(step * j, -step * i);
+                Vector3 _position = transform.position + new Vector3(step * j, -step * i);
                 GameObject _nodeObject = Instantiate(node, _position, Quaternion.identity, transform);
                 _nodeObject.name = "Node["+ i + "," + j + "]";
 
@@ -199,35 +199,27 @@ public class GameGrid : MonoBehaviour
 
 public class Level
 {
-    private const int WIDTH = 10;
-    private const int HEIGHT = 10;
+    private const int WIDTH = 12;
+    private const int HEIGHT = 6;
 
-    public int[,] ObstacleGrid = new int[WIDTH, HEIGHT]
+    public int[,] ObstacleGrid = new int[HEIGHT, WIDTH]
     {
-        { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+        { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
+        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
+        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
+        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
+        { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
     };
 
-    public int[,] PickupGrid = new int[WIDTH, HEIGHT]
+    public int[,] PickupGrid = new int[HEIGHT, WIDTH]
     {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 2, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     #region Old Code

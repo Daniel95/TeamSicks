@@ -2,10 +2,16 @@
 
 public class PlayerMovement : MonoBehaviour
 {
+
+
     private void OnInput(Vector2 input)
     {
+
+
+
         if (MovesGenerator.Moves <= 0) { return; }
         if (!MovesGenerator.Directions.Contains(input)) { return; }
+        //if (!GameGrid.Instance.IsOccupied().Directions.Contains(input)) { return; }
 
         transform.Translate(input);
         MovesGenerator.Moves--;

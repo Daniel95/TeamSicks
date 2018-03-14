@@ -48,22 +48,22 @@ public class GameGrid : MonoBehaviour
             {
                 for (int j = 0; j < _currentGrid.GetLength(1); j++)
                 {
-                    if (_currentGrid[i, j] != (int)NodeType.Null)
+                    if (_currentGrid[i, j] != (int)NodeObjectType.Null)
                     {
-                        GameObject[] _spawnList = Spawnlist((NodeType)_currentGrid[i, j]);
+                        GameObject[] _spawnList = Spawnlist((NodeObjectType)_currentGrid[i, j]);
                         Vector3 position = new Vector3(step * j, -step * i);
                         GameObject _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], position, Quaternion.identity, transform);
 
                         if (_grid.ContainsKey(new Vector2(j, i)))
                         {
-                            _grid[new Vector2(j, i)].Type.Add((NodeType)_currentGrid[i, j]);
+                            _grid[new Vector2(j, i)].NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
                             _node.transform.parent = _grid[new Vector2(j, i)].transform;
                         }
                         else
                         {
                             Node _nodeType = _node.GetComponent<Node>();
 
-                            _nodeType.Type.Add((NodeType)_currentGrid[i, j]);
+                            _nodeType.NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
                             _grid.Add(new Vector2(j, i), _nodeType);
                         }
                     }
@@ -90,21 +90,21 @@ public class GameGrid : MonoBehaviour
         return _grid;
     }
 
-    private GameObject[] Spawnlist(NodeType nodeType)
+    private GameObject[] Spawnlist(NodeObjectType nodeType)
     {
         GameObject[] _spawnList;
         switch (nodeType)
         {
-            case NodeType.Path:
+            case NodeObjectType.Path:
                 _spawnList = paths.PathsPrefabs;
                 break;
-            case NodeType.Obstacle:
+            case NodeObjectType.Obstacle:
                 _spawnList = obstacles.ObstaclePrefabs;
                 break;
-            case NodeType.Special:
+            case NodeObjectType.Special:
                 _spawnList = specials.SpecialsPrefabs;
                 break;
-            case NodeType.Player:
+            case NodeObjectType.Player:
                 _spawnList = players.PlayersPrefabs;
                 break;
             default:
@@ -136,7 +136,7 @@ public class GameGrid : MonoBehaviour
 
     public bool IsOccupied(Vector2 _positionToCheck)
     {
-        if (Grid[new Vector2(_positionToCheck.x, _positionToCheck.y)].Type.Contains(NodeType.Obstacle))
+        if (Grid[new Vector2(_positionToCheck.x, _positionToCheck.y)].NodeObjects.Contains(NodeObjectType.Obstacle))
         {
             return true;
         }

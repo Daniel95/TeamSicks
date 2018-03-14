@@ -616,6 +616,41 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 224875284954036456, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224599677982575806, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 224086002670698532, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224435436133374890, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 224743501968668950, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 224746534342479988, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224274688443670850, guid: e6b18d9901ac35444b1bf7c8b2f692ce,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114297591219031484, guid: e6b18d9901ac35444b1bf7c8b2f692ce, type: 2}
     - {fileID: 114828695183805322, guid: e6b18d9901ac35444b1bf7c8b2f692ce, type: 2}

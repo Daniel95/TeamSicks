@@ -15,5 +15,7 @@ public class NodeObject : MonoBehaviour
         parentNode.NodeObjects.Remove(this);
         parentNode = _node;
         parentNode.NodeObjects.Add(this);
+
+        transform.parent = parentNode.transform;
     }
 }

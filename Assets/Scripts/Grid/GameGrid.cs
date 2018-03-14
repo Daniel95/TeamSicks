@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityToolbag;
 
 public class GameGrid : MonoBehaviour
 {
@@ -21,11 +22,8 @@ public class GameGrid : MonoBehaviour
     #endregion
 
     Dictionary<Vector2, Node> Grid = new Dictionary<Vector2, Node>();
-
-    [SerializeField]    private Paths paths;
-    [SerializeField]    private Obstacles obstacles;
-    [SerializeField]    private Specials specials;
-    [SerializeField]    private Players players;
+    
+    [Reorderable] [SerializeField] private List<NodeObjectEntries> nodeObjectEntries;
 
     [Space(5)]
     [SerializeField]    private int step;
@@ -52,10 +50,10 @@ public class GameGrid : MonoBehaviour
                 {
                     if (_currentGrid[i, j] != (int)NodeObjectType.Null)
                     {
-                        GameObject[] _spawnList = Spawnlist((NodeObjectType)_currentGrid[i, j]);
+                        List<GameObject> _spawnList = Spawnlist((NodeObjectType)_currentGrid[i, j]);
                         Node _currentNode = _grid[new Vector2(i, j)];
 
-                        NodeObject _nodeObject = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], _currentNode.transform.position, Quaternion.identity, _currentNode.transform).GetComponent<NodeObject>();
+                        NodeObject _nodeObject = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Count - 1)], _currentNode.transform.position, Quaternion.identity, _currentNode.transform).GetComponent<NodeObject>();
                         _nodeObject.ParentNode = _currentNode;
                         _nodeObject.NodeObjectType = (NodeObjectType)_currentGrid[i, j];
 
@@ -113,29 +111,22 @@ public class GameGrid : MonoBehaviour
         return _grid;
     }
 
-    private GameObject[] Spawnlist(NodeObjectType nodeType)
+    private List<GameObject> Spawnlist(NodeObjectType nodeObjectType)
     {
-        GameObject[] _spawnList;
-        switch (nodeType)
+        List<GameObject> prefabs = nodeObjectEntries.Find(x => x.NodeObjectType == nodeObjectType).Prefabs;
+        return prefabs;
+    }
+
+    private List<GameObject> TestP(NodeObjectType nodeObjectType)
+    {
+        foreach (NodeObjectEntries item in nodeObjectEntries)
         {
-            case NodeObjectType.Path:
-                _spawnList = paths.PathsPrefabs;
-                break;
-            case NodeObjectType.Obstacle:
-                _spawnList = obstacles.ObstaclePrefabs;
-                break;
-            case NodeObjectType.Special:
-                _spawnList = specials.SpecialsPrefabs;
-                break;
-            case NodeObjectType.Player:
-                _spawnList = players.PlayersPrefabs;
-                break;
-            default:
-                Debug.LogError("Triggered default");
-                _spawnList = paths.PathsPrefabs;
-                break;
+            if (item.NodeObjectType == nodeObjectType)
+            {
+                return item.Prefabs;
+            }
         }
-        return _spawnList;
+        return null;
     }
 
     public Vector2 GetNodePosition(Node _searchNode)
@@ -271,27 +262,9 @@ public class Level
     #endregion
 }
 
-
 [Serializable]
-public class Paths
+public class NodeObjectEntries
 {
-    public GameObject[] PathsPrefabs;
-}
-
-[Serializable]
-public class Obstacles
-{
-    public GameObject[] ObstaclePrefabs;
-}
-
-[Serializable]
-public class Specials
-{
-    public GameObject[] SpecialsPrefabs;
-}
-
-[Serializable]
-public class Players
-{
-    public GameObject[] PlayersPrefabs;
+    public NodeObjectType NodeObjectType;
+    public List<GameObject> Prefabs;
 }

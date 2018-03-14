@@ -8,10 +8,9 @@ public class NodeObject : MonoBehaviour
     private NodeObjectType nodeObjectType;
     private Node parentNode;
 
-    public void MoveToGridPosition(Vector2 _position)
+    public void UpdateGridPosition(Vector2 _position)
     {
         Node _node = GameGrid.Instance.GetNode(_position);
-        transform.position = _node.transform.position;
 
         parentNode.NodeObjects.Remove(this);
         parentNode = _node;

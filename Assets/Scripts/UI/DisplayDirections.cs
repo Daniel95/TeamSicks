@@ -16,7 +16,6 @@ public class DisplayDirections : MonoBehaviour {
 	{
 		horizontalText.text = "None";
 		verticalText.text = "None";
-
 	}
 
 	private void OnEnable()

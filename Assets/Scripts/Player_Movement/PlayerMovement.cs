@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(NodeObject))]
 public class PlayerMovement : MonoBehaviour
 {
 
+    private NodeObject nodeObject;
 
     private void OnInput(Vector2 input)
     {
+        Vector2 gridPosition = nodeObject.ParentNode.GridPosition;
 
-
-
-        if (MovesGenerator.Moves <= 0) { return; }
-        if (!MovesGenerator.Directions.Contains(input)) { return; }
-        //if (!GameGrid.Instance.IsOccupied().Directions.Contains(input)) { return; }
+        if (MovesGenerator.Moves <= 0 || 
+            !MovesGenerator.Directions.Contains(input) ||
+            GameGrid.Instance.IsOccupied(gridPosition)) { return; }
 
         transform.Translate(input);
         MovesGenerator.Moves--;
@@ -22,6 +23,11 @@ public class PlayerMovement : MonoBehaviour
             StartMoveButton.Instance.SetInteractable(true);
             Debug.Log("Move ended");
         }
+    }
+
+    private void Awake()
+    {
+        nodeObject = GetComponent<NodeObject>();
     }
 
     private void OnEnable()

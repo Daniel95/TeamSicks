@@ -19,6 +19,8 @@ public class StartMoveButton : MonoBehaviour
 		{
 			ClickedEvent();
 		}
+		DisplayDirections.UpdateDirection();
+		DisplayMoves.UpdateMoves();
         SetInteractable(false);
     }
 

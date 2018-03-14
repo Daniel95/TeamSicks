@@ -2,7 +2,6 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-
     private void OnInput(Vector2 input)
     {
         if (MovesGenerator.Moves <= 0) { return; }
@@ -10,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
         transform.Translate(input);
         MovesGenerator.Moves--;
+		DisplayMoves.UpdateMoves();
 
         if (MovesGenerator.Moves <= 0)
         {

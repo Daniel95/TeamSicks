@@ -25,7 +25,7 @@ public class MovesGenerator : MonoBehaviour
 		{
 			moves += _moves.GetRandomMoveAmount();
 		}
-		Debug.Log("Moves: " + moves);
+		Debug.Log("Total Moves: " + moves);
 
         directions.Clear();
 

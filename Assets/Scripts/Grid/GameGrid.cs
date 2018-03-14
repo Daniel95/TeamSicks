@@ -28,8 +28,10 @@ public class GameGrid : MonoBehaviour
     [SerializeField]    private Players players;
 
     [Space(5)]
-
     [SerializeField]    private int step;
+
+    [Space(5)]
+    [SerializeField]    private GameObject node;
 
     private void Awake()
     {
@@ -40,7 +42,7 @@ public class GameGrid : MonoBehaviour
 
     private Dictionary<Vector2, Node> CreateGrid(int[][,] _gridLayout)
     {
-        Dictionary<Vector2, Node> _grid = new Dictionary<Vector2, Node>();
+        Dictionary<Vector2, Node> _grid = CreateEmptyNodes(10, 10);
 
         foreach (int[,] _currentGrid in _gridLayout)
         {
@@ -51,21 +53,13 @@ public class GameGrid : MonoBehaviour
                     if (_currentGrid[i, j] != (int)NodeObjectType.Null)
                     {
                         GameObject[] _spawnList = Spawnlist((NodeObjectType)_currentGrid[i, j]);
-                        Vector3 position = new Vector3(step * j, -step * i);
-                        GameObject _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], position, Quaternion.identity, transform);
+                        Node _currentNode = _grid[new Vector2(i, j)];
 
-                        if (_grid.ContainsKey(new Vector2(j, i)))
-                        {
-                            _grid[new Vector2(j, i)].NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
-                            _node.transform.parent = _grid[new Vector2(j, i)].transform;
-                        }
-                        else
-                        {
-                            Node _nodeType = _node.GetComponent<Node>();
+                        NodeObject _nodeObject = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], _currentNode.transform.position, Quaternion.identity, _currentNode.transform).GetComponent<NodeObject>();
+                        _nodeObject.ParentNode = _currentNode;
+                        _nodeObject.NodeObjectType = (NodeObjectType)_currentGrid[i, j];
 
-                            _nodeType.NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
-                            _grid.Add(new Vector2(j, i), _nodeType);
-                        }
+                        _currentNode.NodeObjects.Add(_nodeObject);
                     }
                 }
             }
@@ -84,8 +78,37 @@ public class GameGrid : MonoBehaviour
                 _grid.Add(new Vector2(j,i), _node);
             }
         }
+        
+
+                        //_grid[new Vector2(j, i)].NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
+                        //_node.transform.parent = _grid[new Vector2(j, i)].transform;
+
+                        //_nodeType.NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
+
         */
         #endregion
+
+        return _grid;
+    }
+
+    private Dictionary<Vector2, Node> CreateEmptyNodes(int _width, int _height)
+    {
+        Dictionary<Vector2, Node> _grid = new Dictionary<Vector2, Node>();
+
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                Vector3 _position = new Vector3(step * j, -step * i);
+                GameObject _nodeObject = Instantiate(node, _position, Quaternion.identity, transform);
+                _nodeObject.name = "Node["+ i + "," + j + "]";
+
+                Node _node = _nodeObject.GetComponent<Node>();
+                _node.GridPosition = new Vector2(i, j);
+
+                _grid.Add(new Vector2(i, j), _node);
+            }
+        }
 
         return _grid;
     }
@@ -136,10 +159,14 @@ public class GameGrid : MonoBehaviour
 
     public bool IsOccupied(Vector2 _positionToCheck)
     {
-        if (Grid[new Vector2(_positionToCheck.x, _positionToCheck.y)].NodeObjects.Contains(NodeObjectType.Obstacle))
+        foreach (NodeObject _nodeObject in Grid[_positionToCheck].NodeObjects)
         {
-            return true;
+            if (_nodeObject.NodeObjectType == NodeObjectType.Obstacle)
+            {
+                return true;
+            }
         }
+
         return false;
     }
 

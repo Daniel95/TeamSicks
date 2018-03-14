@@ -115,6 +115,25 @@ public class GameGrid : MonoBehaviour
         return _spawnList;
     }
 
+    public Vector2 GetNodePosition(Node _searchNode)
+    {
+        foreach (Vector2 _position in Grid.Keys)
+        {
+            if (Grid[_position] == _searchNode)
+            {
+                return _position;
+            }
+        }
+
+        Debug.LogError("Not in the keys");
+        return new Vector2(0, 0);
+    }
+
+    public Node GetNode(Vector2 _position)
+    {
+        return Grid[_position];
+    }
+
     public bool IsOccupied(Vector2 _positionToCheck)
     {
         if (Grid[new Vector2(_positionToCheck.x, _positionToCheck.y)].Type.Contains(NodeType.Obstacle))

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    //[HideInInspector]
     public List<NodeType> Type;
 }
 

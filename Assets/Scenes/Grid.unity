@@ -268,7 +268,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1624326422}
   - component: {fileID: 1624326421}
-  - component: {fileID: 1624326423}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -284,21 +283,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1624326420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e3a48252ac58c04aa3881966048fc2e, type: 3}
+  m_Script: {fileID: 11500000, guid: cfc1a424966156c4cae548bebce60417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   paths:
     PathsPrefabs:
-    - {fileID: 1537038063439924, guid: 9a566b4648d438b458790b08c0100623, type: 2}
+    - {fileID: 1537038063439924, guid: d5c05b0c880db5a4695152615cdb9b38, type: 2}
   obstacles:
     ObstaclePrefabs:
-    - {fileID: 1609073165807158, guid: dd6c7c5e27e9abe43b628bb5f8d2d6bb, type: 2}
+    - {fileID: 1609073165807158, guid: ddf950818dcc4b04ab345f1fd51b3eeb, type: 2}
   specials:
     SpecialsPrefabs:
-    - {fileID: 1511505173929664, guid: cf9e115f9486f6f4183aaab130b23e36, type: 2}
+    - {fileID: 1511505173929664, guid: f1d81baa72f20db45b3d294ecb48cbcc, type: 2}
   players:
     PlayersPrefabs:
-    - {fileID: 1918649702758080, guid: ca3c48cf2f727964da3431df9734a8c9, type: 2}
+    - {fileID: 1918649702758080, guid: a892ccc2c511a8e45baba2ac5b8820d3, type: 2}
   step: 3
 --- !u!4 &1624326422
 Transform:
@@ -313,14 +312,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1624326423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1624326420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 786e2b1a71200de4ab48b3b38448f735, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -21,127 +21,93 @@ public class GameGrid : MonoBehaviour
     }
     #endregion
 
-    Dictionary<Vector2, Node> Grid = new Dictionary<Vector2, Node>();
-    
+    private Dictionary<Vector2, Node> nodeGrid = new Dictionary<Vector2, Node>();
+
     [Reorderable] [SerializeField] private List<NodeObjectEntries> nodeObjectEntries;
 
     [Space(5)]
-    [SerializeField]    private int step;
+    [SerializeField]
+    private int step;
 
     [Space(5)]
-    [SerializeField]    private GameObject node;
+    [SerializeField]
+    private GameObject nodePrefab;
 
     private void Awake()
     {
-        Level level = new Level();
-
-        Grid = CreateGrid(new int[][,] { level.ObstacleGrid, level.PickupGrid });
+        nodeGrid = SpawnNodeGrid(Levels.GetLevelGrid(1));
     }
 
-    private Dictionary<Vector2, Node> CreateGrid(int[][,] _gridLayout)
+    private Dictionary<Vector2, Node> SpawnNodeGrid(Dictionary<Vector2, List<NodeObjectType>> _grid)
     {
-        Dictionary<Vector2, Node> _grid = new Dictionary<Vector2, Node>();// CreateEmptyNodes(_gridLayout[0].GetLength(0), _gridLayout[0].GetLength(1));
+        Dictionary<Vector2, Node> _nodeGrid = new Dictionary<Vector2, Node>();
 
-        foreach (int[,] _currentGrid in _gridLayout)
+        foreach (KeyValuePair<Vector2, List<NodeObjectType>> _nodeObjectByGridPosition in _grid)
         {
-            for (int i = 0; i < _currentGrid.GetLength(0); i++)
+            Vector2 _gridPosition = _nodeObjectByGridPosition.Key;
+            Vector2 _localPosition = _gridPosition * step;
+            Vector2 _worldPosition = (Vector2)transform.position + _localPosition;
+            GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);
+            _nodeGameObject.name = "Node[" + _gridPosition.x + "," + _gridPosition.y + "]";
+
+            Node _node = _nodeGameObject.GetComponent<Node>();
+            _node.GridPosition = _gridPosition;
+
+            foreach (NodeObjectType nodeObjectType in _nodeObjectByGridPosition.Value)
             {
-                for (int j = 0; j < _currentGrid.GetLength(1); j++)
-                {
-                    if (_currentGrid[i, j] != (int)NodeObjectType.Null)
-                    {
-                        if (!_grid.ContainsKey(new Vector2(i, j)))
-                        {
-                            Vector3 _position = transform.position + new Vector3(step * j, -step * i);
-                            GameObject _nodeObject0 = Instantiate(node, _position, Quaternion.identity, transform);
-                            _nodeObject0.name = "Node[" + i + "," + j + "]";
+                List<GameObject> _prefabList = GetPrefabList(nodeObjectType);
 
-                            Node _node = _nodeObject0.GetComponent<Node>();
-                            _node.GridPosition = new Vector2(i, j);
+                if(_prefabList.Count <= 0) { continue; }
 
-                            Debug.Log(i + " " + j);
-                            _grid.Add(new Vector2(i, j), _node);
-                        }
+                int randomPrefabIndex = UnityEngine.Random.Range(0, _prefabList.Count - 1);
+                GameObject randomPrefab = _prefabList[randomPrefabIndex];
 
-                        List<GameObject> _spawnList = Spawnlist((NodeObjectType)_currentGrid[i, j]);
-                        Node _currentNode = _grid[new Vector2(i, j)];
+                GameObject _nodeObjectGameObject = Instantiate(randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);
+                NodeObject _nodeObject = _nodeObjectGameObject.GetComponent<NodeObject>();
+                _nodeObject.ParentNode = _node;
+                _nodeObject.NodeObjectType = nodeObjectType;
 
-                        NodeObject _nodeObject = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Count - 1)], _currentNode.transform.position, Quaternion.identity, _currentNode.transform).GetComponent<NodeObject>();
-                        _nodeObject.ParentNode = _currentNode;
-                        _nodeObject.NodeObjectType = (NodeObjectType)_currentGrid[i, j];
-
-                        _currentNode.NodeObjects.Add(_nodeObject);
-                    }
-                }
+                _node.NodeObjects.Add(_nodeObject);
             }
+
+            _nodeGrid.Add(_gridPosition, _node);
         }
 
-        #region Old Code
-        /*
-        for (int i = 0; i < _gridLayout.GetLength(0); i++)
-        {
-            for (int j = 0; j < _gridLayout.GetLength(1); j++)
-            {
-                GameObject[] _spawnList = Spawnlist((NodeType)_gridLayout[i, j]);
-                Vector3 position = new Vector3(step * j, -step * i);
-                Node _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], position, Quaternion.identity, transform).GetComponent<Node>();
-                
-                _grid.Add(new Vector2(j,i), _node);
-            }
-        }
-        
-
-                        //_grid[new Vector2(j, i)].NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
-                        //_node.transform.parent = _grid[new Vector2(j, i)].transform;
-
-                        //_nodeType.NodeObjects.Add((NodeObjectType)_currentGrid[i, j]);
-
-        */
-        #endregion
-
-        return _grid;
+        return _nodeGrid;
     }
 
-    private List<GameObject> Spawnlist(NodeObjectType _nodeObjectType)
+    private List<GameObject> GetPrefabList(NodeObjectType _nodeObjectType)
     {
-        List<GameObject> prefabs = nodeObjectEntries.Find(x => x.NodeObjectType == _nodeObjectType).Prefabs;
+        NodeObjectEntries _nodeObjectEntries = nodeObjectEntries.Find(x => x.NodeObjectType == _nodeObjectType);
+
+        if(_nodeObjectEntries == null) { return new List<GameObject>(); }
+
+        List<GameObject> prefabs = _nodeObjectEntries.Prefabs;
         return prefabs;
-    }
-
-    private List<GameObject> TestP(NodeObjectType nodeObjectType)
-    {
-        foreach (NodeObjectEntries item in nodeObjectEntries)
-        {
-            if (item.NodeObjectType == nodeObjectType)
-            {
-                return item.Prefabs;
-            }
-        }
-        return null;
     }
 
     public Vector2 GetNodePosition(Node _searchNode)
     {
-        foreach (Vector2 _position in Grid.Keys)
+        foreach (Vector2 _position in nodeGrid.Keys)
         {
-            if (Grid[_position] == _searchNode)
+            if (nodeGrid[_position] == _searchNode)
             {
                 return _position;
             }
         }
 
-        Debug.LogError("Not in the keys");
+        Debug.LogError("Node " + _searchNode.name + " does not exists in grid");
         return new Vector2(0, 0);
     }
 
     public Node GetNode(Vector2 _position)
     {
-        return Grid[_position];
+        return nodeGrid[_position];
     }
 
     public bool IsOccupied(Vector2 _positionToCheck)
     {
-        foreach (NodeObject _nodeObject in Grid[_positionToCheck].NodeObjects)
+        foreach (NodeObject _nodeObject in nodeGrid[_positionToCheck].NodeObjects)
         {
             if (_nodeObject.NodeObjectType == NodeObjectType.Obstacle)
             {
@@ -151,66 +117,7 @@ public class GameGrid : MonoBehaviour
 
         return false;
     }
-
-    //Tom: Not functional right now TOOD: fix for new methode
-    /*
-    public void AddOccupied(Vector2 _positionToAdd, NodeType _nodeType)
-    {
-        GameObject[] _spawnList = Spawnlist(_nodeType);
-        Node _node = Instantiate(_spawnList[UnityEngine.Random.Range(0, _spawnList.Length - 1)], Grid[_positionToAdd].transform.position, Quaternion.identity, transform).GetComponent<Node>();
-
-        _node.name = "Test Object";
-
-        Destroy(Grid[_positionToAdd].gameObject);
-        Grid[_positionToAdd] = _node;
-
-        Debug.Log("Added");
-    }
-
-    public void removeOccupied(Vector2 _positionToRemove)
-    {
-        Node _node = Instantiate(paths.PathsPrefabs[UnityEngine.Random.Range(0, paths.PathsPrefabs.Length - 1)], Grid[_positionToRemove].transform.position, Quaternion.identity, transform).GetComponent<Node>();
-
-        Destroy(Grid[_positionToRemove].gameObject);
-        Grid[_positionToRemove] = _node;
-        Debug.Log("Removed");
-    }
-
-    //Also old
-
-    private Dictionary<Vector2, Node> CreateEmptyNodes(int _width, int _height)
-    {
-        Dictionary<Vector2, Node> _grid = new Dictionary<Vector2, Node>();
-
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                Vector3 _position = transform.position + new Vector3(step * j, -step * i);
-                GameObject _nodeObject = Instantiate(node, _position, Quaternion.identity, transform);
-                _nodeObject.name = "Node["+ i + "," + j + "]";
-
-                Node _node = _nodeObject.GetComponent<Node>();
-                _node.GridPosition = new Vector2(i, j);
-
-                _grid.Add(new Vector2(i, j), _node);
-            }
-        }
-
-        return _grid;
-    }
-    */
 }
-
-/*
-    LEVEL NUMBERS:
-
-    Null = 0,
-    Player = 1,
-    Special = 2,
-    Path = 3,
-    Obstacle = 4,
-*/
 
 public enum NodeObjectType
 {
@@ -222,61 +129,80 @@ public enum NodeObjectType
     Finish = 5,
 }
 
-public class Level
+public class Levels
 {
     private const int WIDTH = 12;
     private const int HEIGHT = 6;
 
-    public int[,] ObstacleGrid = new int[HEIGHT, WIDTH]
+    private static Level[] levels =
     {
-        { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-        { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
-    };
+        //LEVEL 1
+        new Level
+        {
+            Height = 6,
+            Width = 12,
 
-    public int[,] PickupGrid = new int[HEIGHT, WIDTH]
-    {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 5, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+            Grids = new int[][,] {
+                //ObstacleGrid
+                new int[HEIGHT, WIDTH]
+                {
+                    { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+                    { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4 },
+                    { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4 },
+                    { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4 },
+                    { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4 },
+                    { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }
+                },
+                //PickupGrid
+                new int[HEIGHT, WIDTH]
+                {
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 5, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+                }
+            },
+        }
+     };
 
-    #region Old Code
-    /*
-    public int[,] TestGrid = new int[5, 5]
+    public static Dictionary<Vector2, List<NodeObjectType>> GetLevelGrid(int _levelIndex)
     {
-        { 1, 0, 1, 1, 1 },
-        { 2, 0, 1, 2, 1 },
-        { 0, 1, 1, 0, 1 },
-        { 0, 0, 0, 0, 1 },
-        { 1, 1, 1, 1, 1 }
-    };
+        Dictionary<Vector2, List<NodeObjectType>> _levelGrid = new Dictionary<Vector2, List<NodeObjectType>>();
 
-    public int[,][] TestGrid0 = new int[5, 5][]
-    {
-        {  new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 } },
-        {  new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 } },
-        {  new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 } },
-        {  new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 } },
-        {  new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 }, new int[1] { 0 } }
-    };
+        Level _level = levels[_levelIndex - 1];
 
-    public List<int>[,] TestGrid1 = new List<int>[5, 5] 
-    {
-        { new List<int> { 0 } , new List<int> { 0 } , new List<int> { 0 } , new List<int> {0 } , new List<int> { 0 } },
-        { new List<int> { 0 } , new List<int> { 0 } , new List<int> { 0 } , new List<int> {0 } , new List<int> { 0 } },
-        { new List<int> { 0 } , new List<int> { 0 } , new List<int> { 0 } , new List<int> {0 } , new List<int> { 0 } },
-        { new List<int> { 0 } , new List<int> { 0 } , new List<int> { 0 } , new List<int> {0 } , new List<int> { 0 } },
-        { new List<int> { 0 } , new List<int> { 0 } , new List<int> { 0 } , new List<int> {0 } , new List<int> { 0 } },
-    };
-    */
-    #endregion
+        for (int x = 0; x < _level.Width; x++)
+        {
+            for (int invertedY = 0; invertedY < HEIGHT; invertedY++)
+            {
+                List<NodeObjectType> _nodeObjectTypes = new List<NodeObjectType>();
+
+                for (int i = 0; i < _level.Grids.Length; i++)
+                {
+                    int[,] _grid = _level.Grids[i];
+                    int _nodeObjectIndex = _grid[invertedY, x];
+                    NodeObjectType _nodeObjectType = (NodeObjectType)_nodeObjectIndex;
+                    _nodeObjectTypes.Add(_nodeObjectType);
+                }
+
+                int _y = Mathf.Abs(invertedY - HEIGHT);
+                Vector2 _gridPosition = new Vector2(x, _y);
+                _levelGrid.Add(_gridPosition, _nodeObjectTypes);
+            }
+        }
+
+        return _levelGrid;
+    }
+
+}
+
+public class Level
+{
+    public int Width = 0;
+    public int Height = 0;
+    public int[][,] Grids;
 }
 
 [Serializable]

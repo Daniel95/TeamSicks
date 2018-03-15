@@ -67,5 +67,7 @@ MonoBehaviour:
   - NodeObjectType: 5
     Prefabs:
     - {fileID: 1015177108965244, guid: a34b012b1247cba4d8233c1030157e49, type: 2}
+  - NodeObjectType: 0
+    Prefabs: []
   step: 3
-  node: {fileID: 1162036337916642, guid: fc8af6e212141784c8556b5fa01ee295, type: 2}
+  nodePrefab: {fileID: 1162036337916642, guid: fc8af6e212141784c8556b5fa01ee295, type: 2}

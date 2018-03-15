@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
         if (MovesGenerator.Moves <= 0)
         {
             StartMoveButton.Instance.SetInteractable(true);
-            Debug.Log("Move ended");
         }
     }
 

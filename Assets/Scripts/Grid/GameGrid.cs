@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using System;
 using UnityToolbag;
 
 public class GameGrid : MonoBehaviour
@@ -60,17 +58,23 @@ public class GameGrid : MonoBehaviour
 
     private void Awake()
     {
-        nodeGrid = SpawnNodeGrid(Levels.GetLevelLayout(1));
+        int _width = 0;
+        int _height = 0;
+        Dictionary<Vector2, List<NodeObjectType>> _layout = Levels.GetLevelLayout(1, out _width, out _height);
+
+        nodeGrid = SpawnNodeGrid(_layout, _width, _height);
     }
 
-    private Dictionary<Vector2, Node> SpawnNodeGrid(Dictionary<Vector2, List<NodeObjectType>> _layout)
+    private Dictionary<Vector2, Node> SpawnNodeGrid(Dictionary<Vector2, List<NodeObjectType>> _layout, int _width, int _height)
     {
         Dictionary<Vector2, Node> _nodeGrid = new Dictionary<Vector2, Node>();
+
+        Vector2 offset = new Vector2(_width, _height) / 2;
 
         foreach (KeyValuePair<Vector2, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
             Vector2 _gridPosition = _nodeObjectByGridPosition.Key;
-            Vector2 _localPosition = _gridPosition * step;
+            Vector2 _localPosition = (_gridPosition - offset) * step;
             Vector2 _worldPosition = (Vector2)transform.position + _localPosition;
             GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);
             _nodeGameObject.name = "Node[" + _gridPosition.x + "," + _gridPosition.y + "]";
@@ -84,7 +88,7 @@ public class GameGrid : MonoBehaviour
 
                 if(_prefabList.Count <= 0) { continue; }
 
-                int randomPrefabIndex = UnityEngine.Random.Range(0, _prefabList.Count - 1);
+                int randomPrefabIndex = Random.Range(0, _prefabList.Count - 1);
                 GameObject randomPrefab = _prefabList[randomPrefabIndex];
 
                 GameObject _nodeObjectGameObject = Instantiate(randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);

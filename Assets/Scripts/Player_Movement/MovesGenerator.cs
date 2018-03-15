@@ -17,15 +17,12 @@ public class MovesGenerator : MonoBehaviour
 
     private void GeneratedMoves()
     {
-        Debug.Log("Move started");
-
 		moves = 0;
 
 		foreach (RandomMoveAmount _moves in randomMoves)
 		{
 			moves += _moves.GetRandomMoveAmount();
 		}
-		Debug.Log("Total Moves: " + moves);
 
         directions.Clear();
 
@@ -33,7 +30,6 @@ public class MovesGenerator : MonoBehaviour
 		{
 			Vector2 containsDirections = _directions.GetRandomDirection();
 			directions.Add(containsDirections);
-			Debug.Log("Direction: " + containsDirections);
 		}
     }
 

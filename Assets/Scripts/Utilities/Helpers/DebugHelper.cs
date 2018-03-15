@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
 public class DebugHelper
@@ -67,11 +66,6 @@ public class DebugHelper
     {
         string log = "(" + vector.x + ", " + vector.y + ", " + vector.z + ")";
         Debug.Log(message + " " + log);
-    }
-
-    public static void ClearConsole()
-    {
-        typeof(Editor).Assembly.GetType("UnityEditorInternal.LogEntries").GetMethod("Clear", BindingFlags.Static | BindingFlags.Public).Invoke(null, null);
     }
 
     private static GameObject GetDebugVisualPrefab()

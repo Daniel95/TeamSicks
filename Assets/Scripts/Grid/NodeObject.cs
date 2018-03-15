@@ -17,5 +17,8 @@ public class NodeObject : MonoBehaviour
         parentNode.NodeObjects.Add(this);
 
         transform.parent = parentNode.transform;
+
+        int _index = _node.NodeObjects.IndexOf(this);
+        GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * (int)_node.NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;
     }
 }

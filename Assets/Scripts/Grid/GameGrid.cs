@@ -64,6 +64,7 @@ public class GameGrid : MonoBehaviour
         Dictionary<Vector2, List<NodeObjectType>> _layout = Levels.GetLevelLayout(1, out _width, out _height);
 
         nodeGrid = SpawnNodeGrid(_layout, _width, _height);
+        SetSpriteIndex();
     }
 
     private Dictionary<Vector2, Node> SpawnNodeGrid(Dictionary<Vector2, List<NodeObjectType>> _layout, int _width, int _height)
@@ -83,19 +84,21 @@ public class GameGrid : MonoBehaviour
             Node _node = _nodeGameObject.GetComponent<Node>();
             _node.GridPosition = _gridPosition;
 
-            foreach (NodeObjectType nodeObjectType in _nodeObjectByGridPosition.Value)
+            foreach (NodeObjectType _nodeObjectType in _nodeObjectByGridPosition.Value)
             {
-                List<GameObject> _prefabList = GetNodeObjectTypePrefabList(nodeObjectType);
+                List<GameObject> _prefabList = GetNodeObjectTypePrefabList(_nodeObjectType);
 
                 if(_prefabList.Count <= 0) { continue; }
 
                 int randomPrefabIndex = Random.Range(0, _prefabList.Count - 1);
                 GameObject randomPrefab = _prefabList[randomPrefabIndex];
-
+                
                 GameObject _nodeObjectGameObject = Instantiate(randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);
                 NodeObject _nodeObject = _nodeObjectGameObject.GetComponent<NodeObject>();
                 _nodeObject.ParentNode = _node;
-                _nodeObject.NodeObjectType = nodeObjectType;
+                _nodeObject.NodeObjectType = _nodeObjectType;
+                
+                 //_nodeObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1000;
 
                 _node.NodeObjects.Add(_nodeObject);
             }
@@ -104,6 +107,17 @@ public class GameGrid : MonoBehaviour
         }
 
         return _nodeGrid;
+    }
+
+    private void SetSpriteIndex()
+    {
+        foreach (Node _node in nodeGrid.Values)
+        {
+            for (int i = 0; i < _node.NodeObjects.Count; i++)
+            {
+                _node.NodeObjects[i].GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * (int)_node.NodeObjects[i].ParentNode.GridPosition.y) + 1000 * i;
+            }
+        }
     }
 
     private List<GameObject> GetNodeObjectTypePrefabList(NodeObjectType _nodeObjectType)

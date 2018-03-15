@@ -34,17 +34,18 @@ public class GameGrid : MonoBehaviour
         return nodeGrid[_position];
     }
 
-    public bool IsOccupied(Vector2 _positionToCheck)
+    public bool Contains(Vector2 _positionToCheck)
     {
-        foreach (NodeObject _nodeObject in nodeGrid[_positionToCheck].NodeObjects)
-        {
-            if (_nodeObject.NodeObjectType == NodeObjectType.Obstacle)
-            {
-                return true;
-            }
-        }
+        return nodeGrid.ContainsKey(_positionToCheck);
+    }
 
-        return false;
+    public bool Contains(Vector2 _positionToCheck, NodeObjectType _nodeObjectType)
+    {
+        if(!nodeGrid.ContainsKey(_positionToCheck)) { return false; }
+        Node _node = nodeGrid[_positionToCheck];
+
+        bool nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
+        return nodeObjectTypeExists;
     }
 
     private static GameGrid GetInstance()

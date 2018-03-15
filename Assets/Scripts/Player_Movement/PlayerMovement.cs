@@ -12,7 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (MovesGenerator.Moves <= 0 || 
             !MovesGenerator.Directions.Contains(input) ||
-            GameGrid.Instance.IsOccupied(nextGridPosition)) { return; }
+            !GameGrid.Instance.Contains(nextGridPosition) ||
+            GameGrid.Instance.Contains(nextGridPosition, NodeObjectType.Obstacle)) { return; }
 
         nodeObject.UpdateGridPosition(nextGridPosition);
         transform.position = nodeObject.ParentNode.transform.position;

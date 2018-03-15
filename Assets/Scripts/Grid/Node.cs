@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public List<NodeObject> NodeObjects;
 
+    public List<NodeObject> NodeObjects;
     public Vector2 GridPosition;
+
 }

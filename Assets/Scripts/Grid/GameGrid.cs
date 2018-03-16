@@ -115,7 +115,11 @@ public class GameGrid : MonoBehaviour
         {
             for (int i = 0; i < _node.NodeObjects.Count; i++)
             {
-                _node.NodeObjects[i].GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * (int)_node.NodeObjects[i].ParentNode.GridPosition.y) + 1000 * i;
+                SpriteRenderer _spriteRenderer = _node.NodeObjects[i].GetComponentInChildren<SpriteRenderer>();
+                if (_spriteRenderer != null)
+                {
+                    _spriteRenderer.sortingOrder = (1000 - 10 * (int)_node.NodeObjects[i].ParentNode.GridPosition.y) + 1000 * i;
+                }
             }
         }
     }

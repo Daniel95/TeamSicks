@@ -9,7 +9,7 @@ public class GameGrid : MonoBehaviour
 
     private static GameGrid instance;
 
-    [Reorderable] [SerializeField] private List<NodeObjectPrefabs> nodeObjectEntries;
+    [Reorderable] [SerializeField] private List<NodeObjectEditorEntry> nodeObjectEntries;
     [Space(5)] [SerializeField] private int step;
     [Space(5)] [SerializeField] private GameObject nodePrefab;
 
@@ -29,23 +29,32 @@ public class GameGrid : MonoBehaviour
         return new Vector2(0, 0);
     }
 
-    public Node GetNode(Vector2 _position)
+    public Node GetNode(Vector2 _gridPosition)
     {
-        return nodeGrid[_position];
+        return nodeGrid[_gridPosition];
     }
 
-    public bool Contains(Vector2 _positionToCheck)
+    public bool Contains(Vector2 _gridPosition)
     {
-        return nodeGrid.ContainsKey(_positionToCheck);
+        return nodeGrid.ContainsKey(_gridPosition);
     }
 
-    public bool Contains(Vector2 _positionToCheck, NodeObjectType _nodeObjectType)
+    public bool Contains(Vector2 _gridPosition, NodeObjectType _nodeObjectType)
     {
-        if(!nodeGrid.ContainsKey(_positionToCheck)) { return false; }
-        Node _node = nodeGrid[_positionToCheck];
+        if(!nodeGrid.ContainsKey(_gridPosition)) { return false; }
+        Node _node = nodeGrid[_gridPosition];
 
         bool nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
         return nodeObjectTypeExists;
+    }
+
+    public bool IsImpassable(Vector2 _gridPosition)
+    {
+        if (!nodeGrid.ContainsKey(_gridPosition)) { return false; }
+        Node _node = nodeGrid[_gridPosition];
+
+        bool containsImpassableNodeObject = _node.NodeObjects.Exists(x => x.Impassable);
+        return containsImpassableNodeObject;
     }
 
     private static GameGrid GetInstance()
@@ -71,12 +80,12 @@ public class GameGrid : MonoBehaviour
     {
         Dictionary<Vector2, Node> _nodeGrid = new Dictionary<Vector2, Node>();
 
-        Vector2 offset = new Vector2(_width, _height) / 2;
+        Vector2 _offset = new Vector2(_width, _height) / 2;
 
         foreach (KeyValuePair<Vector2, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
             Vector2 _gridPosition = _nodeObjectByGridPosition.Key;
-            Vector2 _localPosition = (_gridPosition - offset) * step;
+            Vector2 _localPosition = (_gridPosition - _offset) * step;
             Vector2 _worldPosition = (Vector2)transform.position + _localPosition;
             GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);
             _nodeGameObject.name = "Node[" + _gridPosition.x + "," + _gridPosition.y + "]";
@@ -86,19 +95,17 @@ public class GameGrid : MonoBehaviour
 
             foreach (NodeObjectType _nodeObjectType in _nodeObjectByGridPosition.Value)
             {
-                List<GameObject> _prefabList = GetNodeObjectTypePrefabList(_nodeObjectType);
+                NodeObjectEditorEntry _nodeObjectEditorEntry = GetNodeObjectEditorEntry(_nodeObjectType);
+                if(_nodeObjectEditorEntry.Prefabs.Count <= 0) { continue; }
 
-                if(_prefabList.Count <= 0) { continue; }
-
-                int randomPrefabIndex = Random.Range(0, _prefabList.Count - 1);
-                GameObject randomPrefab = _prefabList[randomPrefabIndex];
+                int _randomPrefabIndex = Random.Range(0, _nodeObjectEditorEntry.Prefabs.Count - 1);
+                GameObject _randomPrefab = _nodeObjectEditorEntry.Prefabs[_randomPrefabIndex];
                 
-                GameObject _nodeObjectGameObject = Instantiate(randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);
+                GameObject _nodeObjectGameObject = Instantiate(_randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);
                 NodeObject _nodeObject = _nodeObjectGameObject.GetComponent<NodeObject>();
                 _nodeObject.ParentNode = _node;
                 _nodeObject.NodeObjectType = _nodeObjectType;
-                
-                 //_nodeObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1000;
+                _nodeObject.Impassable = _nodeObjectEditorEntry.Impassable;
 
                 _node.NodeObjects.Add(_nodeObject);
             }
@@ -124,14 +131,16 @@ public class GameGrid : MonoBehaviour
         }
     }
 
-    private List<GameObject> GetNodeObjectTypePrefabList(NodeObjectType _nodeObjectType)
+    private NodeObjectEditorEntry GetNodeObjectEditorEntry(NodeObjectType _nodeObjectType)
     {
-        NodeObjectPrefabs _nodeObjectEntries = nodeObjectEntries.Find(x => x.NodeObjectType == _nodeObjectType);
+        NodeObjectEditorEntry _nodeObjectEditorEntry = nodeObjectEntries.Find(x => x.NodeObjectType == _nodeObjectType);
 
-        if(_nodeObjectEntries == null) { return new List<GameObject>(); }
+        if(_nodeObjectEditorEntry == null) {
+            Debug.LogError("NodeObjectEditorEntry with nodeObjectType " + _nodeObjectType + " does not exist.");
+            return new NodeObjectEditorEntry();
+        }
 
-        List<GameObject> prefabs = _nodeObjectEntries.Prefabs;
-        return prefabs;
+        return _nodeObjectEditorEntry;
     }
 
 }

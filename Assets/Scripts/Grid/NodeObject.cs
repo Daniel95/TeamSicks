@@ -4,9 +4,11 @@ public class NodeObject : MonoBehaviour
 {
     public NodeObjectType NodeObjectType { get { return nodeObjectType; } set { nodeObjectType = value; } }
     public Node ParentNode { get { return parentNode; } set { parentNode = value; } }
+    public bool Impassable { get { return impassable; } set { impassable = value; } }
 
     private NodeObjectType nodeObjectType;
     private Node parentNode;
+    private bool impassable;
 
     public void UpdateGridPosition(Vector2 _position)
     {

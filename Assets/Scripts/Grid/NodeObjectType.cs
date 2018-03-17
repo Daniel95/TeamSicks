@@ -1,9 +1,10 @@
 ﻿public enum NodeObjectType
 {
     Null = 0,
-    Player = 1,
-    Special = 2,
-    Path = 3,
-    Obstacle = 4,
-    Finish = 5,
+    Path = 1,
+    Obstacle = 2,
+    Special = 3,
+    Finish = 4,
+    Player = 5,
+    Enemy = 6,
 }

@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1518968176282800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5, z: 0}
+  m_LocalPosition: {x: 1.5, y: -2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -53,22 +53,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeObjectEntries:
   - NodeObjectType: 1
+    Impassable: 0
     Prefabs:
     - {fileID: 1537038063439924, guid: d5c05b0c880db5a4695152615cdb9b38, type: 2}
   - NodeObjectType: 3
+    Impassable: 0
     Prefabs:
     - {fileID: 1511505173929664, guid: f1d81baa72f20db45b3d294ecb48cbcc, type: 2}
   - NodeObjectType: 5
+    Impassable: 0
     Prefabs:
     - {fileID: 1918649702758080, guid: a892ccc2c511a8e45baba2ac5b8820d3, type: 2}
   - NodeObjectType: 4
+    Impassable: 0
     Prefabs:
     - {fileID: 1015177108965244, guid: a34b012b1247cba4d8233c1030157e49, type: 2}
   - NodeObjectType: 2
+    Impassable: 0
     Prefabs:
     - {fileID: 1609073165807158, guid: ddf950818dcc4b04ab345f1fd51b3eeb, type: 2}
   - NodeObjectType: 6
+    Impassable: 0
     Prefabs:
     - {fileID: 1795132429625600, guid: bd1371275a43cf34581e344c82658e84, type: 2}
+  - NodeObjectType: 0
+    Impassable: 0
+    Prefabs: []
   step: 3
   nodePrefab: {fileID: 1162036337916642, guid: fc8af6e212141784c8556b5fa01ee295, type: 2}

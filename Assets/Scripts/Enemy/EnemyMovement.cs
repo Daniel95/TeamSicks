@@ -65,24 +65,23 @@ public class EnemyMovement : MonoBehaviour
 
     private void TestPath()
     {
-        int[][] map = new int[][]
+        int[,] map = new int[,]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {1, 1, 1, 1, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 1, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 1, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 1, 0, 0, 0, 0},
-            new int[] {1, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {1, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {1, 1, 0, 1, 1, 1, 0, 0},
-            new int[] {1, 0, 1, 0, 0, 0, 0, 0},
-            new int[] {1, 0, 1, 0, 0, 0, 0, 0}
+            { 0, 0, 0, 0, 0, 0, 0, 0},
+            { 1, 1, 1, 1, 0, 0, 0, 0},
+            { 0, 0, 0, 1, 0, 0, 0, 0},
+            { 0, 0, 0, 1, 0, 0, 0, 0},
+            { 0, 0, 0, 1, 0, 0, 0, 0},
+            { 1, 0, 0, 0, 0, 0, 0, 0},
+            { 1, 0, 0, 0, 0, 0, 0, 0},
+            { 1, 1, 0, 1, 1, 1, 0, 0},
+            { 1, 0, 1, 0, 0, 0, 0, 0},
+            { 1, 0, 1, 0, 0, 0, 0, 0}
         };
         int[] start = new int[2] { 0, 0 };
         int[] end = new int[2] { 2, 3 };
         List<Vector2> path = new AstarHelper(map, start, end, AstarHelper.AstarPathType.Manhattan).Result;
 
-        Debug.Log(path.Count);
         for (int i = 0; i < path.Count; i++)
         {
             Debug.Log(path[i]);

@@ -79,26 +79,26 @@ public class AstarHelper
         }
     }
 
-    private _Object[] DiagonalSuccessors(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
+    private _Object[] DiagonalSuccessors(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[,] grid, int rows, int cols, _Object[] result, int i)
     {
         if (xN)
         {
-            if (xE && grid[N][E] == 0)
+            if (xE && grid[N, E] == 0)
             {
                 result[i++] = new _Object(E, N);
             }
-            if (xW && grid[N][W] == 0)
+            if (xW && grid[N, W] == 0)
             {
                 result[i++] = new _Object(W, N);
             }
         }
         if (xS)
         {
-            if (xE && grid[S][E] == 0)
+            if (xE && grid[S, E] == 0)
             {
                 result[i++] = new _Object(E, S);
             }
-            if (xW && grid[S][W] == 0)
+            if (xW && grid[S, W] == 0)
             {
                 result[i++] = new _Object(W, S);
             }
@@ -106,7 +106,7 @@ public class AstarHelper
         return result;
     }
 
-    private _Object[] DiagonalSuccessorsFree(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
+    private _Object[] DiagonalSuccessorsFree(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[,] grid, int rows, int cols, _Object[] result, int i)
     {
         xN = N > -1;
         xS = S < rows;
@@ -115,22 +115,22 @@ public class AstarHelper
 
         if (xE)
         {
-            if (xN && grid[N][E] == 0)
+            if (xN && grid[N, E] == 0)
             {
                 result[i++] = new _Object(E, N);
             }
-            if (xS && grid[S][E] == 0)
+            if (xS && grid[S, E] == 0)
             {
                 result[i++] = new _Object(E, S);
             }
         }
         if (xW)
         {
-            if (xN && grid[N][W] == 0)
+            if (xN && grid[N, W] == 0)
             {
                 result[i++] = new _Object(W, N);
             }
-            if (xS && grid[S][W] == 0)
+            if (xS && grid[S, W] == 0)
             {
                 result[i++] = new _Object(W, S);
             }
@@ -138,22 +138,22 @@ public class AstarHelper
         return result;
     }
 
-    private _Object[] NothingToDo(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
+    private _Object[] NothingToDo(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[, ] grid, int rows, int cols, _Object[] result, int i)
     {
         return result;
     }
 
-    private _Object[] Successors(int x, int y, int[][] grid, int rows, int cols)
+    private _Object[] Successors(int x, int y, int[,] grid, int rows, int cols)
     {
         int N = y - 1;
         int S = y + 1;
         int E = x + 1;
         int W = x - 1;
 
-        bool xN = N > -1 && grid[N][x] == 0;
-        bool xS = S < rows && grid[S][x] == 0;
-        bool xE = E < cols && grid[y][E] == 0;
-        bool xW = W > -1 && grid[y][W] == 0;
+        bool xN = N > -1 && grid[N, x] == 0;
+        bool xS = S < rows && grid[S, x] == 0;
+        bool xE = E < cols && grid[y, E] == 0;
+        bool xW = W > -1 && grid[y, W] == 0;
 
         int i = 0;
 
@@ -202,12 +202,12 @@ public class AstarHelper
         return Math.Abs(start.X - end.X) + Math.Abs(start.Y - end.Y);
     }
 
-    public AstarHelper(int[][] grid, int[] _start, int[] _end, AstarPathType _astarPathType)
+    public AstarHelper(int[,] grid, int[] _start, int[] _end, AstarPathType _astarPathType)
     {
         astarPathType = _astarPathType;
 
-        int cols = grid[0].Length;
-        int rows = grid.Length;
+        int cols = grid.GetLength(1);
+        int rows = grid.GetLength(0);
         int limit = cols * rows;
         int length = 1;
 

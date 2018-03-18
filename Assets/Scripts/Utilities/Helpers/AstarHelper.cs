@@ -27,49 +27,59 @@ using UnityEngine;
 
 public class AstarHelper
 {
-    public List<Vector2> result = new List<Vector2>();
-    private string find;
+    public enum AstarPathType
+    {
+        Manhattan,
+        Diagonal,
+        DiagonalFree,
+        Euclidean,
+        EuclideanFree,
+    }
+
+    public List<Vector2> Result = new List<Vector2>();
+
+    private AstarPathType astarPathType;
 
     private class _Object
     {
-        public int x
+        public int X
         {
             get;
             set;
         }
-        public int y
+        public int Y
         {
             get;
             set;
         }
-        public double f
+        public double F
         {
             get;
             set;
         }
-        public double g
+        public double G
         {
             get;
             set;
         }
-        public int v
+        public int V
         {
             get;
             set;
         }
-        public _Object p
+        public _Object P
         {
             get;
             set;
         }
-        public _Object(int x, int y)
+        public _Object(int _x, int _y)
         {
-            this.x = x;
-            this.y = y;
+            X = _x;
+            Y = _y;
         }
     }
 
-    private _Object[] diagonalSuccessors(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
+    private _Object[] DiagonalSuccessors(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
     {
         if (xN)
         {
@@ -96,7 +106,7 @@ public class AstarHelper
         return result;
     }
 
-    private _Object[] diagonalSuccessorsFree(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
+    private _Object[] DiagonalSuccessorsFree(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
     {
         xN = N > -1;
         xS = S < rows;
@@ -128,12 +138,12 @@ public class AstarHelper
         return result;
     }
 
-    private _Object[] nothingToDo(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
+    private _Object[] NothingToDo(bool xN, bool xS, bool xE, bool xW, int N, int S, int E, int W, int[][] grid, int rows, int cols, _Object[] result, int i)
     {
         return result;
     }
 
-    private _Object[] successors(int x, int y, int[][] grid, int rows, int cols)
+    private _Object[] Successors(int x, int y, int[][] grid, int rows, int cols)
     {
         int N = y - 1;
         int S = y + 1;
@@ -167,34 +177,34 @@ public class AstarHelper
         }
 
         _Object[] obj =
-            (this.find == "Diagonal" || this.find == "Euclidean") ? diagonalSuccessors(xN, xS, xE, xW, N, S, E, W, grid, rows, cols, result, i) :
-            (this.find == "DiagonalFree" || this.find == "EuclideanFree") ? diagonalSuccessorsFree(xN, xS, xE, xW, N, S, E, W, grid, rows, cols, result, i) :
-                                                                                     nothingToDo(xN, xS, xE, xW, N, S, E, W, grid, rows, cols, result, i);
+            (astarPathType == AstarPathType.Diagonal || astarPathType == AstarPathType.Euclidean) ? DiagonalSuccessors(xN, xS, xE, xW, N, S, E, W, grid, rows, cols, result, i) :
+            (astarPathType == AstarPathType.DiagonalFree || astarPathType == AstarPathType.EuclideanFree) ? DiagonalSuccessorsFree(xN, xS, xE, xW, N, S, E, W, grid, rows, cols, result, i) :
+                                                                                     NothingToDo(xN, xS, xE, xW, N, S, E, W, grid, rows, cols, result, i);
 
         return obj;
     }
 
-    private double diagonal(_Object start, _Object end)
+    private double Diagonal(_Object start, _Object end)
     {
-        return Math.Max(Math.Abs(start.x - end.x), Math.Abs(start.y - end.y));
+        return Math.Max(Math.Abs(start.X - end.X), Math.Abs(start.Y - end.Y));
     }
 
-    private double euclidean(_Object start, _Object end)
+    private double Euclidean(_Object start, _Object end)
     {
-        var x = start.x - end.x;
-        var y = start.y - end.y;
+        var x = start.X - end.X;
+        var y = start.Y - end.Y;
 
         return Math.Sqrt(x * x + y * y);
     }
 
-    private double manhattan(_Object start, _Object end)
+    private double Manhattan(_Object start, _Object end)
     {
-        return Math.Abs(start.x - end.x) + Math.Abs(start.y - end.y);
+        return Math.Abs(start.X - end.X) + Math.Abs(start.Y - end.Y);
     }
 
-    public AstarHelper(int[][] grid, int[] s, int[] e, string f)
+    public AstarHelper(int[][] grid, int[] _start, int[] _end, AstarPathType _astarPathType)
     {
-       // this.find = (f == null) ? "Diagonal" : f;
+        astarPathType = _astarPathType;
 
         int cols = grid[0].Length;
         int rows = grid.Length;
@@ -202,10 +212,10 @@ public class AstarHelper
         int length = 1;
 
         List<_Object> open = new List<_Object>();
-        open.Add(new _Object(s[0], s[1]));
-        open[0].f = 0;
-        open[0].g = 0;
-        open[0].v = s[0] + s[1] * cols;
+        open.Add(new _Object(_start[0], _start[1]));
+        open[0].F = 0;
+        open[0].G = 0;
+        open[0].V = _start[0] + _start[1] * cols;
 
         _Object current;
 
@@ -223,9 +233,9 @@ public class AstarHelper
         _Object[] next;
         _Object adj = null;
 
-        _Object end = new _Object(e[0], e[1])
+        _Object end = new _Object(_end[0], _end[1])
         {
-            v = e[0] + e[1] * cols
+            V = _end[0] + _end[1] * cols
         };
 
         bool inList;
@@ -237,9 +247,9 @@ public class AstarHelper
 
             for (i = 0; i < length; i++)
             {
-                if (open[i].f < max)
+                if (open[i].F < max)
                 {
-                    max = open[i].f;
+                    max = open[i].F;
                     min = i;
                 }
             }
@@ -247,10 +257,10 @@ public class AstarHelper
             current = open[min];
             open.RemoveAt(min);
 
-            if (current.v != end.v)
+            if (current.V != end.V)
             {
                 --length;
-                next = successors(current.x, current.y, grid, rows, cols);
+                next = Successors(current.X, current.Y, grid, rows, cols);
 
                 for (i = 0, j = next.Length; i < j; ++i)
                 {
@@ -259,14 +269,14 @@ public class AstarHelper
                         continue;
                     }
 
-                    (adj = next[i]).p = current;
-                    adj.f = adj.g = 0;
-                    adj.v = adj.x + adj.y * cols;
+                    (adj = next[i]).P = current;
+                    adj.F = adj.G = 0;
+                    adj.V = adj.X + adj.Y * cols;
                     inList = false;
 
                     foreach (int key in list)
                     {
-                        if (adj.v == key)
+                        if (adj.V == key)
                         {
                             inList = true;
                         }
@@ -274,25 +284,25 @@ public class AstarHelper
 
                     if (!inList)
                     {
-                        if (this.find == "DiagonalFree" || this.find == "Diagonal")
+                        if (astarPathType == AstarPathType.DiagonalFree || astarPathType == AstarPathType.Diagonal)
                         {
-                            distanceS = diagonal(adj, current);
-                            distanceE = diagonal(adj, end);
+                            distanceS = Diagonal(adj, current);
+                            distanceE = Diagonal(adj, end);
                         }
-                        else if (this.find == "Euclidean" || this.find == "EuclideanFree")
+                        else if (astarPathType == AstarPathType.Euclidean || astarPathType == AstarPathType.EuclideanFree)
                         {
-                            distanceS = euclidean(adj, current);
-                            distanceE = euclidean(adj, end);
+                            distanceS = Euclidean(adj, current);
+                            distanceE = Euclidean(adj, end);
                         }
                         else
                         {
-                            distanceS = manhattan(adj, current);
-                            distanceE = manhattan(adj, end);
+                            distanceS = Manhattan(adj, current);
+                            distanceE = Manhattan(adj, end);
                         }
 
-                        adj.f = (adj.g = current.g + distanceS) + distanceE;
+                        adj.F = (adj.G = current.G + distanceS) + distanceE;
                         open.Add(adj);
-                        list.Add(adj.v);
+                        list.Add(adj.V);
                         length++;
                     }
                 }
@@ -302,12 +312,13 @@ public class AstarHelper
                 i = length = 0;
                 do
                 {
-                    this.result.Add(new Vector2(current.x, current.y));
+                    Result.Add(new Vector2(current.X, current.Y));
                 }
-                while ((current = current.p) != null);
-                result.Reverse();
+                while ((current = current.P) != null);
+                Result.Reverse();
             }
         }
         while (length != 0);
     }
+
 }

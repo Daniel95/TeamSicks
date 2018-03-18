@@ -78,8 +78,9 @@ public class EnemyMovement : MonoBehaviour
             { 1, 0, 1, 0, 0, 0, 0, 0},
             { 1, 0, 1, 0, 0, 0, 0, 0}
         };
-        int[] start = new int[2] { 0, 0 };
-        int[] end = new int[2] { 2, 3 };
+        Vector2Int start = new Vector2Int(0, 0);
+        Vector2Int end = new Vector2Int(2, 3);
+
         List<Vector2> path = new AstarHelper(map, start, end, AstarHelper.AstarPathType.Manhattan).Result;
 
         for (int i = 0; i < path.Count; i++)

@@ -202,7 +202,7 @@ public class AstarHelper
         return Math.Abs(start.X - end.X) + Math.Abs(start.Y - end.Y);
     }
 
-    public AstarHelper(int[,] grid, int[] _start, int[] _end, AstarPathType _astarPathType)
+    public AstarHelper(int[,] grid, Vector2Int _start, Vector2Int _end, AstarPathType _astarPathType)
     {
         astarPathType = _astarPathType;
 
@@ -212,10 +212,10 @@ public class AstarHelper
         int length = 1;
 
         List<_Object> open = new List<_Object>();
-        open.Add(new _Object(_start[0], _start[1]));
+        open.Add(new _Object(_start.x, _start.y));
         open[0].F = 0;
         open[0].G = 0;
-        open[0].V = _start[0] + _start[1] * cols;
+        open[0].V = _start.x + _start.y * cols;
 
         _Object current;
 
@@ -233,9 +233,9 @@ public class AstarHelper
         _Object[] next;
         _Object adj = null;
 
-        _Object end = new _Object(_end[0], _end[1])
+        _Object end = new _Object(_end.x, _end.y)
         {
-            V = _end[0] + _end[1] * cols
+            V = _end.x + _end.y * cols
         };
 
         bool inList;

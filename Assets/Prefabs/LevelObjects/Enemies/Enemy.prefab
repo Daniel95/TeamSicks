@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4480303055129188}
-  - component: {fileID: 114732797241813850}
   - component: {fileID: 114101397658607262}
   m_Layer: 0
   m_Name: Enemy
@@ -82,18 +81,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3f242fb3cd22a4bbc6fd5f880214e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movesPerTurn: 3
---- !u!114 &114732797241813850
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1795132429625600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5355a1046129b174fb206cde590f59a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  movesPerTurn: 999
+  moveDelay: 0.4
 --- !u!212 &212226158363388572
 SpriteRenderer:
   m_ObjectHideFlags: 1

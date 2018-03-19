@@ -52,6 +52,11 @@ public class LevelGrid : MonoBehaviour
 
     public Node GetNode(Vector2Int _gridPosition)
     {
+        if(!nodeGrid.ContainsKey(_gridPosition))
+        {
+            Debug.LogError("Nodegrid does not contain gridposition " + _gridPosition);
+            return null;
+        }
         return nodeGrid[_gridPosition];
     }
 
@@ -65,8 +70,8 @@ public class LevelGrid : MonoBehaviour
         if(!nodeGrid.ContainsKey(_gridPosition)) { return false; }
         Node _node = nodeGrid[_gridPosition];
 
-        bool nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
-        return nodeObjectTypeExists;
+        bool _nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
+        return _nodeObjectTypeExists;
     }
 
     public Vector2Int GetSize()
@@ -96,8 +101,8 @@ public class LevelGrid : MonoBehaviour
         if (!nodeGrid.ContainsKey(_gridPosition)) { return false; }
         Node _node = nodeGrid[_gridPosition];
 
-        bool containsImpassableNodeObject = _node.NodeObjects.Exists(x => x.Impassable);
-        return containsImpassableNodeObject;
+        bool _containsImpassableNodeObject = _node.NodeObjects.Exists(x => x.Impassable);
+        return _containsImpassableNodeObject;
     }
 
     private void Awake()

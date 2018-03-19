@@ -7,6 +7,8 @@ public class EnemyNodeObject : NodeObject
 {
 
     [SerializeField] private int movesPerTurn = 3;
+    [SerializeField] private float moveDelay = 0.4f;
+
     private Vector2Int endPoint;
 
     private void StartTurnMovement()
@@ -17,7 +19,6 @@ public class EnemyNodeObject : NodeObject
         path.Remove(GridPosition);
 
         int moves = movesPerTurn < path.Count ? movesPerTurn : path.Count;
-
         List<Vector2Int> pathThisTurn = path.GetRange(0, moves);
         StartCoroutine(FollowPath(pathThisTurn, () => { EndTurnButton.Instance.SetInteractable(true); }));
     }
@@ -26,13 +27,13 @@ public class EnemyNodeObject : NodeObject
     {
         for (int i = 0; i < path.Count; i++)
         {
-            if(i != 0)
-            {
-                yield return new WaitForSeconds(1);
-            }
-
             Vector2Int _gridPosition = path[i];
             MoveToGridPosition(_gridPosition);
+
+            if(i != path.Count - 1)
+            {
+                yield return new WaitForSeconds(moveDelay);
+            }
         }
 
         if (OnFollowPathCompletedEvent != null)
@@ -55,7 +56,7 @@ public class EnemyNodeObject : NodeObject
             return;
         }
 
-        int randomEndpointIndex = UnityEngine.Random.Range(0, EndpointNodeObject.Endpoints.Count - 1);
+        int randomEndpointIndex = UnityEngine.Random.Range(0, EndpointNodeObject.Endpoints.Count);
         EndpointNodeObject endpointNodeObject = EndpointNodeObject.Endpoints[randomEndpointIndex];
         endPoint = endpointNodeObject.GridPosition;
     }

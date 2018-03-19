@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
 
     private NodeObject nodeObject;
 
-    [SerializeField] private int movesPerTurn;
+    [SerializeField] private int movesPerTurn = 3;
 
     private void StartTurnMovement()
     {
@@ -20,7 +20,6 @@ public class EnemyMovement : MonoBehaviour
         List<Vector2Int> path = AstarHelper.GetPath(impassableMap, nodeObject.GridPosition, end, AstarHelper.AstarPathType.Manhattan);
 
         List<Vector2Int> pathThisTurn = path.GetRange(0, movesPerTurn);
-        Debug.Log(pathThisTurn.Count);
         StartCoroutine(FollowPath(pathThisTurn));
     }
 

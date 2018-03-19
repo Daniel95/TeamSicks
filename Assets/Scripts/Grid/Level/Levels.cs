@@ -20,7 +20,7 @@ public class Levels
             Height = 7,
             Width = 20,
 
-            LayoutLayers = new int[][,] {
+            MapLayers = new int[][,] {
                 //Obstacle Layer
                 new int[7, 20]
                 {
@@ -47,11 +47,11 @@ public class Levels
         }
     };
 
-    public static Vector2Int GetLevelDimensions(int _levelNumber)
+    public static Vector2Int GetLevelSize(int _levelNumber)
     {
         Level _level = GetLevel(_levelNumber);
-        Vector2Int _levelDimensions = new Vector2Int(_level.Width, _level.Height);
-        return _levelDimensions;
+        Vector2Int _size = new Vector2Int(_level.Width, _level.Height);
+        return _size;
     }
 
     public static Dictionary<Vector2Int, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
@@ -74,9 +74,9 @@ public class Levels
             {
                 List<NodeObjectType> _nodeObjectTypes = new List<NodeObjectType>();
 
-                for (int i = 0; i < _level.LayoutLayers.Length; i++)
+                for (int i = 0; i < _level.MapLayers.Length; i++)
                 {
-                    int[,] _layout = _level.LayoutLayers[i];
+                    int[,] _layout = _level.MapLayers[i];
                     int _nodeObjectIndex = _layout[invertedY, x];
                     NodeObjectType _nodeObjectType = (NodeObjectType)_nodeObjectIndex;
                     _nodeObjectTypes.Add(_nodeObjectType);

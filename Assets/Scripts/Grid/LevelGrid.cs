@@ -69,22 +69,23 @@ public class LevelGrid : MonoBehaviour
         return nodeObjectTypeExists;
     }
 
-    public Vector2Int GetDimensions()
+    public Vector2Int GetSize()
     {
-        Vector2Int _dimensions = Levels.GetLevelDimensions(loadedLevelGridNumber);
-        return _dimensions;
+        Vector2Int _getSize = Levels.GetLevelSize(loadedLevelGridNumber);
+        return _getSize;
     }
 
     public int[,] GetImpassableMap()
     {
-        Vector2Int _dimensions = Levels.GetLevelDimensions(loadedLevelGridNumber);
+        Vector2Int _size = Levels.GetLevelSize(loadedLevelGridNumber);
 
-        int[,] _impassableMap = new int[_dimensions.y, _dimensions.x];
-        for (int y = 0; y < _dimensions.y; y++)
+        int[,] _impassableMap = new int[_size.y, _size.x];
+        for (int invertedY = 0; invertedY < _size.y; invertedY++)
         {
-            for (int x = 0; x < _dimensions.x; x++)
+            for (int x = 0; x < _size.x; x++)
             {
-                _impassableMap[y, x] = IsImpassable(new Vector2Int(x, y)) ? 1 : 0;
+                int _y = _size.y - invertedY;
+                _impassableMap[invertedY, x] = IsImpassable(new Vector2Int(x, invertedY)) ? 1 : 0;
             }
         }
 

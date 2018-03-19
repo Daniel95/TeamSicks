@@ -6,7 +6,7 @@ using UnityToolbag;
 public class LevelGrid : MonoBehaviour
 {
 
-    public static Action OnLoadedEvent;
+    public static Action LevelGridLoadedEvent;
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
@@ -30,9 +30,9 @@ public class LevelGrid : MonoBehaviour
 
         loadedLevelGridNumber = _levelNumber;
 
-        if(OnLoadedEvent != null)
+        if(LevelGridLoadedEvent != null)
         {
-            OnLoadedEvent();
+            LevelGridLoadedEvent();
         }
     }
 
@@ -141,6 +141,13 @@ public class LevelGrid : MonoBehaviour
                 
                 GameObject _nodeObjectGameObject = Instantiate(_randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);
                 NodeObject _nodeObject = _nodeObjectGameObject.GetComponent<NodeObject>();
+
+                if(_nodeObject == null)
+                {
+                    Debug.LogError("No NodeObject script on NodeObject of type " + _nodeObjectType);
+                    continue;
+                }
+
                 _nodeObject.ParentNode = _node;
                 _nodeObject.NodeObjectType = _nodeObjectType;
                 _nodeObject.Impassable = _nodeObjectEditorEntry.Impassable;

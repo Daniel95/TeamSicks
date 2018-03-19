@@ -15,6 +15,8 @@ public class NodeObject : MonoBehaviour
     {
         Node _node = LevelGrid.Instance.GetNode(_position);
 
+        Debug.Log(parentNode);
+
         parentNode.NodeObjects.Remove(this);
         parentNode = _node;
         parentNode.NodeObjects.Add(this);
@@ -22,6 +24,7 @@ public class NodeObject : MonoBehaviour
         transform.parent = parentNode.transform;
 
         int _index = _node.NodeObjects.IndexOf(this);
-        GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * (int)_node.NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;
+        GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * _node.NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;
     }
+
 }

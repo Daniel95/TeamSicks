@@ -24,10 +24,15 @@ public class EnemyNodeObject : NodeObject
 
     private IEnumerator FollowPath(List<Vector2Int> path, Action OnFollowPathCompletedEvent = null)
     {
-        foreach (Vector2Int _gridPosition in path)
+        for (int i = 0; i < path.Count; i++)
         {
+            if(i != 0)
+            {
+                yield return new WaitForSeconds(1);
+            }
+
+            Vector2Int _gridPosition = path[i];
             MoveToGridPosition(_gridPosition);
-            yield return new WaitForSeconds(1);
         }
 
         if (OnFollowPathCompletedEvent != null)

@@ -14,8 +14,11 @@ public class EnemyNodeObject : NodeObject
         int[,] impassableMap = LevelGrid.Instance.GetImpassableMap();
 
         List<Vector2Int> path = AstarHelper.GetPath(impassableMap, GridPosition, endPoint, AstarHelper.AstarPathType.Manhattan);
+        path.Remove(GridPosition);
 
-        List<Vector2Int> pathThisTurn = path.GetRange(1, movesPerTurn);
+        int moves = movesPerTurn < path.Count ? movesPerTurn : path.Count;
+
+        List<Vector2Int> pathThisTurn = path.GetRange(0, moves);
         StartCoroutine(FollowPath(pathThisTurn, () => { EndTurnButton.Instance.SetInteractable(true); }));
     }
 

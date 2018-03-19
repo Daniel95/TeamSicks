@@ -15,8 +15,6 @@ public class NodeObject : MonoBehaviour
     {
         Node _node = LevelGrid.Instance.GetNode(_position);
 
-        Debug.Log(parentNode);
-
         parentNode.NodeObjects.Remove(this);
         parentNode = _node;
         parentNode.NodeObjects.Add(this);

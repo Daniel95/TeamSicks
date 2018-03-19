@@ -5,6 +5,6 @@ public class Node : MonoBehaviour
 {
 
     public List<NodeObject> NodeObjects;
-    public Vector2 GridPosition;
+    public Vector2Int GridPosition;
 
 }

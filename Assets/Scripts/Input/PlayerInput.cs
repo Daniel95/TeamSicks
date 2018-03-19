@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
 
-    public static Action<Vector2> PlayerInputEvent;
+    public static Action<Vector2Int> PlayerInputEvent;
 
     public static PlayerInput Instance { get { return GetInstance(); } }
 
@@ -17,7 +17,7 @@ public class PlayerInput : MonoBehaviour
         {
             if(PlayerInputEvent != null)
             {
-                PlayerInputEvent(Vector2.left);
+                PlayerInputEvent(Vector2Int.left);
             }
         }
         //Right
@@ -25,7 +25,7 @@ public class PlayerInput : MonoBehaviour
         {
             if (PlayerInputEvent != null)
             {
-                PlayerInputEvent(Vector2.right);
+                PlayerInputEvent(Vector2Int.right);
             }
         }
         //Up
@@ -33,7 +33,7 @@ public class PlayerInput : MonoBehaviour
         {
             if (PlayerInputEvent != null)
             {
-                PlayerInputEvent(Vector2.up);
+                PlayerInputEvent(Vector2Int.up);
             }
         }
         //Down
@@ -41,7 +41,7 @@ public class PlayerInput : MonoBehaviour
         {
             if (PlayerInputEvent != null)
             {
-                PlayerInputEvent(Vector2.down);
+                PlayerInputEvent(Vector2Int.down);
             }
         }
     }

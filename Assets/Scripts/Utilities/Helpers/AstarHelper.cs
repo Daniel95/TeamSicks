@@ -1,5 +1,6 @@
 ﻿/*
 Unity C# Port of Andrea Giammarchi's JavaScript A* algorithm (http://devpro.it/javascript_id_137.html)
+Modified to improve ease of use by Daniel Brand March 2018
 Usage:
  
 int[,] map = new int[,]

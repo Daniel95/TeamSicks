@@ -6,14 +6,14 @@ public class PlayerMovement : MonoBehaviour
 
     private NodeObject nodeObject;
 
-    private void OnInput(Vector2 input)
+    private void OnInput(Vector2Int input)
     {
-        Vector2 nextGridPosition = nodeObject.ParentNode.GridPosition + input;
+        Vector2Int nextGridPosition = nodeObject.ParentNode.GridPosition + input;
 
         if (MovesGenerator.Moves <= 0 || 
             !MovesGenerator.Directions.Contains(input) ||
-            !GameGrid.Instance.Contains(nextGridPosition) ||
-            GameGrid.Instance.Contains(nextGridPosition, NodeObjectType.Obstacle)) { return; }
+            !LevelGrid.Instance.Contains(nextGridPosition) ||
+            LevelGrid.Instance.Contains(nextGridPosition, NodeObjectType.Obstacle)) { return; }
 
         nodeObject.UpdateGridPosition(nextGridPosition);
         transform.position = nodeObject.ParentNode.transform.position;

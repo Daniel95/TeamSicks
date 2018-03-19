@@ -47,19 +47,26 @@ public class Levels
         }
     };
 
-    public static Dictionary<Vector2, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
+    public static Vector2Int GetLevelDimensions(int _levelNumber)
     {
-        Dictionary<Vector2, List<NodeObjectType>> _levelLayout = new Dictionary<Vector2, List<NodeObjectType>>();
+        Level _level = GetLevel(_levelNumber);
+        Vector2Int _levelDimensions = new Vector2Int(_level.Width, _level.Height);
+        return _levelDimensions;
+    }
+
+    public static Dictionary<Vector2Int, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
+    {
+        Dictionary<Vector2Int, List<NodeObjectType>> _levelLayout = new Dictionary<Vector2Int, List<NodeObjectType>>();
 
         if(_levelNumber < 0 || _levelNumber > levels.Length)
         {
             Debug.Log("Level " + _levelNumber + " does not exist");
             _width = 0;
             _height = 0;
-            return new Dictionary<Vector2, List<NodeObjectType>>();
+            return new Dictionary<Vector2Int, List<NodeObjectType>>();
         }
-        
-        Level _level = levels[_levelNumber - 1];
+
+        Level _level = GetLevel(_levelNumber);
 
         for (int x = 0; x < _level.Width; x++)
         {
@@ -76,7 +83,7 @@ public class Levels
                 }
 
                 int _y = Mathf.Abs(invertedY - _level.Height);
-                Vector2 _layoutGridPosition = new Vector2(x, _y);
+                Vector2Int _layoutGridPosition = new Vector2Int(x, _y);
                 _levelLayout.Add(_layoutGridPosition, _nodeObjectTypes);
             }
         }
@@ -85,6 +92,12 @@ public class Levels
         _height = _level.Height;
 
         return _levelLayout;
+    }
+
+    private static Level GetLevel(int _levelNumber)
+    {
+        Level _level = levels[_levelNumber - 1];
+        return _level;
     }
 
 }

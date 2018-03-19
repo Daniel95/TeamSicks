@@ -80,12 +80,11 @@ public class LevelGrid : MonoBehaviour
         Vector2Int _size = Levels.GetLevelSize(loadedLevelGridNumber);
 
         int[,] _impassableMap = new int[_size.y, _size.x];
-        for (int invertedY = 0; invertedY < _size.y; invertedY++)
+        for (int y = 0; y < _size.y; y++)
         {
             for (int x = 0; x < _size.x; x++)
             {
-                int _y = _size.y - invertedY;
-                _impassableMap[invertedY, x] = IsImpassable(new Vector2Int(x, invertedY)) ? 1 : 0;
+                _impassableMap[y, x] = IsImpassable(new Vector2Int(x, y)) ? 1 : 0;
             }
         }
 

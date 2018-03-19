@@ -19,8 +19,8 @@ public class EnemyMovement : MonoBehaviour
 
         List<Vector2Int> path = AstarHelper.GetPath(impassableMap, nodeObject.GridPosition, end, AstarHelper.AstarPathType.Manhattan);
 
-        List<Vector2Int> pathThisTurn = path.GetRange(0, movesPerTurn);
-        StartCoroutine(FollowPath(pathThisTurn));
+        List<Vector2Int> pathThisTurn = path.GetRange(1, movesPerTurn);
+        StartCoroutine(FollowPath(pathThisTurn, () => { EndTurnButton.Instance.SetInteractable(true); }));
     }
 
     private IEnumerator FollowPath(List<Vector2Int> path, Action OnFollowPathCompletedEvent = null)
@@ -60,7 +60,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (MovesGenerator.Moves <= 0)
         {
-            StartMoveButton.Instance.SetInteractable(true);
+            EndTurnButton.Instance.SetInteractable(true);
         }
     }
 
@@ -71,14 +71,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInput.PlayerInputEvent += OnInput;
-        LevelGrid.OnLoadedEvent += StartTurnMovement;
+        EndTurnButton.ClickedEvent += StartTurnMovement;
     }
 
     private void OnDisable()
     {
-        LevelGrid.OnLoadedEvent -= StartTurnMovement;
-        PlayerInput.PlayerInputEvent -= OnInput;
+        EndTurnButton.ClickedEvent -= StartTurnMovement;
     }
 
 }

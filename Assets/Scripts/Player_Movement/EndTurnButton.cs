@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class StartMoveButton : MonoBehaviour
+public class EndTurnButton : MonoBehaviour
 {
 	public static Action ClickedEvent;
 
-    public static StartMoveButton Instance { get { return GetInstance(); } }
+    public static EndTurnButton Instance { get { return GetInstance(); } }
 
-    private static StartMoveButton instance;
+    private static EndTurnButton instance;
 
     [SerializeField] private Button startMoveButton;
 
@@ -29,11 +29,11 @@ public class StartMoveButton : MonoBehaviour
         startMoveButton.interactable = _interactable;
     }
 
-    private static StartMoveButton GetInstance()
+    private static EndTurnButton GetInstance()
     {
         if(instance == null)
         {
-            instance = FindObjectOfType<StartMoveButton>();
+            instance = FindObjectOfType<EndTurnButton>();
         }
         return instance;
     }

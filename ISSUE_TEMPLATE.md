@@ -17,5 +17,5 @@
 3.
 4.
 
-## Detailed Description
+## Gedetailleerde beschrijving
 <!--- Leg in detail uit wat het probleem zou oplossen -->

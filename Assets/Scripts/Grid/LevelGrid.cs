@@ -105,11 +105,6 @@ public class LevelGrid : MonoBehaviour
         return _containsImpassableNodeObject;
     }
 
-    private void Awake()
-    {
-        LoadLevelGrid(1);
-    }
-
     private static LevelGrid GetInstance()
     {
         if (instance == null)

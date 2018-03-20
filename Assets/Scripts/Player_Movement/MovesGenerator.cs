@@ -35,12 +35,12 @@ public class MovesGenerator : MonoBehaviour
 
     private void OnEnable()
     {
-        StartMoveButton.ClickedEvent += GeneratedMoves;
+        EndTurnButton.ClickedEvent += GeneratedMoves;
     }
 
     private void OnDisable()
     {
-        StartMoveButton.ClickedEvent -= GeneratedMoves;
+        EndTurnButton.ClickedEvent -= GeneratedMoves;
     }
 
 }

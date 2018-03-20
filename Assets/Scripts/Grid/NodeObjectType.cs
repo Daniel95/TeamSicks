@@ -4,7 +4,7 @@
     Path = 1,
     Obstacle = 2,
     Special = 3,
-    Finish = 4,
+    EndPoint = 4,
     Player = 5,
     Enemy = 6,
 }

@@ -20,7 +20,7 @@ public class Levels
             Height = 7,
             Width = 20,
 
-            LayoutLayers = new int[][,] {
+            MapLayers = new int[][,] {
                 //Obstacle Layer
                 new int[7, 20]
                 {
@@ -38,7 +38,7 @@ public class Levels
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                    { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
+                    { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
@@ -47,19 +47,26 @@ public class Levels
         }
     };
 
-    public static Dictionary<Vector2, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
+    public static Vector2Int GetLevelSize(int _levelNumber)
     {
-        Dictionary<Vector2, List<NodeObjectType>> _levelLayout = new Dictionary<Vector2, List<NodeObjectType>>();
+        Level _level = GetLevel(_levelNumber);
+        Vector2Int _size = new Vector2Int(_level.Width, _level.Height);
+        return _size;
+    }
+
+    public static Dictionary<Vector2Int, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
+    {
+        Dictionary<Vector2Int, List<NodeObjectType>> _levelLayout = new Dictionary<Vector2Int, List<NodeObjectType>>();
 
         if(_levelNumber < 0 || _levelNumber > levels.Length)
         {
             Debug.Log("Level " + _levelNumber + " does not exist");
             _width = 0;
             _height = 0;
-            return new Dictionary<Vector2, List<NodeObjectType>>();
+            return new Dictionary<Vector2Int, List<NodeObjectType>>();
         }
-        
-        Level _level = levels[_levelNumber - 1];
+
+        Level _level = GetLevel(_levelNumber);
 
         for (int x = 0; x < _level.Width; x++)
         {
@@ -67,16 +74,16 @@ public class Levels
             {
                 List<NodeObjectType> _nodeObjectTypes = new List<NodeObjectType>();
 
-                for (int i = 0; i < _level.LayoutLayers.Length; i++)
+                for (int i = 0; i < _level.MapLayers.Length; i++)
                 {
-                    int[,] _layout = _level.LayoutLayers[i];
+                    int[,] _layout = _level.MapLayers[i];
                     int _nodeObjectIndex = _layout[invertedY, x];
                     NodeObjectType _nodeObjectType = (NodeObjectType)_nodeObjectIndex;
                     _nodeObjectTypes.Add(_nodeObjectType);
                 }
 
-                int _y = Mathf.Abs(invertedY - _level.Height);
-                Vector2 _layoutGridPosition = new Vector2(x, _y);
+                int _y = (_level.Height - 1) - invertedY;
+                Vector2Int _layoutGridPosition = new Vector2Int(x, _y);
                 _levelLayout.Add(_layoutGridPosition, _nodeObjectTypes);
             }
         }
@@ -85,6 +92,12 @@ public class Levels
         _height = _level.Height;
 
         return _levelLayout;
+    }
+
+    private static Level GetLevel(int _levelNumber)
+    {
+        Level _level = levels[_levelNumber - 1];
+        return _level;
     }
 
 }

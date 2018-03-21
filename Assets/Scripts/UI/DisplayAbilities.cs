@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DisplayAbilities : MonoBehaviour {
+public class DisplayAbilities : MonoBehaviour
+{
+    [SerializeField]
+    Button[] abilityButtons;
 
-    Button ;
-
-    private void UpdateAbilities(Ability _ability0, Ability _ability1, Ability _ability2)
+    public void UpdateAbilities(Ability[] _abilities)
     {
-
+        for (int i = 0; i < abilityButtons.Length; i++)
+        {   
+            abilityButtons[i].GetComponent<Image>().sprite = _abilities[i].image.sprite;
+        }
     }
 }

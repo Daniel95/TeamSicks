@@ -14,14 +14,17 @@ public class EndTurnButton : MonoBehaviour
 
     [SerializeField] private Button startMoveButton;
 
+    private void Start()
+    {
+        CallPlayerTurnStartedEvent();
+    }
+
 	public void ClickStartButton()
 	{
 		if (PlayerTurnCompletedEvent != null)
 		{
 			PlayerTurnCompletedEvent();
 		}
-		DisplayDirections.UpdateDirection();
-		DisplayMoves.UpdateMoves();
         SetInteractable(false);
     }
 
@@ -46,15 +49,23 @@ public class EndTurnButton : MonoBehaviour
 
     private void CallPlayerTurnStartedEvent()
     {
+        SetInteractable(true);
         if (PlayerTurnStartedEvent != null)
         {
+            Debug.Log("called player start turn");
+            Debug.Log(PlayerTurnStartedEvent.Method);
             PlayerTurnStartedEvent();
+            Debug.Log("Finished");
         }
     }
 
     void OnEnable()
     {
-        //EnemyNodeObject.
+        EnemyNodeObject.EnemyTurnCompletedEvent += CallPlayerTurnStartedEvent;
     }
 
+    void OnDisable()
+    {
+        EnemyNodeObject.EnemyTurnCompletedEvent -= CallPlayerTurnStartedEvent;
+    }
 }

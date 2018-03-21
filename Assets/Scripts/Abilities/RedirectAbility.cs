@@ -8,7 +8,6 @@ public class RedirectAbility : BaseAbility {
 	public override void Ability()
 	{
 		base.Ability();
-
 	}
 
 	public override void OnClick()

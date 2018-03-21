@@ -5,7 +5,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class EndTurnButton : MonoBehaviour
 {
-	public static Action ClickedEvent;
+	public static Action PlayerTurnCompletedEvent;
+    public static Action PlayerTurnStartedEvent;
 
     public static EndTurnButton Instance { get { return GetInstance(); } }
 
@@ -13,14 +14,17 @@ public class EndTurnButton : MonoBehaviour
 
     [SerializeField] private Button startMoveButton;
 
+    private void Start()
+    {
+        CallPlayerTurnStartedEvent();
+    }
+
 	public void ClickStartButton()
 	{
-		if (ClickedEvent != null)
+		if (PlayerTurnCompletedEvent != null)
 		{
-			ClickedEvent();
+			PlayerTurnCompletedEvent();
 		}
-		DisplayDirections.UpdateDirection();
-		DisplayMoves.UpdateMoves();
         SetInteractable(false);
     }
 
@@ -43,4 +47,25 @@ public class EndTurnButton : MonoBehaviour
         startMoveButton = GetComponent<Button>();
     }
 
+    private void CallPlayerTurnStartedEvent()
+    {
+        SetInteractable(true);
+        if (PlayerTurnStartedEvent != null)
+        {
+            Debug.Log("called player start turn");
+            Debug.Log(PlayerTurnStartedEvent.Method);
+            PlayerTurnStartedEvent();
+            Debug.Log("Finished");
+        }
+    }
+
+    void OnEnable()
+    {
+        EnemyNodeObject.EnemyTurnCompletedEvent += CallPlayerTurnStartedEvent;
+    }
+
+    void OnDisable()
+    {
+        EnemyNodeObject.EnemyTurnCompletedEvent -= CallPlayerTurnStartedEvent;
+    }
 }

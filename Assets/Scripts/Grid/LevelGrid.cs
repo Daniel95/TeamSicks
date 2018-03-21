@@ -25,7 +25,7 @@ public class LevelGrid : MonoBehaviour
     {
         int _width = 0;
         int _height = 0;
-        Dictionary<Vector2Int, List<NodeObjectType>> _layout = Levels.GetLevelLayout(1, out _width, out _height);
+        Dictionary<Vector2Int, List<NodeObjectType>> _layout = Levels.GetLevelLayout(_levelNumber, out _width, out _height);
 
         nodeGrid = SpawnNodeGrid(_layout, _width, _height);
         SetSpriteIndex();
@@ -60,6 +60,11 @@ public class LevelGrid : MonoBehaviour
             return null;
         }
         return nodeGrid[_gridPosition];
+    }
+
+    public int GetStep()
+    {
+        return step;
     }
 
     public bool Contains(Vector2Int _gridPosition)

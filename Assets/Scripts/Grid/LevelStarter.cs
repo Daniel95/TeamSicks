@@ -3,7 +3,7 @@
 public class LevelStarter : MonoBehaviour
 {
 
-    [SerializeField] private int levelNumberToStart = 1;
+    [SerializeField] private int levelNumberToStart;
 
     private void Awake()
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputMobile : InputBase
 {
@@ -12,9 +13,11 @@ public class InputMobile : InputBase
     private float touchDownTime;
     private Vector2 startTouchPosition;
 
+
+
     public virtual void ResetTouched()
     {
-        RawCancelDragInputEvent();
+        //RawCancelDragInputEvent();
     }
 
     public void EnableInput(bool enable)
@@ -39,7 +42,7 @@ public class InputMobile : InputBase
         {
             bool startedTouching = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
             //TODO Add UI Hover Exception
-            if (startedTouching)
+            if (startedTouching && !EventSystem.current.IsPointerOverGameObject())
             {
                 TouchState = TouchStates.Tapped;
                 startTouchPosition = Input.GetTouch(0).position;
@@ -55,7 +58,7 @@ public class InputMobile : InputBase
                     {
                         if (TouchState == TouchStates.Tapped)
                         {
-                            RawTappedExpiredInputEvent();
+                            //RawTappedExpiredInputEvent();
                         }
 
                         Vector2 worldCurrentTouchPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -75,27 +78,27 @@ public class InputMobile : InputBase
                         {
                             if (TouchState == TouchStates.Dragging)
                             {
-                                RawCancelDragInputEvent();
+                                //RawCancelDragInputEvent();
                             }
 
                             TouchState = TouchStates.Holding;
-                            RawHoldingInputEvent();
+                            //RawHoldingInputEvent();
                         }
                     }
                 }
                 else
                 {
-                    RawReleaseInputEvent();
+                    //RawReleaseInputEvent();
 
                     if (TouchState == TouchStates.Dragging)
                     {
                         Vector2 direction = (Input.GetTouch(0).position - startTouchPosition).normalized;
-                        RawReleaseInDirectionInputEvent(direction);
+                        //RawReleaseInDirectionInputEvent(direction);
 
                     }
                     else if (TouchState == TouchStates.Tapped)
                     {
-                        RawTapInputEvent();
+                        //RawTapInputEvent();
                     }
 
                     TouchState = TouchStates.None;

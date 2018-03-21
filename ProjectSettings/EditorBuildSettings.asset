@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: c9b76829f5d7d9642866dfe56fe5d198
+    path: Assets/Scenes/FlexibleInput.unity
+    guid: 38f537a40e485fd4e97da8af72b3bb1a

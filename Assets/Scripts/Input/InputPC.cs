@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputPC : InputBase {
 
@@ -40,8 +41,8 @@ public class InputPC : InputBase {
                 //RawTapInputEvent();
                 Debug.Log("Jumped");
             }
-            //TODO Add UI Hover Exception
-            if (Input.GetKeyDown(aimInput)) {
+
+            if (Input.GetKeyDown(aimInput) && !EventSystem.current.IsPointerOverGameObject()) {
                 touchState = TouchStates.Tapped;
                 mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Debug.Log("Mouse start pos: " + mouseStartPosition);
@@ -58,8 +59,8 @@ public class InputPC : InputBase {
 
                         if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), mouseStartPosition) > dragTreshhold) {
                             touchState = TouchStates.Dragging;
-                            Vector2 direction = ((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)mouseStartPosition).normalized;
-                            //RawDraggingInputEvent(direction);
+                            Vector2 direction = ((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - mouseStartPosition).normalized;
+                            RawDraggingInputEvent(direction);
                             Debug.Log("Dragging " + direction);
 
                         } else if (touchState != TouchStates.Holding) {

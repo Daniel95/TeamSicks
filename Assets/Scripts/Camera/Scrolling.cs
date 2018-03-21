@@ -10,18 +10,30 @@ public class Scrolling : MonoBehaviour
     /// </summary>
 
     private float MaximumScrollDistance;
+    private float MinimumScrollDistance = 0;
+
+    private float ScrollSpeed = 1;
 
     private void Initialise()
     {
         LevelGrid.Instance.GetSize();
-        MaximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep();
-        Debug.Log(MaximumScrollDistance);
+        MaximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
     }
 
 
     private void ScrollCamera(Vector2 _direction)
     {
-        Debug.Log("ScrollDirection! " + _direction);
+        Debug.Log(MaximumScrollDistance);
+        Debug.Log(-_direction.x);
+        if (transform.position.x <= MinimumScrollDistance && -_direction.x <= 0)
+        {
+            return;
+        }
+        if (transform.position.x >= MaximumScrollDistance && -_direction.x >= 0)
+        {
+            return;
+        }
+        transform.Translate(new Vector2(-_direction.x * ScrollSpeed, transform.position.y));
     }
 
     private void OnEnable()

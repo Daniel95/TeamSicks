@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class EndTurnButton : MonoBehaviour
 {
-	public static Action ClickedEvent;
+	public static Action PlayerTurnCompletedEvent;
 
     public static EndTurnButton Instance { get { return GetInstance(); } }
 
@@ -15,9 +15,9 @@ public class EndTurnButton : MonoBehaviour
 
 	public void ClickStartButton()
 	{
-		if (ClickedEvent != null)
+		if (PlayerTurnCompletedEvent != null)
 		{
-			ClickedEvent();
+			PlayerTurnCompletedEvent();
 		}
 		DisplayDirections.UpdateDirection();
 		DisplayMoves.UpdateMoves();

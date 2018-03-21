@@ -6,8 +6,14 @@ using UnityEngine;
 public class EnemyNodeObject : NodeObject
 {
 
+    public static List<EnemyNodeObject> EnemyNodeObjects;
+
     [SerializeField] private int movesPerTurn = 3;
     [SerializeField] private float moveDelay = 0.4f;
+
+    [SerializeField] private Animator animator;
+    [SerializeField] private AnimationClip idleClip;
+    [SerializeField] private AnimationClip walkingClip;
 
     private Vector2Int endPoint;
 

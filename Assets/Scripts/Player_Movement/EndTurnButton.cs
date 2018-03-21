@@ -52,10 +52,7 @@ public class EndTurnButton : MonoBehaviour
         SetInteractable(true);
         if (PlayerTurnStartedEvent != null)
         {
-            Debug.Log("called player start turn");
-            Debug.Log(PlayerTurnStartedEvent.Method);
             PlayerTurnStartedEvent();
-            Debug.Log("Finished");
         }
     }
 

@@ -10,6 +10,8 @@ public class LevelGrid : MonoBehaviour
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
+	public int Step { get { return step; } }
+
     private static LevelGrid instance;
 
     [Reorderable] [SerializeField] private List<NodeObjectEditorEntry> nodeObjectEntries;
@@ -105,7 +107,34 @@ public class LevelGrid : MonoBehaviour
         return _containsImpassableNodeObject;
     }
 
-    private static LevelGrid GetInstance()
+	public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
+	{
+		Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
+		Vector2Int _gridPosition = WorldToGridPosition(_worldPosition);
+
+		return _gridPosition;
+	}
+
+	public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
+	{
+		//world / step = grid (rounded)
+		Vector2 _roundedWorldPosition = _worldPosition / Step;
+		_roundedWorldPosition = VectorHelper.Round(_roundedWorldPosition);
+
+		Vector2Int gridPosition = new Vector2Int((int)_roundedWorldPosition.x, (int)_roundedWorldPosition.y);
+		return gridPosition;
+	}
+
+	public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
+	{
+		//grid * step = world
+		Vector3 _calculateWorldPos = (Vector3)((Vector2)_gridPosition * Step) + transform.position;
+		Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
+
+		return _worldPosition;
+	}
+
+	private static LevelGrid GetInstance()
     {
         if (instance == null)
         {
@@ -187,5 +216,4 @@ public class LevelGrid : MonoBehaviour
 
         return _nodeObjectEditorEntry;
     }
-
 }

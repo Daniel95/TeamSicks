@@ -6,7 +6,11 @@ using UnityEngine;
 public class EnemyNodeObject : NodeObject
 {
 
+    public static Action EnemyTurnCompletedEvent;
+
     public static List<EnemyNodeObject> EnemyNodeObjects;
+
+    private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
 
     [SerializeField] private int movesPerTurn = 3;
     [SerializeField] private float moveDelay = 0.4f;
@@ -26,7 +30,7 @@ public class EnemyNodeObject : NodeObject
 
         int moves = movesPerTurn < path.Count ? movesPerTurn : path.Count;
         List<Vector2Int> pathThisTurn = path.GetRange(0, moves);
-        StartCoroutine(FollowPath(pathThisTurn, () => { EndTurnButton.Instance.SetInteractable(true); }));
+        StartCoroutine(FollowPath(pathThisTurn, () => { OnFollowPathCompletedEvent(); }));
     }
 
     private IEnumerator FollowPath(List<Vector2Int> path, Action OnFollowPathCompletedEvent = null)
@@ -36,7 +40,7 @@ public class EnemyNodeObject : NodeObject
             Vector2Int _gridPosition = path[i];
             MoveToGridPosition(_gridPosition);
 
-            if(i != path.Count - 1)
+            if (i != path.Count - 1)
             {
                 yield return new WaitForSeconds(moveDelay);
             }
@@ -45,6 +49,20 @@ public class EnemyNodeObject : NodeObject
         if (OnFollowPathCompletedEvent != null)
         {
             OnFollowPathCompletedEvent();
+        }
+    }
+
+    private void OnFollowPathCompletedEvent()
+    {
+        bool enemyDidNotReachEndpointYet = EnemyNodeObjects.Exists(x => !x.ReachedEndpoint);
+
+        if(!enemyDidNotReachEndpointYet)
+        {
+            if(EnemyTurnCompletedEvent == null)
+            {
+                EnemyTurnCompletedEvent();
+                EndTurnButton.Instance.SetInteractable(true);
+            }
         }
     }
 
@@ -65,6 +83,11 @@ public class EnemyNodeObject : NodeObject
         int randomEndpointIndex = UnityEngine.Random.Range(0, EndpointNodeObject.Endpoints.Count);
         EndpointNodeObject endpointNodeObject = EndpointNodeObject.Endpoints[randomEndpointIndex];
         endPoint = endpointNodeObject.GridPosition;
+    }
+
+    private void Awake()
+    {
+        EnemyNodeObjects.Add(this);
     }
 
     private void OnEnable()

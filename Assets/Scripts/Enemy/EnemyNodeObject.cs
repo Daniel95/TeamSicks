@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class EnemyNodeObject : NodeObject
 {
-	private DirectionType directionType;
-
 	public static Action EnemyReachedEndpoint;
     public static Action EnemyTurnCompletedEvent;
 
@@ -102,11 +100,11 @@ public class EnemyNodeObject : NodeObject
         endPoint = endpointNodeObject.GridPosition;
     }
 
-	private void ActivateAbility(int _totalmoves)
+	private void ActivateAbility(DirectionType _directionType , int _totalmoves)
 	{
 		Vector2Int _direction;
 
-		if (directionType == DirectionType.Up)
+		if (_directionType == DirectionType.Up)
 		{
 			_direction = Vector2Int.up;
 			MoveToGridPosition(_direction);
@@ -130,7 +128,7 @@ public class EnemyNodeObject : NodeObject
 			StopCoroutine(followPathCoroutine);
 			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
 		}
-		else if(directionType == DirectionType.Down)
+		else if(_directionType == DirectionType.Down)
 		{
 			_direction = Vector2Int.down;
 			MoveToGridPosition(_direction);
@@ -154,7 +152,7 @@ public class EnemyNodeObject : NodeObject
 			StopCoroutine(followPathCoroutine);
 			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
 		}
-		else if (directionType == DirectionType.Left)
+		else if (_directionType == DirectionType.Left)
 		{
 			_direction = Vector2Int.left;
 			MoveToGridPosition(_direction);
@@ -178,7 +176,7 @@ public class EnemyNodeObject : NodeObject
 			StopCoroutine(followPathCoroutine);
 			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
 		}
-		else if (directionType == DirectionType.Right)
+		else if (_directionType == DirectionType.Right)
 		{
 			_direction = Vector2Int.right;
 			MoveToGridPosition(_direction);

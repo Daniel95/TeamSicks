@@ -203,7 +203,6 @@ public class LevelGrid : MonoBehaviour
         foreach (KeyValuePair<Vector2Int, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
             Vector2Int _gridPosition = _nodeObjectByGridPosition.Key;
-            Node _node = AddNode(_gridPosition);
 
             foreach (NodeObjectType _nodeObjectType in _nodeObjectByGridPosition.Value)
             {

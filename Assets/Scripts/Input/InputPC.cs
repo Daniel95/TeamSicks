@@ -39,13 +39,11 @@ public class InputPC : InputBase {
         while (true) {
             if (Input.GetKeyDown(jumpInput)) {
                 //RawTapInputEvent();
-                Debug.Log("Jumped");
             }
 
             if (Input.GetKeyDown(aimInput) && !EventSystem.current.IsPointerOverGameObject()) {
                 touchState = TouchStates.Tapped;
                 mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Debug.Log("Mouse start pos: " + mouseStartPosition);
                 startDownTime = Time.time;
             }
 
@@ -54,34 +52,28 @@ public class InputPC : InputBase {
                     if (Time.time - startDownTime > TimebeforeTappedExpired) {
                         if (touchState == TouchStates.Tapped) {
                             //RawTappedExpiredInputEvent();
-                            Debug.Log("Tapped");
                         }
 
                         if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), mouseStartPosition) > dragTreshhold) {
                             touchState = TouchStates.Dragging;
                             Vector2 direction = ((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - mouseStartPosition).normalized;
                             RawDraggingInputEvent(direction);
-                            Debug.Log("Dragging " + direction);
 
                         } else if (touchState != TouchStates.Holding) {
                             if (touchState == TouchStates.Dragging) {
                                 //RawCancelDragInputEvent();
-                                Debug.Log("Cancel Dragging");
                             }
 
                             touchState = TouchStates.Holding;
                             //RawHoldingInputEvent();
-                            Debug.Log("Holding");
                         }
                     }
                 } else { 
                     //RawReleaseInputEvent();
-                    Debug.Log("Released Tap");
 
                     if (touchState != TouchStates.Holding) {
                         Vector2 direction = ((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized;
                         //RawReleaseInDirectionInputEvent(direction);
-                        Debug.Log("Released Drag " + direction);
                     }
 
                     touchState = TouchStates.None;

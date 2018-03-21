@@ -23,7 +23,6 @@ public class Scrolling : MonoBehaviour
 
     private void ScrollCamera(Vector2 _direction)
     {
-        Debug.Log(-_direction.x);
         if (transform.position.x <= MinimumScrollDistance && -_direction.x <= 0)
         {
             return;

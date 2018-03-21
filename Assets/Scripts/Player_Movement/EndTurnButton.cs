@@ -5,7 +5,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class EndTurnButton : MonoBehaviour
 {
-	public static Action ClickedEvent;
+	public static Action PlayerTurnCompletedEvent;
+    public static Action PlayerTurnStartedEvent;
 
     public static EndTurnButton Instance { get { return GetInstance(); } }
 
@@ -15,9 +16,9 @@ public class EndTurnButton : MonoBehaviour
 
 	public void ClickStartButton()
 	{
-		if (ClickedEvent != null)
+		if (PlayerTurnCompletedEvent != null)
 		{
-			ClickedEvent();
+			PlayerTurnCompletedEvent();
 		}
 		DisplayDirections.UpdateDirection();
 		DisplayMoves.UpdateMoves();
@@ -41,6 +42,19 @@ public class EndTurnButton : MonoBehaviour
     private void Awake()
     {
         startMoveButton = GetComponent<Button>();
+    }
+
+    private void CallPlayerTurnStartedEvent()
+    {
+        if (PlayerTurnStartedEvent != null)
+        {
+            PlayerTurnStartedEvent();
+        }
+    }
+
+    void OnEnable()
+    {
+        //EnemyNodeObject.
     }
 
 }

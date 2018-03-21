@@ -6,7 +6,7 @@ public class InputPC : InputBase {
 
     [SerializeField] private KeyCode jumpInput = KeyCode.Space;
     [SerializeField] private KeyCode aimInput = KeyCode.Mouse0;
-    [SerializeField] private float dragTreshhold = 3;
+    [SerializeField] private float dragTreshhold = 0.1f;
     [SerializeField] private float TimebeforeTappedExpired = 0.15f;
 
     private enum TouchStates { Holding, Dragging, Tapped, None }

@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpInput: 32
   aimInput: 323
-  dragTreshhold: 3
+  dragTreshhold: 0.75
   TimebeforeTappedExpired: 0.15
 --- !u!1 &289757848
 GameObject:

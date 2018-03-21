@@ -60,6 +60,11 @@ public class LevelGrid : MonoBehaviour
         return nodeGrid[_gridPosition];
     }
 
+    public int GetStep()
+    {
+        return step;
+    }
+
     public bool Contains(Vector2Int _gridPosition)
     {
         return nodeGrid.ContainsKey(_gridPosition);

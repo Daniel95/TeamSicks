@@ -72,7 +72,6 @@ public class EnemyNodeObject : NodeObject
 
         bool enemiesAreMoving = EnemyNodeObjects.Exists(x => x.Moving);
         if (!enemiesAreMoving) {
-            Debug.Log("EnemyTurnCompleted");
             if(EnemyTurnCompletedEvent != null)
             {
                 EnemyTurnCompletedEvent();

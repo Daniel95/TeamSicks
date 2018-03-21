@@ -6,11 +6,13 @@ using UnityEngine;
 public class EnemyNodeObject : NodeObject
 {
 
+    public static Action EnemyReachedEndpoint;
     public static Action EnemyTurnCompletedEvent;
 
-    public static List<EnemyNodeObject> EnemyNodeObjects;
+    public static List<EnemyNodeObject> EnemyNodeObjects = new List<EnemyNodeObject>();
 
     private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
+    private bool Moving { get { return moving;  } }
 
     [SerializeField] private int movesPerTurn = 3;
     [SerializeField] private float moveDelay = 0.4f;
@@ -20,6 +22,7 @@ public class EnemyNodeObject : NodeObject
     [SerializeField] private AnimationClip walkingClip;
 
     private Vector2Int endPoint;
+    private bool moving;
 
     private void StartTurnMovement()
     {
@@ -35,6 +38,8 @@ public class EnemyNodeObject : NodeObject
 
     private IEnumerator FollowPath(List<Vector2Int> path, Action OnFollowPathCompletedEvent = null)
     {
+        moving = true;
+
         for (int i = 0; i < path.Count; i++)
         {
             Vector2Int _gridPosition = path[i];
@@ -46,6 +51,8 @@ public class EnemyNodeObject : NodeObject
             }
         }
 
+        moving = false;
+
         if (OnFollowPathCompletedEvent != null)
         {
             OnFollowPathCompletedEvent();
@@ -54,14 +61,20 @@ public class EnemyNodeObject : NodeObject
 
     private void OnFollowPathCompletedEvent()
     {
-        bool enemyDidNotReachEndpointYet = EnemyNodeObjects.Exists(x => !x.ReachedEndpoint);
-
-        if(!enemyDidNotReachEndpointYet)
+        if(GridPosition == endPoint)
         {
-            if(EnemyTurnCompletedEvent == null)
+            if(EnemyReachedEndpoint != null)
+            {
+                EnemyReachedEndpoint();
+            }
+            return;
+        }
+
+        bool enemiesAreMoving = EnemyNodeObjects.Exists(x => x.Moving);
+        if (!enemiesAreMoving) {
+            if(EnemyTurnCompletedEvent != null)
             {
                 EnemyTurnCompletedEvent();
-                EndTurnButton.Instance.SetInteractable(true);
             }
         }
     }

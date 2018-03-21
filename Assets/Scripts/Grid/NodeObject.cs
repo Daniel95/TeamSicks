@@ -13,13 +13,10 @@ public class NodeObject : MonoBehaviour
 
     public void UpdateGridPosition(Vector2Int _position)
     {
+        parentNode.RemoveNodeObject(this);
+
         Node _node = LevelGrid.Instance.GetNode(_position);
-
-        parentNode.NodeObjects.Remove(this);
-        parentNode = _node;
-        parentNode.NodeObjects.Add(this);
-
-        transform.parent = parentNode.transform;
+        _node.AddNodeObject(this);
 
         int _index = _node.NodeObjects.IndexOf(this);
         GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * _node.NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;

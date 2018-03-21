@@ -22,7 +22,48 @@ public class EnemyNodeObject : NodeObject
 
     private Vector2Int endPoint;
     private bool moving;
-	private Coroutine followPathCoroutine;
+    private Coroutine followPathCoroutine;
+
+    public void ActivateAbility(DirectionType _directionType , int _totalmoves)
+	{
+        Vector2Int _direction = new Vector2Int();
+
+        if (_directionType == DirectionType.Up)
+        {
+            _direction = Vector2Int.up;
+        }
+        else if (_directionType == DirectionType.Down)
+        {
+            _direction = Vector2Int.down;
+        }
+        else if (_directionType == DirectionType.Left)
+        {
+            _direction = Vector2Int.left;
+
+        }
+        else if (_directionType == DirectionType.Right)
+        {
+            _direction = Vector2Int.right;
+        }
+
+        List<Vector2Int> _path = new List<Vector2Int>();
+
+        for (int i = 1; i < _totalmoves + 1; i++)
+        {
+            Vector2Int _newGridPosition = GridPosition + _direction * i;
+            if (!LevelGrid.Instance.IsImpassable(_newGridPosition) && LevelGrid.Instance.Contains(_newGridPosition))
+            {
+                _path.Add(_newGridPosition);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        StopCoroutine(followPathCoroutine);
+        followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
+	}
 
     private void StartTurnMovement()
     {
@@ -33,16 +74,19 @@ public class EnemyNodeObject : NodeObject
 		
         int moves = movesPerTurn < path.Count ? movesPerTurn : path.Count;
         List<Vector2Int> pathThisTurn = path.GetRange(0, moves);
+
         followPathCoroutine = StartCoroutine(FollowPath(pathThisTurn, OnFollowPathCompleted));
     }
 
     private IEnumerator FollowPath(List<Vector2Int> _path, Action _onFollowPathCompletedEvent = null)
     {
+
         moving = true;
 
         for (int i = 0; i < _path.Count; i++)
         {
             Vector2Int _gridPosition = _path[i];
+            Debug.Log("Move to " + _gridPosition);
             MoveToGridPosition(_gridPosition);
 
             if (i != _path.Count - 1)
@@ -100,108 +144,6 @@ public class EnemyNodeObject : NodeObject
         endPoint = endpointNodeObject.GridPosition;
     }
 
-	private void ActivateAbility(DirectionType _directionType , int _totalmoves)
-	{
-		Vector2Int _direction;
-
-		if (_directionType == DirectionType.Up)
-		{
-			_direction = Vector2Int.up;
-			MoveToGridPosition(_direction);
-			movesPerTurn = _totalmoves;
-
-			List<Vector2Int> _path = new List<Vector2Int>();
-
-			for (int i = 1; i < _totalmoves + 1; i++)
-			{
-				Vector2Int _newGridPath = _direction * i;	
-				if (!LevelGrid.Instance.IsImpassable(_newGridPath))
-				{
-					_path.Add(_newGridPath);
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			StopCoroutine(followPathCoroutine);
-			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
-		}
-		else if(_directionType == DirectionType.Down)
-		{
-			_direction = Vector2Int.down;
-			MoveToGridPosition(_direction);
-			movesPerTurn = _totalmoves;
-
-			List<Vector2Int> _path = new List<Vector2Int>();
-
-			for (int i = 1; i < _totalmoves + 1; i++)
-			{
-				Vector2Int _newGridPath = _direction * i;
-				if (!LevelGrid.Instance.IsImpassable(_newGridPath))
-				{
-					_path.Add(_newGridPath);
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			StopCoroutine(followPathCoroutine);
-			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
-		}
-		else if (_directionType == DirectionType.Left)
-		{
-			_direction = Vector2Int.left;
-			MoveToGridPosition(_direction);
-			movesPerTurn = _totalmoves;
-
-			List<Vector2Int> _path = new List<Vector2Int>();
-
-			for (int i = 1; i < _totalmoves + 1; i++)
-			{
-				Vector2Int _newGridPath = _direction * i;
-				if (!LevelGrid.Instance.IsImpassable(_newGridPath))
-				{
-					_path.Add(_newGridPath);
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			StopCoroutine(followPathCoroutine);
-			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
-		}
-		else if (_directionType == DirectionType.Right)
-		{
-			_direction = Vector2Int.right;
-			MoveToGridPosition(_direction);
-			movesPerTurn = _totalmoves;
-
-			List<Vector2Int> _path = new List<Vector2Int>();
-
-			for (int i = 1; i < _totalmoves + 1; i++)
-			{
-				Vector2Int _newGridPath = _direction * i;
-				if (!LevelGrid.Instance.IsImpassable(_newGridPath))
-				{
-					_path.Add(_newGridPath);
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			StopCoroutine(followPathCoroutine);
-			followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
-		}
-	}
-
 
     private void Awake()
     {
@@ -217,7 +159,7 @@ public class EnemyNodeObject : NodeObject
     private void OnDisable()
     {
         EndTurnButton.PlayerTurnCompletedEvent -= StartTurnMovement;
-        LevelGrid.LevelGridLoadedEvent += ChooseEndpoint;
+        LevelGrid.LevelGridLoadedEvent -= ChooseEndpoint;
     }
 
 }

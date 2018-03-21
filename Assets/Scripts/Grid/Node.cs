@@ -20,6 +20,9 @@ public class Node : MonoBehaviour
         _nodeObject.transform.parent = transform;
 
         nodeObjects.Add(_nodeObject);
+
+        //Debug.Log("New element in nodeobject");
+
         if(NodeObjectAddedEvent != null)
         {
             NodeObjectAddedEvent(_nodeObject.NodeObjectType);

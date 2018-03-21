@@ -22,4 +22,13 @@ public class NodeObject : MonoBehaviour
         GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * _node.NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;
     }
 
+    private void OnDestroy()
+    {
+        parentNode.RemoveNodeObject(this);
+        if(parentNode.NodeObjects.Count == 0)
+        {
+            Destroy(parentNode);
+        }
+    }
+
 }

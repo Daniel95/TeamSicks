@@ -5,8 +5,8 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
 
-    public Action<NodeObjectType> AddedNodeObjectToNode;
-    public Action<NodeObjectType> RemoveNodeObjectToNode;
+    public Action<NodeObjectType> NodeObjectAddedEvent;
+    public Action<NodeObjectType> NodeObjectRemovedEvent;
 
     public Vector2Int GridPosition { get { return gridPosition; } set { gridPosition = value; } }
     public List<NodeObject> NodeObjects { get { return nodeObjects; } }
@@ -20,18 +20,18 @@ public class Node : MonoBehaviour
         _nodeObject.transform.parent = transform;
 
         nodeObjects.Add(_nodeObject);
-        if(AddedNodeObjectToNode != null)
+        if(NodeObjectAddedEvent != null)
         {
-            AddedNodeObjectToNode(_nodeObject.NodeObjectType);
+            NodeObjectAddedEvent(_nodeObject.NodeObjectType);
         }
     }
 
     public void RemoveNodeObject(NodeObject _nodeObject)
     {
         nodeObjects.Remove(_nodeObject);
-        if (RemoveNodeObjectToNode != null)
+        if (NodeObjectRemovedEvent != null)
         {
-            RemoveNodeObjectToNode(_nodeObject.NodeObjectType);
+            NodeObjectRemovedEvent(_nodeObject.NodeObjectType);
         }
     }
 

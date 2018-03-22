@@ -24,7 +24,7 @@ public class EnemyNodeObject : NodeObject
     private bool moving;
     private Coroutine followPathCoroutine;
 
-    public void ActivateAbility(DirectionType _directionType , int _totalmoves)
+    public void ActivateAbility(DirectionType _directionType , int _moveCount)
 	{
         Vector2Int _direction = new Vector2Int();
 
@@ -48,9 +48,11 @@ public class EnemyNodeObject : NodeObject
 
         List<Vector2Int> _path = new List<Vector2Int>();
 
-        for (int i = 1; i < _totalmoves + 1; i++)
+        Vector2Int startGridPosition = GridPosition;
+
+        for (int i = 1; i < _moveCount + 1; i++)
         {
-            Vector2Int _newGridPosition = GridPosition + _direction * i;
+            Vector2Int _newGridPosition = startGridPosition + _direction * i;
             if (!LevelGrid.Instance.IsImpassable(_newGridPosition) && LevelGrid.Instance.Contains(_newGridPosition))
             {
                 _path.Add(_newGridPosition);
@@ -80,13 +82,11 @@ public class EnemyNodeObject : NodeObject
 
     private IEnumerator FollowPath(List<Vector2Int> _path, Action _onFollowPathCompletedEvent = null)
     {
-
         moving = true;
 
         for (int i = 0; i < _path.Count; i++)
         {
             Vector2Int _gridPosition = _path[i];
-            Debug.Log("Move to " + _gridPosition);
             MoveToGridPosition(_gridPosition);
 
             if (i != _path.Count - 1)
@@ -127,8 +127,9 @@ public class EnemyNodeObject : NodeObject
 
     private void MoveToGridPosition(Vector2Int _gridPosition)
     {
+        transform.position = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
         UpdateGridPosition(_gridPosition);
-        transform.position = ParentNode.transform.position;
+        //transform.position = ParentNode.transform.position;
     }
 
     private void ChooseEndpoint()

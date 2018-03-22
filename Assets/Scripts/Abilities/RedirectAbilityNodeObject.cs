@@ -6,8 +6,6 @@ public class RedirectAbilityNodeObject : NodeObject
 
     private void OnNodeObjectAdded(NodeObjectType _nodeObjectType)
     {
-        Debug.Log("New element on ability node");
-
         if (_nodeObjectType != NodeObjectType.Enemy) { return; }
 
         NodeObject _nodeObject = ParentNode.NodeObjects.Find(x => x.NodeObjectType == NodeObjectType.Enemy);
@@ -15,14 +13,16 @@ public class RedirectAbilityNodeObject : NodeObject
 
         //TEMP HACK
         int directionTypesLength = Enum.GetNames(typeof(DirectionType)).Length;
-        DirectionType _directionType = (DirectionType)UnityEngine.Random.Range(0, directionTypesLength);
-        int _moveCount = UnityEngine.Random.Range(0, 4);
+        DirectionType _directionType = DirectionType.Left;//(DirectionType)UnityEngine.Random.Range(0, directionTypesLength);
+        int _moveCount = UnityEngine.Random.Range(2, 4);
         //TEMP HACK
 
         Debug.Log("directionTypesLength " + directionTypesLength);
         Debug.Log("_directionType " + _directionType);
 
         _enemyNodeObject.ActivateAbility(_directionType, _moveCount);
+
+        Destroy(this);
     }
 
     private void Start()

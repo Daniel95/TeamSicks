@@ -21,9 +21,10 @@ public class Node : MonoBehaviour
 
         nodeObjects.Add(_nodeObject);
 
-        //Debug.Log("New element in nodeobject");
+        int _index = NodeObjects.IndexOf(_nodeObject);
+        GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;
 
-        if(NodeObjectAddedEvent != null)
+        if (NodeObjectAddedEvent != null)
         {
             NodeObjectAddedEvent(_nodeObject.NodeObjectType);
         }

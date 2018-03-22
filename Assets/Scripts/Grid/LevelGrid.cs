@@ -129,6 +129,7 @@ public class LevelGrid : MonoBehaviour
         {
             Vector2Int _gridPosition = _nodeObjectByGridPosition.Key;
             Vector2 _localPosition = (_gridPosition - _offset) * step;
+            _localPosition = new Vector2(_localPosition.x, _localPosition.y/1.5f);
             Vector2 _worldPosition = (Vector2)transform.position + _localPosition;
             GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);
             _nodeGameObject.name = "Node[" + _gridPosition.x + "," + _gridPosition.y + "]";

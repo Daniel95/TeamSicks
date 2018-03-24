@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Scrolling : MonoBehaviour
 {
@@ -20,12 +18,12 @@ public class Scrolling : MonoBehaviour
         maximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
     }
 
-    private void ScrollCamera(Vector2 _direction)
+    private void ScrollCamera(Vector2 _delta)
     {
-        if (transform.position.x <= minimumScrollDistance && -_direction.x <= 0) { return; }
-        if (transform.position.x >= maximumScrollDistance && -_direction.x >= 0) { return; }
+        if (transform.position.x <= minimumScrollDistance && -_delta.x <= 0) { return; }
+        if (transform.position.x >= maximumScrollDistance && -_delta.x >= 0) { return; }
 
-        transform.Translate(new Vector2(-_direction.x * scrollSpeed, transform.position.y));
+        transform.Translate(new Vector2(-_delta.x * scrollSpeed, transform.position.y));
     }
 
     private void OnEnable()

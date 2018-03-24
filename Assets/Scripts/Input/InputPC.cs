@@ -7,28 +7,17 @@ public class InputPC : InputBase {
     [SerializeField] private KeyCode tapInput = KeyCode.Space;
     [SerializeField] private KeyCode dragInput = KeyCode.Mouse0;
 
-    private enum TouchStates { Holding, Dragging, Tapped, None }
-
-    private TouchStates touchState = TouchStates.None;
     private float startDownTime;
     private Coroutine inputUpdateCoroutine;
-
-    public void Start()
-    {
-        EnableInput(true);
-    }
 
     public void ResetTouched() {
         CancelDragInputEvent();
     }
 
-    public void EnableInput(bool enable) {
-        if (enable) {
-            inputUpdateCoroutine = StartCoroutine(InputUpdate());
-        } else if (inputUpdateCoroutine != null) {
-            StopCoroutine(inputUpdateCoroutine);
-            inputUpdateCoroutine = null;
-        }
+    protected override void StartInputUpdate()
+    {
+        base.StartInputUpdate();
+        InputUpdateCoroutine = StartCoroutine(InputUpdate());
     }
 
     private IEnumerator InputUpdate() {
@@ -43,15 +32,15 @@ public class InputPC : InputBase {
             }
 
             if (Input.GetKeyDown(dragInput) && !EventSystem.current.IsPointerOverGameObject()) {
-                touchState = TouchStates.Tapped;
+                TouchState = TouchStates.Tapped;
                 _mouseStartPosition = _lastInputPosition = Input.mousePosition;
                 startDownTime = Time.time;
             }
 
-            if (touchState != TouchStates.None) {
+            if (TouchState != TouchStates.None) {
                 if (!Input.GetKeyUp(dragInput)) {
-                    if (Time.time - startDownTime > timebeforeTappedExpired) {
-                        if (touchState == TouchStates.Tapped) {
+                    if (Time.time - startDownTime > TimebeforeTappedExpired) {
+                        if (TouchState == TouchStates.Tapped) {
                             if(TappedExpiredInputEvent != null)
                             {
                                 TappedExpiredInputEvent();
@@ -61,8 +50,8 @@ public class InputPC : InputBase {
                         Vector2 _currentMousePosition = Input.mousePosition;
                         float _distance = Vector2.Distance(_currentMousePosition, _mouseStartPosition);
 
-                        if (_distance > dragTreshhold) {
-                            touchState = TouchStates.Dragging;
+                        if (_distance > DragTreshhold) {
+                            TouchState = TouchStates.Dragging;
 
                             Vector2 _delta = _currentMousePosition - _lastInputPosition;
                             if (DraggingInputEvent != null)
@@ -72,15 +61,15 @@ public class InputPC : InputBase {
 
                             _lastInputPosition = _currentMousePosition;
 
-                        } else if (touchState != TouchStates.Holding) {
-                            if (touchState == TouchStates.Dragging) {
+                        } else if (TouchState != TouchStates.Holding) {
+                            if (TouchState == TouchStates.Dragging) {
                                 if(CancelDragInputEvent != null)
                                 {
                                     CancelDragInputEvent();
                                 }
                             }
 
-                            touchState = TouchStates.Holding;
+                            TouchState = TouchStates.Holding;
                             if(HoldingInputEvent != null)
                             {
                                 HoldingInputEvent();
@@ -94,7 +83,7 @@ public class InputPC : InputBase {
                         ReleaseInputEvent();
                     }
 
-                    if (touchState != TouchStates.Holding) {
+                    if (TouchState != TouchStates.Holding) {
 
                         Vector2 _currentInputPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                         Vector2 _direction = (_currentInputPosition - _lastInputPosition).normalized;
@@ -107,11 +96,20 @@ public class InputPC : InputBase {
                         _lastInputPosition = _currentInputPosition;
                     }
 
-                    touchState = TouchStates.None;
+                    TouchState = TouchStates.None;
                 }
             }
 
             yield return null;
         }
     }
+
+    private void Awake()
+    {
+        if(!PlatformHelper.PlatformIsMobile)
+        {
+            EnableInput(true);
+        }
+    }
+
 }

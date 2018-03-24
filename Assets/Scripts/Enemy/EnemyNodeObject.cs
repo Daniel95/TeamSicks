@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class EnemyNodeObject : NodeObject
 {
-
-    public static Action EnemyReachedEndpoint;
+	public static Action EnemyReachedEndpoint;
     public static Action EnemyTurnCompletedEvent;
 
     public static List<EnemyNodeObject> EnemyNodeObjects = new List<EnemyNodeObject>();
@@ -23,6 +22,50 @@ public class EnemyNodeObject : NodeObject
 
     private Vector2Int endPoint;
     private bool moving;
+    private Coroutine followPathCoroutine;
+
+    public void ActivateAbility(DirectionType _directionType , int _moveCount)
+	{
+        Vector2Int _direction = new Vector2Int();
+
+        if (_directionType == DirectionType.Up)
+        {
+            _direction = Vector2Int.up;
+        }
+        else if (_directionType == DirectionType.Down)
+        {
+            _direction = Vector2Int.down;
+        }
+        else if (_directionType == DirectionType.Left)
+        {
+            _direction = Vector2Int.left;
+
+        }
+        else if (_directionType == DirectionType.Right)
+        {
+            _direction = Vector2Int.right;
+        }
+
+        List<Vector2Int> _path = new List<Vector2Int>();
+
+        Vector2Int startGridPosition = GridPosition;
+
+        for (int i = 1; i < _moveCount + 1; i++)
+        {
+            Vector2Int _newGridPosition = startGridPosition + _direction * i;
+            if (!LevelGrid.Instance.IsImpassable(_newGridPosition) && LevelGrid.Instance.Contains(_newGridPosition))
+            {
+                _path.Add(_newGridPosition);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        StopCoroutine(followPathCoroutine);
+        followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
+	}
 
     private void StartTurnMovement()
     {
@@ -30,22 +73,23 @@ public class EnemyNodeObject : NodeObject
 
         List<Vector2Int> path = AstarHelper.GetPath(impassableMap, GridPosition, endPoint, AstarHelper.AstarPathType.Manhattan);
         path.Remove(GridPosition);
-
+		
         int moves = movesPerTurn < path.Count ? movesPerTurn : path.Count;
         List<Vector2Int> pathThisTurn = path.GetRange(0, moves);
-        StartCoroutine(FollowPath(pathThisTurn, () => { OnFollowPathCompletedEvent(); }));
+
+        followPathCoroutine = StartCoroutine(FollowPath(pathThisTurn, OnFollowPathCompleted));
     }
 
-    private IEnumerator FollowPath(List<Vector2Int> path, Action OnFollowPathCompletedEvent = null)
+    private IEnumerator FollowPath(List<Vector2Int> _path, Action _onFollowPathCompletedEvent = null)
     {
         moving = true;
 
-        for (int i = 0; i < path.Count; i++)
+        for (int i = 0; i < _path.Count; i++)
         {
-            Vector2Int _gridPosition = path[i];
+            Vector2Int _gridPosition = _path[i];
             MoveToGridPosition(_gridPosition);
 
-            if (i != path.Count - 1)
+            if (i != _path.Count - 1)
             {
                 yield return new WaitForSeconds(moveDelay);
             }
@@ -53,13 +97,15 @@ public class EnemyNodeObject : NodeObject
 
         moving = false;
 
-        if (OnFollowPathCompletedEvent != null)
+		followPathCoroutine = null;
+
+        if (_onFollowPathCompletedEvent != null)
         {
-            OnFollowPathCompletedEvent();
+            _onFollowPathCompletedEvent();
         }
     }
 
-    private void OnFollowPathCompletedEvent()
+    private void OnFollowPathCompleted()
     {
         if(GridPosition == endPoint)
         {
@@ -81,8 +127,9 @@ public class EnemyNodeObject : NodeObject
 
     private void MoveToGridPosition(Vector2Int _gridPosition)
     {
+        transform.position = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
         UpdateGridPosition(_gridPosition);
-        transform.position = ParentNode.transform.position;
+        //transform.position = ParentNode.transform.position;
     }
 
     private void ChooseEndpoint()
@@ -98,6 +145,7 @@ public class EnemyNodeObject : NodeObject
         endPoint = endpointNodeObject.GridPosition;
     }
 
+
     private void Awake()
     {
         EnemyNodeObjects.Add(this);
@@ -112,7 +160,7 @@ public class EnemyNodeObject : NodeObject
     private void OnDisable()
     {
         EndTurnButton.PlayerTurnCompletedEvent -= StartTurnMovement;
-        LevelGrid.LevelGridLoadedEvent += ChooseEndpoint;
+        LevelGrid.LevelGridLoadedEvent -= ChooseEndpoint;
     }
 
 }

@@ -58,9 +58,6 @@ public class InputPC : InputBase {
                             {
                                 DraggingInputEvent(_delta);
                             }
-
-                            _lastInputPosition = _currentMousePosition;
-
                         } else if (TouchState != TouchStates.Holding) {
                             if (TouchState == TouchStates.Dragging) {
                                 if(CancelDragInputEvent != null)
@@ -75,6 +72,8 @@ public class InputPC : InputBase {
                                 HoldingInputEvent();
                             }
                         }
+
+                        _lastInputPosition = _currentMousePosition;
                     }
                 } else { 
 

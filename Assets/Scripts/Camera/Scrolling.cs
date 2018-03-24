@@ -9,21 +9,33 @@ public class Scrolling : MonoBehaviour
 
     [SerializeField] private float scrollSpeed = 1;
 
-    private float maximumScrollDistance;
-    private float minimumScrollDistance = 0;
+    private float maxXBound;
+    private float minXBound = 0;
 
     private void Initialise()
     {
         LevelGrid.Instance.GetSize();
-        maximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
+        maxXBound = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
     }
 
     private void ScrollCamera(Vector2 _delta)
     {
-        if (transform.position.x <= minimumScrollDistance && -_delta.x <= 0) { return; }
-        if (transform.position.x >= maximumScrollDistance && -_delta.x >= 0) { return; }
+        float _xTranslation = -_delta.x * scrollSpeed;
+        float _nextCameraXPosition = transform.position.x + _xTranslation;
 
-        transform.Translate(new Vector2(-_delta.x * scrollSpeed, transform.position.y));
+        if (_nextCameraXPosition < minXBound)
+        {
+            transform.position = new Vector3(minXBound, transform.position.y, transform.position.z);
+        }
+        else if (_nextCameraXPosition > maxXBound)
+        {
+            transform.position = new Vector3(maxXBound, transform.position.y, transform.position.z);
+        }
+        else
+        {
+            transform.Translate(new Vector2(_xTranslation, 0));
+        }
+
     }
 
     private void OnEnable()

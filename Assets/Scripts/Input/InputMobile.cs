@@ -18,6 +18,7 @@ public class InputMobile : InputBase
 
     private IEnumerator InputUpdate()
     {
+        Vector2 _lastTouchPosition = new Vector2();
         Vector2 _startTouchPosition = new Vector2();
         float _touchDownTime = 0;
 
@@ -27,7 +28,7 @@ public class InputMobile : InputBase
             if (_startedTouching && !EventSystem.current.IsPointerOverGameObject())
             {
                 TouchState = TouchStates.Tapped;
-                _startTouchPosition = Input.GetTouch(0).position;
+                _startTouchPosition = _lastTouchPosition = Input.GetTouch(0).position;
                 _touchDownTime = Time.time;
             }
 
@@ -53,9 +54,9 @@ public class InputMobile : InputBase
                         {
                             TouchState = TouchStates.Dragging;
 
-                            Vector2 _delta = _currentTouchPosition - _startTouchPosition;
+                            Vector2 _delta = _currentTouchPosition - _lastTouchPosition;
 
-                            if(DraggingInputEvent != null ) {
+                            if (DraggingInputEvent != null ) {
                                 DraggingInputEvent(_delta);
                             }
                         }
@@ -75,6 +76,8 @@ public class InputMobile : InputBase
                                 HoldingInputEvent();
                             }
                         }
+
+                        _lastTouchPosition = _currentTouchPosition;
                     }
                 }
                 else

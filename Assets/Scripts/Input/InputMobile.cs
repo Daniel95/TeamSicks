@@ -3,22 +3,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InputMobile : InputBase
-{
-    [SerializeField] private float TimebeforeTappedExpired = 0.15f;
-    [SerializeField] private float minimalDistanceToDrag = 0.75f;
+{ 
 
     private Coroutine inputUpdateCoroutine;
     private enum TouchStates { Holding, Dragging, Tapped, None }
-    private TouchStates TouchState = TouchStates.None;
-    private float touchDownTime;
-    private Vector2 startTouchPosition;
-
-
-
-    public virtual void ResetTouched()
-    {
-        //RawCancelDragInputEvent();
-    }
+    private TouchStates _touchState = TouchStates.None;
 
     public void EnableInput(bool enable)
     {
@@ -38,70 +27,90 @@ public class InputMobile : InputBase
 
     private IEnumerator InputUpdate()
     {
+        Vector2 _startTouchPosition = new Vector2();
+        float _touchDownTime = 0;
+
         while (true)
         {
-            bool startedTouching = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
-            //TODO Add UI Hover Exception
-            if (startedTouching && !EventSystem.current.IsPointerOverGameObject())
+            bool _startedTouching = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
+            if (_startedTouching && !EventSystem.current.IsPointerOverGameObject())
             {
-                TouchState = TouchStates.Tapped;
-                startTouchPosition = Input.GetTouch(0).position;
-                touchDownTime = Time.time;
+                _touchState = TouchStates.Tapped;
+                _startTouchPosition = Input.GetTouch(0).position;
+                _touchDownTime = Time.time;
             }
 
-            if (TouchState != TouchStates.None)
+            if (_touchState != TouchStates.None)
             {
                 if (Input.GetTouch(0).phase != TouchPhase.Ended)
                 {
-                    float timePassedSinceTouchDown = Time.time - touchDownTime;
-                    if (timePassedSinceTouchDown > TimebeforeTappedExpired)
+                    float timePassedSinceTouchDown = Time.time - _touchDownTime;
+                    if (timePassedSinceTouchDown > timebeforeTappedExpired)
                     {
-                        if (TouchState == TouchStates.Tapped)
+                        if (_touchState == TouchStates.Tapped)
                         {
-                            //RawTappedExpiredInputEvent();
-                        }
-
-                        Vector2 worldCurrentTouchPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                        Vector2 worldStartTouchPosition = Camera.main.ScreenToWorldPoint(startTouchPosition);
-                        float dragDistance = Vector2.Distance(worldStartTouchPosition, worldCurrentTouchPosition);
-
-                        if (dragDistance > minimalDistanceToDrag)
-                        {
-
-                            Vector2 direction = (Input.GetTouch(0).position - startTouchPosition).normalized;
-
-                            TouchState = TouchStates.Dragging;
-                            RawDraggingInputEvent(direction);
-
-                        }
-                        else if (timePassedSinceTouchDown > TimebeforeTappedExpired && TouchState != TouchStates.Holding)
-                        {
-                            if (TouchState == TouchStates.Dragging)
+                            if(TappedExpiredInputEvent != null)
                             {
-                                //RawCancelDragInputEvent();
+                                TappedExpiredInputEvent();
+                            }
+                        }
+
+                        Vector2 _currentTouchPosition = Input.GetTouch(0).position;
+                        float _distance = Vector2.Distance(_currentTouchPosition, _startTouchPosition);
+
+                        if (_distance > dragTreshhold)
+                        {
+                            _touchState = TouchStates.Dragging;
+
+                            Vector2 _delta = _currentTouchPosition - _startTouchPosition;
+
+                            if(DraggingInputEvent != null ) {
+                                DraggingInputEvent(_delta);
+                            }
+                        }
+                        else if (timePassedSinceTouchDown > timebeforeTappedExpired && _touchState != TouchStates.Holding)
+                        {
+                            if (_touchState == TouchStates.Dragging)
+                            {
+                                if(CancelDragInputEvent != null)
+                                {
+                                    CancelDragInputEvent();
+                                }
                             }
 
-                            TouchState = TouchStates.Holding;
-                            //RawHoldingInputEvent();
+                            _touchState = TouchStates.Holding;
+                            if(HoldingInputEvent != null)
+                            {
+                                HoldingInputEvent();
+                            }
                         }
                     }
                 }
                 else
                 {
-                    //RawReleaseInputEvent();
-
-                    if (TouchState == TouchStates.Dragging)
+                    if(ReleaseInputEvent != null)
                     {
-                        Vector2 direction = (Input.GetTouch(0).position - startTouchPosition).normalized;
-                        //RawReleaseInDirectionInputEvent(direction);
-
-                    }
-                    else if (TouchState == TouchStates.Tapped)
-                    {
-                        //RawTapInputEvent();
+                        ReleaseInputEvent();
                     }
 
-                    TouchState = TouchStates.None;
+                    if (_touchState == TouchStates.Dragging)
+                    {
+                        Vector2 direction = (Input.GetTouch(0).position - _startTouchPosition).normalized;
+                        if(ReleaseInDirectionInputEvent != null)
+                        {
+                            ReleaseInDirectionInputEvent(direction);
+                        }
+
+                    }
+                    else if (_touchState == TouchStates.Tapped)
+                    {
+                        if(TapInputEvent != null)
+                        {
+                            TapInputEvent();
+                        }
+                    }
+
+                    _touchState = TouchStates.None;
                 }
             }
 

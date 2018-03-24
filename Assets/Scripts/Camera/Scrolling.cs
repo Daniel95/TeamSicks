@@ -9,40 +9,35 @@ public class Scrolling : MonoBehaviour
     /// This script is used on the camera to add the ability to scroll through the level
     /// </summary>
 
-    private float MaximumScrollDistance;
-    private float MinimumScrollDistance = 0;
+    [SerializeField] private float scrollSpeed = 1;
 
-    private float ScrollSpeed = 1;
+    private float maximumScrollDistance;
+    private float minimumScrollDistance = 0;
 
     private void Initialise()
     {
         LevelGrid.Instance.GetSize();
-        MaximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
+        maximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
     }
-
 
     private void ScrollCamera(Vector2 _direction)
     {
-        if (transform.position.x <= MinimumScrollDistance && -_direction.x <= 0)
-        {
-            return;
-        }
-        if (transform.position.x >= MaximumScrollDistance && -_direction.x >= 0)
-        {
-            return;
-        }
-        transform.Translate(new Vector2(-_direction.x * ScrollSpeed, transform.position.y));
+        if (transform.position.x <= minimumScrollDistance && -_direction.x <= 0) { return; }
+        if (transform.position.x >= maximumScrollDistance && -_direction.x >= 0) { return; }
+
+        transform.Translate(new Vector2(-_direction.x * scrollSpeed, transform.position.y));
     }
 
     private void OnEnable()
     {
         LevelGrid.LevelGridLoadedEvent += Initialise;
-        InputBase.RawDraggingInputEvent += ScrollCamera;
+        InputBase.DraggingInputEvent += ScrollCamera;
     }
 
     private void OnDisable()
     {
         LevelGrid.LevelGridLoadedEvent -= Initialise;
-        InputBase.RawDraggingInputEvent -= ScrollCamera;
+        InputBase.DraggingInputEvent -= ScrollCamera;
     }
+
 }

@@ -100,10 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movesPerTurn: 3
-  moveDelay: 0.4
-  animator: {fileID: 0}
-  idleClip: {fileID: 0}
-  walkingClip: {fileID: 0}
+  moveSpeed: 0.01
+  animator: {fileID: 95403879299425800}
+  walkingAnimatorBoolName: Moving
 --- !u!212 &212319264137984744
 SpriteRenderer:
   m_ObjectHideFlags: 1

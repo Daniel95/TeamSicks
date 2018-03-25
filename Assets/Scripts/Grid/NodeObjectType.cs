@@ -7,4 +7,5 @@
     EndPoint = 4,
     Player = 5,
     Enemy = 6,
+    RedirectAbility = 7,
 }

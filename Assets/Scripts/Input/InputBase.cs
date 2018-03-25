@@ -1,16 +1,40 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputBase : MonoBehaviour {
 
-    public static Action RawCancelDragInputEvent;
-    public static Action<Vector2> RawDraggingInputEvent;
-    public static Action RawHoldingInputEvent;
-    public static Action RawTapInputEvent;
-    public static Action<Vector2> RawReleaseInDirectionInputEvent;
-    public static Action RawReleaseInputEvent;
-    public static Action RawTappedExpiredInputEvent;
+    public enum TouchStates { Holding, Dragging, Tapped, None }
+
+    public static Action CancelDragInputEvent;
+    public static Action<Vector2> DraggingInputEvent;
+    public static Action HoldingInputEvent;
+    public static Action TapInputEvent;
+    public static Action<Vector2> ReleaseInDirectionInputEvent;
+    public static Action ReleaseInputEvent;
+    public static Action TappedExpiredInputEvent;
+
+    [SerializeField] protected float DragTreshhold = 0.1f;
+    [SerializeField] protected float TimebeforeTappedExpired = 0.15f;
+
+    protected TouchStates TouchState = TouchStates.None;
+    protected Coroutine InputUpdateCoroutine;
+
+    public void EnableInput(bool enable)
+    {
+        if (enable)
+        {
+            StartInputUpdate();
+        }
+        else
+        {
+            if (InputUpdateCoroutine != null)
+            {
+                StopCoroutine(InputUpdateCoroutine);
+                InputUpdateCoroutine = null;
+            }
+        }
+    }
+
+    protected virtual void StartInputUpdate() { }
 
 }

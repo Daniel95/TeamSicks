@@ -5,7 +5,7 @@ public class LevelStarter : MonoBehaviour
 
     [SerializeField] private int levelNumberToStart;
 
-    private void Awake()
+    private void Start()
     {
         LevelGrid.Instance.LoadLevelGrid(levelNumberToStart);
     }

@@ -10,6 +10,8 @@ public class LevelGrid : MonoBehaviour
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
+	public int Step { get { return step; } }
+
     private static LevelGrid instance;
 
     [Reorderable] [SerializeField] private List<NodeObjectEditorEntry> nodeObjectEntries;
@@ -21,14 +23,14 @@ public class LevelGrid : MonoBehaviour
 
     public void LoadLevelGrid(int _levelNumber)
     {
+        loadedLevelGridNumber = _levelNumber;
+
         int _width = 0;
         int _height = 0;
         Dictionary<Vector2Int, List<NodeObjectType>> _layout = Levels.GetLevelLayout(_levelNumber, out _width, out _height);
 
-        nodeGrid = SpawnNodeGrid(_layout, _width, _height);
+        SpawnNodeGrid(_layout, _width, _height);
         SetSpriteIndex();
-
-        loadedLevelGridNumber = _levelNumber;
 
         if(LevelGridLoadedEvent != null)
         {
@@ -110,6 +112,67 @@ public class LevelGrid : MonoBehaviour
         return _containsImpassableNodeObject;
     }
 
+	public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
+	{
+		Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
+		Vector2Int _gridPosition = WorldToGridPosition(_worldPosition);
+
+		return _gridPosition;
+	}
+
+	public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
+	{
+		Vector2 _roundedWorldPosition = _worldPosition / Step;
+		_roundedWorldPosition = VectorHelper.Round(_roundedWorldPosition);
+
+		Vector2Int gridPosition = new Vector2Int((int)_roundedWorldPosition.x, (int)_roundedWorldPosition.y);
+		return gridPosition;
+	}
+
+	public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
+	{
+        Vector2 _offset = (Vector2)GetSize() / 2;
+        Vector3 _localPosition = (_gridPosition - _offset) * Step;
+        Vector3 _calculateWorldPos = _localPosition + transform.position;
+		Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
+
+		return _worldPosition;
+	}
+
+    public NodeObject AddNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
+    {
+        if (!Contains(_gridPosition))
+        {
+            AddNode(_gridPosition);
+        }
+
+        Node _node = GetNode(_gridPosition);
+        GameObject _nodeGameObject = _node.gameObject;
+
+        NodeObjectEditorEntry _nodeObjectEditorEntry = GetNodeObjectEditorEntry(_nodeObjectType);
+        if (_nodeObjectEditorEntry.Prefabs.Count <= 0) { return null; }
+
+        int _randomPrefabIndex = UnityEngine.Random.Range(0, _nodeObjectEditorEntry.Prefabs.Count);
+        GameObject _randomPrefab = _nodeObjectEditorEntry.Prefabs[_randomPrefabIndex];
+
+        GameObject _nodeObjectGameObject = Instantiate(_randomPrefab, _nodeGameObject.transform.position, Quaternion.identity, _nodeGameObject.transform);
+        NodeObject _nodeObject = _nodeObjectGameObject.GetComponent<NodeObject>();
+
+        if (_nodeObject == null)
+        {
+            Debug.LogError("No NodeObject script on NodeObject of type " + _nodeObjectType);
+            return null;
+        }
+
+        _node.AddNodeObject(_nodeObject);
+
+        _nodeObject.ParentNode = _node;
+        _nodeObject.NodeObjectType = _nodeObjectType;
+        _nodeObject.Impassable = _nodeObjectEditorEntry.Impassable;
+
+        return _nodeObject;
+    }
+
     private static LevelGrid GetInstance()
     {
         if (instance == null)
@@ -119,51 +182,32 @@ public class LevelGrid : MonoBehaviour
         return instance;
     }
 
-    private Dictionary<Vector2Int, Node> SpawnNodeGrid(Dictionary<Vector2Int, List<NodeObjectType>> _layout, int _width, int _height)
+    private Node AddNode(Vector2Int _gridPosition)
     {
-        Dictionary<Vector2Int, Node> _nodeGrid = new Dictionary<Vector2Int, Node>();
+        Vector3 _worldPosition = GridToWorldPosition(_gridPosition);
 
-        Vector2 _offset = new Vector2(_width, _height) / 2;
+        GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);
+        _nodeGameObject.name = "Node[" + _gridPosition.x + "," + _gridPosition.y + "]";
+
+        Node _node = _nodeGameObject.GetComponent<Node>();
+        _node.GridPosition = _gridPosition;
+        nodeGrid.Add(_gridPosition, _node);
+
+        return _node;
+    }
+
+    private void SpawnNodeGrid(Dictionary<Vector2Int, List<NodeObjectType>> _layout, int _width, int _height)
+    {
+        nodeGrid = new Dictionary<Vector2Int, Node>();
 
         foreach (KeyValuePair<Vector2Int, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
             Vector2Int _gridPosition = _nodeObjectByGridPosition.Key;
-            Vector2 _localPosition = (_gridPosition - _offset) * step;
-            Vector2 _worldPosition = (Vector2)transform.position + _localPosition;
-            GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);
-            _nodeGameObject.name = "Node[" + _gridPosition.x + "," + _gridPosition.y + "]";
-
-            Node _node = _nodeGameObject.GetComponent<Node>();
-            _node.GridPosition = _gridPosition;
-
             foreach (NodeObjectType _nodeObjectType in _nodeObjectByGridPosition.Value)
             {
-                NodeObjectEditorEntry _nodeObjectEditorEntry = GetNodeObjectEditorEntry(_nodeObjectType);
-                if(_nodeObjectEditorEntry.Prefabs.Count <= 0) { continue; }
-
-                int _randomPrefabIndex = UnityEngine.Random.Range(0, _nodeObjectEditorEntry.Prefabs.Count - 1);
-                GameObject _randomPrefab = _nodeObjectEditorEntry.Prefabs[_randomPrefabIndex];
-                
-                GameObject _nodeObjectGameObject = Instantiate(_randomPrefab, _worldPosition, Quaternion.identity, _nodeGameObject.transform);
-                NodeObject _nodeObject = _nodeObjectGameObject.GetComponent<NodeObject>();
-
-                if(_nodeObject == null)
-                {
-                    Debug.LogError("No NodeObject script on NodeObject of type " + _nodeObjectType);
-                    continue;
-                }
-
-                _nodeObject.ParentNode = _node;
-                _nodeObject.NodeObjectType = _nodeObjectType;
-                _nodeObject.Impassable = _nodeObjectEditorEntry.Impassable;
-
-                _node.NodeObjects.Add(_nodeObject);
+                AddNodeObject(_nodeObjectType, _gridPosition);
             }
-
-            _nodeGrid.Add(_gridPosition, _node);
         }
-
-        return _nodeGrid;
     }
 
     private void SetSpriteIndex()
@@ -192,5 +236,4 @@ public class LevelGrid : MonoBehaviour
 
         return _nodeObjectEditorEntry;
     }
-
 }

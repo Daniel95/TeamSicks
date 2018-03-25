@@ -12,17 +12,14 @@ public class EnemyNodeObject : NodeObject
     public static List<EnemyNodeObject> EnemyNodeObjects = new List<EnemyNodeObject>();
 
     private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
-    private bool Moving { get { return moving;  } }
+    private bool Moving { get { return animator.GetBool("Moving"); } set { animator.SetBool("Moving", value); } }
 
     [SerializeField] private int movesPerTurn = 3;
     [SerializeField] private float moveDelay = 0.4f;
-
     [SerializeField] private Animator animator;
-    [SerializeField] private AnimationClip idleClip;
-    [SerializeField] private AnimationClip walkingClip;
+    [SerializeField] private string walkingAnimatorBoolName = "Moving";
 
     private Vector2Int endPoint;
-    private bool moving;
 
     private void StartTurnMovement()
     {
@@ -38,7 +35,7 @@ public class EnemyNodeObject : NodeObject
 
     private IEnumerator FollowPath(List<Vector2Int> path, Action OnFollowPathCompletedEvent = null)
     {
-        moving = true;
+        Moving = true;
 
         for (int i = 0; i < path.Count; i++)
         {
@@ -51,7 +48,7 @@ public class EnemyNodeObject : NodeObject
             }
         }
 
-        moving = false;
+        Moving = false;
 
         if (OnFollowPathCompletedEvent != null)
         {

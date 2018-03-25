@@ -91,24 +91,25 @@ public class EnemyNodeObject : NodeObject
             {
                 if(_pathIndex < _path.Count)
                 {
+                    Vector2Int _gridPosition = _path[_pathIndex];
+                    UpdateGridPosition(_gridPosition);
+                    _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
+
                     _pathIndex++;
-                    _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_path[_pathIndex]);
                 }
                 else
                 {
-                    Moving = true;
+                    Moving = false;
                     break;
                 }
             }
             else
             {
-                Vector2.MoveTowards(transform.position, _worldPositionTarget, moveSpeed);
+                transform.position = Vector2.MoveTowards(transform.position, _worldPositionTarget, moveSpeed);
             }
 
             yield return new WaitForFixedUpdate();
         }
-
-        Moving = false;
 
 		followPathCoroutine = null;
 
@@ -136,12 +137,6 @@ public class EnemyNodeObject : NodeObject
                 EnemyTurnCompletedEvent();
             }
         }
-    }
-
-    private void MoveToGridPosition(Vector2Int _gridPosition)
-    {
-        transform.position = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
-        UpdateGridPosition(_gridPosition);
     }
 
     private void ChooseEndpoint()

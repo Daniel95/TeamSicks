@@ -21,6 +21,7 @@ public class EnemyNodeObject : NodeObject
 
     private Vector2Int endPoint;
     private Coroutine followPathCoroutine;
+    private float animatorTransformStartXScale;
 
     public void ActivateAbility(DirectionType _directionType , int _moveCount)
 	{
@@ -85,7 +86,16 @@ public class EnemyNodeObject : NodeObject
         int _pathIndex = 0;
         Vector2 _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_path[_pathIndex]);
 
-        while(Moving)
+        if (transform.position.x > _worldPositionTarget.x)
+        {
+            animator.transform.localScale = new Vector2(animatorTransformStartXScale * -1, animator.transform.localScale.y);
+        }
+        else
+        {
+            animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
+        }
+
+        while (Moving)
         {
             if((Vector2)transform.position == _worldPositionTarget)
             {
@@ -94,6 +104,15 @@ public class EnemyNodeObject : NodeObject
                     Vector2Int _gridPosition = _path[_pathIndex];
                     UpdateGridPosition(_gridPosition);
                     _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
+
+                    if(transform.position.x > _worldPositionTarget.x)
+                    {
+                        animator.transform.localScale = new Vector2(animatorTransformStartXScale * -1, animator.transform.localScale.y);
+                    }
+                    else
+                    {
+                        animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
+                    }
 
                     _pathIndex++;
                 }
@@ -159,6 +178,9 @@ public class EnemyNodeObject : NodeObject
         {
             Debug.LogError("EnemyNodeObject has no Animator assigned");
         }
+        animatorTransformStartXScale = animator.transform.localScale.x;
+
+
         EnemyNodeObjects.Add(this);
     }
 

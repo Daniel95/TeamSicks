@@ -17,9 +17,6 @@ public class RedirectAbilityNodeObject : NodeObject
         int _moveCount = UnityEngine.Random.Range(2, 4);
         //TEMP HACK
 
-        Debug.Log("directionTypesLength " + directionTypesLength);
-        Debug.Log("_directionType " + _directionType);
-
         _enemyNodeObject.ActivateAbility(_directionType, _moveCount);
 
         Destroy(this);

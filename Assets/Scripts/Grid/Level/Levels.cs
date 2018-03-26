@@ -85,6 +85,13 @@ public class Levels
         return _size;
     }
 
+    public static bool LevelExists(int _levelNumber)
+    {
+        int levelIndex = _levelNumber - 1;
+        bool levelExists = _levelNumber >= 0 || levelIndex < levels.Length;
+        return levelExists;
+    }
+
     public static Dictionary<Vector2Int, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
     {
         Dictionary<Vector2Int, List<NodeObjectType>> _levelLayout = new Dictionary<Vector2Int, List<NodeObjectType>>();

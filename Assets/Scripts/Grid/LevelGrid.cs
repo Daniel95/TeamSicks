@@ -10,12 +10,13 @@ public class LevelGrid : MonoBehaviour
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
-	public int Step { get { return step; } }
+	public Vector2 Step { get { return new Vector2(widthStep, heightStep); } }
 
     private static LevelGrid instance;
 
     [Reorderable] [SerializeField] private List<NodeObjectEditorEntry> nodeObjectEntries;
-    [Space(5)] [SerializeField] private int step;
+    [Space(5)] [SerializeField] private int widthStep;
+    [Space(5)] [SerializeField] private int heightStep;
     [Space(5)] [SerializeField] private GameObject nodePrefab;
 
     private Dictionary<Vector2Int, Node> nodeGrid = new Dictionary<Vector2Int, Node>();
@@ -60,11 +61,6 @@ public class LevelGrid : MonoBehaviour
             return null;
         }
         return nodeGrid[_gridPosition];
-    }
-
-    public int GetStep()
-    {
-        return step;
     }
 
     public bool Contains(Vector2Int _gridPosition)
@@ -122,7 +118,7 @@ public class LevelGrid : MonoBehaviour
 
 	public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
 	{
-		Vector2 _roundedWorldPosition = _worldPosition / Step;
+		Vector2 _roundedWorldPosition = VectorHelper.Divide((Vector2)_worldPosition, Step);
 		_roundedWorldPosition = VectorHelper.Round(_roundedWorldPosition);
 
 		Vector2Int gridPosition = new Vector2Int((int)_roundedWorldPosition.x, (int)_roundedWorldPosition.y);
@@ -132,7 +128,7 @@ public class LevelGrid : MonoBehaviour
 	public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
 	{
         Vector2 _offset = (Vector2)GetSize() / 2;
-        Vector3 _localPosition = (_gridPosition - _offset) * Step;
+        Vector3 _localPosition = VectorHelper.Multiply((_gridPosition - _offset), Step);
         Vector3 _calculateWorldPos = _localPosition + transform.position;
 		Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
 

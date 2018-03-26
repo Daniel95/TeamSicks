@@ -15,7 +15,7 @@ public class Scrolling : MonoBehaviour
     private void Initialise()
     {
         LevelGrid.Instance.GetSize();
-        maxXBound = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
+        maxXBound = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.Step.x / 2;
     }
 
     private void ScrollCamera(Vector2 _delta)

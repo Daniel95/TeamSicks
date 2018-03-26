@@ -77,7 +77,6 @@ public class Levels
 
     };
 
-
     public static Vector2Int GetLevelSize(int _levelNumber)
     {
         Level _level = GetLevel(_levelNumber);

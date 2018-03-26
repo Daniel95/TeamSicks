@@ -8,7 +8,7 @@ public class InputBase : MonoBehaviour {
     public static Action CancelDragInputEvent;
     public static Action<Vector2> DraggingInputEvent;
     public static Action HoldingInputEvent;
-    public static Action TapInputEvent;
+    public static Action<Vector2>TapInputEvent;
     public static Action<Vector2> ReleaseInDirectionInputEvent;
     public static Action ReleaseInputEvent;
     public static Action TappedExpiredInputEvent;

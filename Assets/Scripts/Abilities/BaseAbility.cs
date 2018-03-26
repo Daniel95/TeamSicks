@@ -4,36 +4,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BaseAbility : MonoBehaviour
+public class BaseAbility
 {
-	public Button button;
-	private bool isSelected;
+    protected String UIText;
+    protected Sprite UIImage;
 
-	public virtual void Ability()
+
+	public virtual void OnGenerate()
 	{
-
-	}
+	    InputBase.TapInputEvent += PlaceOnGrid;
+    }
 
 	public virtual void OnClick()
 	{
-		if(button.IsInteractable())
-		{
-			this.isSelected = true;
-			Debug.Log(isSelected);
-
-
-
-			//LevelGrid.Instance.IsImpassable();
-			//LevelGrid.Instance.ScreenToGridPosition();
-		}
-		else if(!button.IsInteractable())
-		{
-			this.isSelected = false;
-			Debug.Log(isSelected);
-		}
+	    
 	}
 
-	private void PlaceOnGrid()
+    public String UITextGetter()
+    {
+        return UIText;
+    }
+
+    public Sprite UIImageGetter()
+    {
+        return UIImage;
+    }
+
+	protected virtual void PlaceOnGrid(Vector2 _screenPosition)
 	{
 
 	}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 class AbilityPool : MonoBehaviour
 {
@@ -19,34 +20,37 @@ class AbilityPool : MonoBehaviour
     }
     #endregion
 
+    /*
     [SerializeField]
     List<Ability> allAbilities;
 
     List<Ability> availableAbilites;
 
     List<Ability> usedAbilities = new List<Ability>();
+    */
 
     void Awake()
     {
-        availableAbilites = allAbilities;
+        //availableAbilites = allAbilities;
     }
 
-    public Ability GetRandomAbility()
+    public BaseAbility GetRandomAbility()
     {
-        Ability _ability = availableAbilites[Random.Range(0, availableAbilites.Count)];
 
-        availableAbilites.Remove(_ability);
-        usedAbilities.Add(_ability);
-        
-        if (availableAbilites.Count <= 0)
+        int _random = Random.Range(0,2);
+        BaseAbility _baseAbility;
+
+        if (_random == 0)
         {
-            foreach (Ability _usedAbility in usedAbilities)
-            {
-                availableAbilites.Add(_usedAbility);
-            }
-            usedAbilities.Clear();
+            _baseAbility = new RedirectAbility();
+        }
+        else
+        {
+            _baseAbility = new StunAbility();
         }
 
-        return _ability;
+        _baseAbility.OnGenerate();
+
+        return _baseAbility;
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DisplayAbilities))]
@@ -15,14 +14,13 @@ public class AbilityChooser : MonoBehaviour {
 
     void NewAbilities()
     {
-        Ability[] _newAbilities = new Ability[totalNewAbilities];
+        List<BaseAbility> baseAbilities = new List<BaseAbility>();
         for (int i = 0; i < totalNewAbilities; i++)
         {
-            //Debug.Log("Hmmm?");
-            _newAbilities[i] = AbilityPool.Instance.GetRandomAbility();
+            baseAbilities.Add(AbilityPool.Instance.GetRandomAbility());
         }
 
-        displayAbilities.UpdateAbilities(_newAbilities);
+        displayAbilities.UpdateAbilities(baseAbilities.ToArray());
     }
 
     void OnEnable()

@@ -1,29 +1,29 @@
 fileFormatVersion: 2
-guid: c7491a086a1ee9b469d0290890657a67
-timeCreated: 1521034264
+guid: b6e4d45d9fb733047b95d9990bdb8737
+timeCreated: 1522059254
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: idle_0
-    21300002: idle_1
-    21300004: idle_2
-    21300006: idle_3
-    21300008: idle_4
-    21300010: idle_5
-    21300012: idle_6
-    21300014: idle_7
-    21300016: idle_8
-    21300018: idle_9
-    21300020: idle_10
-    21300022: idle_11
-    21300024: idle_12
-    21300026: idle_13
-    21300028: idle_14
-    21300030: idle_15
-    21300032: idle_16
-    21300034: idle_17
-    21300036: idle_18
-    21300038: idle_19
+    21300000: spr_enemy_idle 1_0
+    21300002: spr_enemy_idle 1_1
+    21300004: spr_enemy_idle 1_2
+    21300006: spr_enemy_idle 1_3
+    21300008: spr_enemy_idle 1_4
+    21300010: spr_enemy_idle 1_5
+    21300012: spr_enemy_idle 1_6
+    21300014: spr_enemy_idle 1_7
+    21300016: spr_enemy_idle 1_8
+    21300018: spr_enemy_idle 1_9
+    21300020: spr_enemy_idle 1_10
+    21300022: spr_enemy_idle 1_11
+    21300024: spr_enemy_idle 1_12
+    21300026: spr_enemy_idle 1_13
+    21300028: spr_enemy_idle 1_14
+    21300030: spr_enemy_idle 1_15
+    21300032: spr_enemy_idle 1_16
+    21300034: spr_enemy_idle 1_17
+    21300036: spr_enemy_idle 1_18
+    21300038: spr_enemy_idle 1_19
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: idle_0
+      name: spr_enemy_idle 1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 2430
-        width: 810
-        height: 810
+        y: 750
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,13 +114,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_1
+      name: spr_enemy_idle 1_1
       rect:
         serializedVersion: 2
-        x: 810
-        y: 2430
-        width: 810
-        height: 810
+        x: 250
+        y: 750
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,13 +128,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_2
+      name: spr_enemy_idle 1_2
       rect:
         serializedVersion: 2
-        x: 1620
-        y: 2430
-        width: 810
-        height: 810
+        x: 500
+        y: 750
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,13 +142,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_3
+      name: spr_enemy_idle 1_3
       rect:
         serializedVersion: 2
-        x: 2430
-        y: 2430
-        width: 810
-        height: 810
+        x: 750
+        y: 750
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,13 +156,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_4
+      name: spr_enemy_idle 1_4
       rect:
         serializedVersion: 2
-        x: 3240
-        y: 2430
-        width: 810
-        height: 810
+        x: 1000
+        y: 750
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,13 +170,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_5
+      name: spr_enemy_idle 1_5
       rect:
         serializedVersion: 2
-        x: 4050
-        y: 2430
-        width: 810
-        height: 810
+        x: 1250
+        y: 750
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,97 +184,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1620
-        width: 810
-        height: 810
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: idle_7
-      rect:
-        serializedVersion: 2
-        x: 810
-        y: 1620
-        width: 810
-        height: 810
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: idle_8
-      rect:
-        serializedVersion: 2
-        x: 1620
-        y: 1620
-        width: 810
-        height: 810
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: idle_9
-      rect:
-        serializedVersion: 2
-        x: 2430
-        y: 1620
-        width: 810
-        height: 810
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: idle_10
-      rect:
-        serializedVersion: 2
-        x: 3240
-        y: 1620
-        width: 810
-        height: 810
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: idle_11
-      rect:
-        serializedVersion: 2
-        x: 4050
-        y: 1620
-        width: 810
-        height: 810
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: idle_12
+      name: spr_enemy_idle 1_6
       rect:
         serializedVersion: 2
         x: 0
-        y: 810
-        width: 810
-        height: 810
+        y: 500
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -282,13 +198,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_13
+      name: spr_enemy_idle 1_7
       rect:
         serializedVersion: 2
-        x: 810
-        y: 810
-        width: 810
-        height: 810
+        x: 250
+        y: 500
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -296,13 +212,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_14
+      name: spr_enemy_idle 1_8
       rect:
         serializedVersion: 2
-        x: 1620
-        y: 810
-        width: 810
-        height: 810
+        x: 500
+        y: 500
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,13 +226,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_15
+      name: spr_enemy_idle 1_9
       rect:
         serializedVersion: 2
-        x: 2430
-        y: 810
-        width: 810
-        height: 810
+        x: 750
+        y: 500
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -324,13 +240,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_16
+      name: spr_enemy_idle 1_10
       rect:
         serializedVersion: 2
-        x: 3240
-        y: 810
-        width: 810
-        height: 810
+        x: 1000
+        y: 500
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -338,13 +254,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_17
+      name: spr_enemy_idle 1_11
       rect:
         serializedVersion: 2
-        x: 4050
-        y: 810
-        width: 810
-        height: 810
+        x: 1250
+        y: 500
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -352,13 +268,97 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_18
+      name: spr_enemy_idle 1_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_idle 1_13
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_idle 1_14
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_idle 1_15
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_idle 1_16
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_idle 1_17
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_idle 1_18
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 810
-        height: 810
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -366,13 +366,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: idle_19
+      name: spr_enemy_idle 1_19
       rect:
         serializedVersion: 2
-        x: 810
+        x: 250
         y: 0
-        width: 810
-        height: 810
+        width: 250
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

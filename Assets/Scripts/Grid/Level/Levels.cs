@@ -12,19 +12,19 @@ public class Levels
     //Player = 5,
     //Enemy = 6,
 
-    private static Level[] levels =
+   private static Level[] levels =
     {
         //LEVEL 1
         new Level
         {
-            Height = 7,
+            Height = 6,
             Width = 20,
 
             MapLayers = new int[][,] {
                 //Obstacle Layer
-                new int[7, 20]
+                new int[6, 20]
                 {
-                    { 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                    
                     { 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                     { 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 },
                     { 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1 },
@@ -33,9 +33,9 @@ public class Levels
                     { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1 },
                 },
                 //Pickup Layer
-                new int[7, 20]
+                new int[6, 20]
                 {
-                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
+                   
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -48,27 +48,29 @@ public class Levels
         //LEVEL 2
         new Level
         {
-            Height = 5,
+            Height = 6,
             Width = 20,
 
             MapLayers = new int[][,] {
                 //Obstacle Layer
-                new int[5, 20]
+                new int[6, 20]
                 {
                     { 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                     { 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                     { 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 },
                     { 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1 },
-                    { 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1 },
+                    { 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1 },
+                    { 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1 },
                 },
                 //Pickup Layer
-                new int[5, 20]
+                new int[6, 20]
                 {
-                    { 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 4 },
-                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                     { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 }
             },
         }
@@ -80,6 +82,13 @@ public class Levels
         Level _level = GetLevel(_levelNumber);
         Vector2Int _size = new Vector2Int(_level.Width, _level.Height);
         return _size;
+    }
+
+    public static bool LevelExists(int _levelNumber)
+    {
+        int levelIndex = _levelNumber - 1;
+        bool levelExists = _levelNumber >= 0 || levelIndex < levels.Length;
+        return levelExists;
     }
 
     public static Dictionary<Vector2Int, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)

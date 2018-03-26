@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class EnemyNodeObject : NodeObject
 {
-	public static Action EnemyReachedEndpoint;
-    public static Action EnemyTurnCompletedEvent;
+	public static Action ReachedEndpointEvent;
+    public static Action TurnCompletedEvent;
 
     public static List<EnemyNodeObject> EnemyNodeObjects = new List<EnemyNodeObject>();
 
@@ -142,18 +142,18 @@ public class EnemyNodeObject : NodeObject
     {
         if(GridPosition == endPoint)
         {
-            if(EnemyReachedEndpoint != null)
+            if(ReachedEndpointEvent != null)
             {
-                EnemyReachedEndpoint();
+                ReachedEndpointEvent();
             }
             return;
         }
 
         bool enemiesAreMoving = EnemyNodeObjects.Exists(x => x.Moving);
         if (!enemiesAreMoving) {
-            if(EnemyTurnCompletedEvent != null)
+            if(TurnCompletedEvent != null)
             {
-                EnemyTurnCompletedEvent();
+                TurnCompletedEvent();
             }
         }
     }

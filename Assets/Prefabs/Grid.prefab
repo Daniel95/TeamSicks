@@ -73,10 +73,6 @@ MonoBehaviour:
     Impassable: 0
     Prefabs:
     - {fileID: 1511505173929664, guid: f1d81baa72f20db45b3d294ecb48cbcc, type: 2}
-  - NodeObjectType: 5
-    Impassable: 0
-    Prefabs:
-    - {fileID: 1918649702758080, guid: a892ccc2c511a8e45baba2ac5b8820d3, type: 2}
   - NodeObjectType: 4
     Impassable: 0
     Prefabs:

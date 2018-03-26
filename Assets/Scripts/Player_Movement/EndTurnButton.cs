@@ -58,11 +58,11 @@ public class EndTurnButton : MonoBehaviour
 
     void OnEnable()
     {
-        EnemyNodeObject.EnemyTurnCompletedEvent += CallPlayerTurnStartedEvent;
+        EnemyNodeObject.TurnCompletedEvent += CallPlayerTurnStartedEvent;
     }
 
     void OnDisable()
     {
-        EnemyNodeObject.EnemyTurnCompletedEvent -= CallPlayerTurnStartedEvent;
+        EnemyNodeObject.TurnCompletedEvent -= CallPlayerTurnStartedEvent;
     }
 }

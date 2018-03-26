@@ -337,8 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae42eb11711cf9439cdfaaf9005343f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DragTreshhold: 0.1
   TimebeforeTappedExpired: 0.15
-  minimalDistanceToDrag: 0.75
 --- !u!114 &100314847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,10 +350,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78798dfb5f74bae47b51d3e0634d8ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpInput: 32
-  aimInput: 323
-  dragTreshhold: 0.75
+  DragTreshhold: 0.1
   TimebeforeTappedExpired: 0.15
+  tapInput: 32
+  dragInput: 323
 --- !u!1 &154518591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,6 +1857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a2d0dc668f0e34c816abeb45bc88bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSpeed: 0.05
 --- !u!1 &1318356961
 GameObject:
   m_ObjectHideFlags: 0

@@ -62,9 +62,11 @@ public class EnemyNodeObject : NodeObject
             }
         }
 
+        Moving = false;
         StopCoroutine(followPathCoroutine);
-        followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
-	}
+        followPathCoroutine = null;
+        CoroutineHelper.Delay(0.1f, () => { followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted)); });
+    }
 
     private void StartTurnMovement()
     {
@@ -84,6 +86,7 @@ public class EnemyNodeObject : NodeObject
         Moving = true;
 
         int _pathIndex = 0;
+        Vector2Int _targetGridPosition = _path[_pathIndex];
         Vector2 _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_path[_pathIndex]);
 
         if (transform.position.x > _worldPositionTarget.x)
@@ -97,44 +100,45 @@ public class EnemyNodeObject : NodeObject
 
         while (Moving)
         {
-            if((Vector2)transform.position == _worldPositionTarget)
+            if((Vector2)transform.position != _worldPositionTarget)
             {
-                if(_pathIndex < _path.Count)
-                {
-                    Vector2Int _gridPosition = _path[_pathIndex];
-                    UpdateGridPosition(_gridPosition);
-                    _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
-
-                    if(transform.position.x > _worldPositionTarget.x)
-                    {
-                        animator.transform.localScale = new Vector2(animatorTransformStartXScale * -1, animator.transform.localScale.y);
-                    }
-                    else
-                    {
-                        animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
-                    }
-
-                    _pathIndex++;
-                }
-                else
-                {
-                    Moving = false;
-                    break;
-                }
+                transform.position = Vector2.MoveTowards(transform.position, _worldPositionTarget, moveSpeed);
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, _worldPositionTarget, moveSpeed);
+                UpdateGridPosition(_targetGridPosition);
+                _pathIndex++;
+
+                if (_pathIndex >= _path.Count)
+                {
+                    break;
+                }
+
+                _targetGridPosition = _path[_pathIndex];
+                _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_targetGridPosition);
+
+                if (transform.position.x > _worldPositionTarget.x)
+                {
+                    animator.transform.localScale = new Vector2(animatorTransformStartXScale * -1, animator.transform.localScale.y);
+                }
+                else
+                {
+                    animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
+                }
             }
 
             yield return new WaitForFixedUpdate();
         }
 
-		followPathCoroutine = null;
+        followPathCoroutine = null;
 
-        if (_onFollowPathCompletedEvent != null)
+        if (Moving)
         {
-            _onFollowPathCompletedEvent();
+            Moving = false;
+            if (_onFollowPathCompletedEvent != null)
+            {
+                _onFollowPathCompletedEvent();
+            }
         }
     }
 

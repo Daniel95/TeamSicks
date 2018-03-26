@@ -16,10 +16,8 @@ public class Scrolling : MonoBehaviour
 
     private void Initialise()
     {
-        LevelGrid.Instance.GetSize();
-        MaximumScrollDistance = LevelGrid.Instance.GetSize().x * LevelGrid.Instance.GetStep() / 2;
+        MaximumScrollDistance = LevelGrid.Instance.Size.x * LevelGrid.Instance.Step.x / 2;
     }
-
 
     private void ScrollCamera(Vector2 _direction)
     {

@@ -12,8 +12,12 @@ public class LevelGrid : MonoBehaviour
 
     private static LevelGrid instance;
 
+    public Vector2 Step { get { return new Vector2(widthStep, heightStep); } }
+    public Vector2 Size { get { return Levels.GetLevelSize(loadedLevelGridNumber); } }
+
     [Reorderable] [SerializeField] private List<NodeObjectEditorEntry> nodeObjectEntries;
-    [Space(5)] [SerializeField] private int step;
+    [Space(5)] [SerializeField] private int widthStep;
+    [Space(5)] [SerializeField] private int heightStep;
     [Space(5)] [SerializeField] private GameObject nodePrefab;
 
     private Dictionary<Vector2Int, Node> nodeGrid = new Dictionary<Vector2Int, Node>();
@@ -60,11 +64,6 @@ public class LevelGrid : MonoBehaviour
         return nodeGrid[_gridPosition];
     }
 
-    public int GetStep()
-    {
-        return step;
-    }
-
     public bool Contains(Vector2Int _gridPosition)
     {
         return nodeGrid.ContainsKey(_gridPosition);
@@ -77,12 +76,6 @@ public class LevelGrid : MonoBehaviour
 
         bool _nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
         return _nodeObjectTypeExists;
-    }
-
-    public Vector2Int GetSize()
-    {
-        Vector2Int _getSize = Levels.GetLevelSize(loadedLevelGridNumber);
-        return _getSize;
     }
 
     public int[,] GetImpassableMap()
@@ -128,7 +121,7 @@ public class LevelGrid : MonoBehaviour
         foreach (KeyValuePair<Vector2Int, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
             Vector2Int _gridPosition = _nodeObjectByGridPosition.Key;
-            Vector2 _localPosition = (_gridPosition - _offset) * step;
+            Vector2 _localPosition = VectorHelper.Multiply((_gridPosition - _offset), Step);
             _localPosition = new Vector2(_localPosition.x, _localPosition.y/1.5f);
             Vector2 _worldPosition = (Vector2)transform.position + _localPosition;
             GameObject _nodeGameObject = Instantiate(nodePrefab, _worldPosition, Quaternion.identity, transform);

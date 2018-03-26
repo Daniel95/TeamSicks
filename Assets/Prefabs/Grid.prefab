@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1518968176282800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: -2.5, z: 0}
+  m_LocalPosition: {x: 31, y: -5.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,5 +79,6 @@ MonoBehaviour:
   - NodeObjectType: 0
     Impassable: 0
     Prefabs: []
-  step: 3
+  widthStep: 6
+  heightStep: 6
   nodePrefab: {fileID: 1162036337916642, guid: fc8af6e212141784c8556b5fa01ee295, type: 2}

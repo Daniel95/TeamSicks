@@ -152,7 +152,7 @@ public class LevelGrid : MonoBehaviour
         NodeObjectEditorEntry _nodeObjectEditorEntry = GetNodeObjectEditorEntry(_nodeObjectType);
         if (_nodeObjectEditorEntry.Prefabs.Count <= 0) { return null; }
 
-        int _randomPrefabIndex = UnityEngine.Random.Range(0, _nodeObjectEditorEntry.Prefabs.Count - 1);
+        int _randomPrefabIndex = UnityEngine.Random.Range(0, _nodeObjectEditorEntry.Prefabs.Count);
         GameObject _randomPrefab = _nodeObjectEditorEntry.Prefabs[_randomPrefabIndex];
 
         GameObject _nodeObjectGameObject = Instantiate(_randomPrefab, _nodeGameObject.transform.position, Quaternion.identity, _nodeGameObject.transform);

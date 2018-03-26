@@ -11,18 +11,17 @@ public class EnemyNodeObject : NodeObject
     public static List<EnemyNodeObject> EnemyNodeObjects = new List<EnemyNodeObject>();
 
     private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
-    private bool Moving { get { return moving;  } }
+    private bool Moving { get { return animator.GetBool(walkingAnimatorBoolName); } set { animator.SetBool(walkingAnimatorBoolName, value); } }
 
     [SerializeField] private int movesPerTurn = 3;
-    [SerializeField] private float moveDelay = 0.4f;
+    [SerializeField] private float moveSpeed = 0.01f;
 
     [SerializeField] private Animator animator;
-    [SerializeField] private AnimationClip idleClip;
-    [SerializeField] private AnimationClip walkingClip;
+    [SerializeField] private string walkingAnimatorBoolName = "Moving";
 
     private Vector2Int endPoint;
-    private bool moving;
     private Coroutine followPathCoroutine;
+    private float animatorTransformStartXScale;
 
     public void ActivateAbility(DirectionType _directionType , int _moveCount)
 	{
@@ -82,20 +81,54 @@ public class EnemyNodeObject : NodeObject
 
     private IEnumerator FollowPath(List<Vector2Int> _path, Action _onFollowPathCompletedEvent = null)
     {
-        moving = true;
+        Moving = true;
 
-        for (int i = 0; i < _path.Count; i++)
+        int _pathIndex = 0;
+        Vector2 _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_path[_pathIndex]);
+
+        if (transform.position.x > _worldPositionTarget.x)
         {
-            Vector2Int _gridPosition = _path[i];
-            MoveToGridPosition(_gridPosition);
-
-            if (i != _path.Count - 1)
-            {
-                yield return new WaitForSeconds(moveDelay);
-            }
+            animator.transform.localScale = new Vector2(animatorTransformStartXScale * -1, animator.transform.localScale.y);
+        }
+        else
+        {
+            animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
         }
 
-        moving = false;
+        while (Moving)
+        {
+            if((Vector2)transform.position == _worldPositionTarget)
+            {
+                if(_pathIndex < _path.Count)
+                {
+                    Vector2Int _gridPosition = _path[_pathIndex];
+                    UpdateGridPosition(_gridPosition);
+                    _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
+
+                    if(transform.position.x > _worldPositionTarget.x)
+                    {
+                        animator.transform.localScale = new Vector2(animatorTransformStartXScale * -1, animator.transform.localScale.y);
+                    }
+                    else
+                    {
+                        animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
+                    }
+
+                    _pathIndex++;
+                }
+                else
+                {
+                    Moving = false;
+                    break;
+                }
+            }
+            else
+            {
+                transform.position = Vector2.MoveTowards(transform.position, _worldPositionTarget, moveSpeed);
+            }
+
+            yield return new WaitForFixedUpdate();
+        }
 
 		followPathCoroutine = null;
 
@@ -125,13 +158,6 @@ public class EnemyNodeObject : NodeObject
         }
     }
 
-    private void MoveToGridPosition(Vector2Int _gridPosition)
-    {
-        transform.position = LevelGrid.Instance.GridToWorldPosition(_gridPosition);
-        UpdateGridPosition(_gridPosition);
-        //transform.position = ParentNode.transform.position;
-    }
-
     private void ChooseEndpoint()
     {
         if (EndpointNodeObject.Endpoints.Count <= 0)
@@ -148,6 +174,13 @@ public class EnemyNodeObject : NodeObject
 
     private void Awake()
     {
+        if(animator == null)
+        {
+            Debug.LogError("EnemyNodeObject has no Animator assigned");
+        }
+        animatorTransformStartXScale = animator.transform.localScale.x;
+
+
         EnemyNodeObjects.Add(this);
     }
 

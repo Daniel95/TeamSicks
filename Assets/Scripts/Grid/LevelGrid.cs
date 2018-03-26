@@ -15,8 +15,8 @@ public class LevelGrid : MonoBehaviour
     private static LevelGrid instance;
 
     [Reorderable] [SerializeField] private List<NodeObjectEditorEntry> nodeObjectEntries;
-    [Space(5)] [SerializeField] private int widthStep;
-    [Space(5)] [SerializeField] private int heightStep;
+    [Space(5)] [SerializeField] private float widthStep;
+    [Space(5)] [SerializeField] private float heightStep;
     [Space(5)] [SerializeField] private GameObject nodePrefab;
 
     private Dictionary<Vector2Int, Node> nodeGrid = new Dictionary<Vector2Int, Node>();

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DisplayAbilities : MonoBehaviour
 {
     [SerializeField]
-    Toggle[] abilityButtons;
+    Button[] abilityButtons;
 
     public void UpdateAbilities(Ability[] _abilities)
     {

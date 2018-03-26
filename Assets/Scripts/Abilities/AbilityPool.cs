@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class AbiityPool : MonoBehaviour
+class AbilityPool : MonoBehaviour
 {
     #region Singleton
-    public static AbiityPool Instance { get { return GetInstance(); } }
+    public static AbilityPool Instance { get { return GetInstance(); } }
 
-    private static AbiityPool instance;
+    private static AbilityPool instance;
 
-    private static AbiityPool GetInstance()
+    private static AbilityPool GetInstance()
     {
         if (instance == null)
         {
-            instance = FindObjectOfType<AbiityPool>();
+            instance = FindObjectOfType<AbilityPool>();
         }
         return instance;
     }

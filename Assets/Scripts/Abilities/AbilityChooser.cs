@@ -19,7 +19,7 @@ public class AbilityChooser : MonoBehaviour {
         for (int i = 0; i < totalNewAbilities; i++)
         {
             //Debug.Log("Hmmm?");
-            _newAbilities[i] = AbiityPool.Instance.GetRandomAbility();
+            _newAbilities[i] = AbilityPool.Instance.GetRandomAbility();
         }
 
         displayAbilities.UpdateAbilities(_newAbilities);

@@ -6,4 +6,6 @@ using UnityEngine.UI;
 public class Ability : MonoBehaviour
 {
     public Image image;
+
+
 }

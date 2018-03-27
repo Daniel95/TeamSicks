@@ -1148,6 +1148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57159b7f8078f9745b8be9f26d28fb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiredTurnsMultiplier: 2
   turnCounterText: {fileID: 114180522686596944}
 --- !u!114 &114958608372164856
 MonoBehaviour:

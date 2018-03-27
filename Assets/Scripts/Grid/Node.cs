@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-
+    //Use for layering
     public Action<NodeObjectType> NodeObjectAddedEvent;
     public Action<NodeObjectType> NodeObjectRemovedEvent;
 
@@ -18,15 +18,40 @@ public class Node : MonoBehaviour
     {
         _nodeObject.ParentNode = this;
         _nodeObject.transform.parent = transform;
-
-        nodeObjects.Add(_nodeObject);
-
-        int _index = NodeObjects.IndexOf(_nodeObject);
-        GetComponentInChildren<SpriteRenderer>().sortingOrder = (1000 - 10 * NodeObjects[_index].ParentNode.GridPosition.y) + 1000 * _index;
+        NodeObjects.Add(_nodeObject);
+        
+        //NodeObjects.IndexOf(_nodeObject);
+        int _index = GetLayer((int)_nodeObject.NodeObjectType);
+        _nodeObject.gameObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = /*(1000 - 10 * NodeObjects[_index].ParentNode.GridPosition.y) +*/ 1000 * _index;
+        
+        //End layering
 
         if (NodeObjectAddedEvent != null)
         {
             NodeObjectAddedEvent(_nodeObject.NodeObjectType);
+        }
+    }
+    
+    int GetLayer(int _nodeObjectTypeInt)
+    {
+        switch (_nodeObjectTypeInt)
+        {
+            case 0:
+            case 2:         
+                return 0;
+            case 1:
+                return 1;
+            case 3:
+            case 7:
+            case 8:
+                return 2;
+            case 4:
+                return 4;
+            case 5:
+            case 6:
+                return 5;
+            default:
+                return 0;
         }
     }
 

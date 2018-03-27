@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DragTreshhold: 0.1
   TimebeforeTappedExpired: 0.15
-  tapInput: 32
+  tapInput: 323
   dragInput: 323
 --- !u!114 &114987504268277592
 MonoBehaviour:

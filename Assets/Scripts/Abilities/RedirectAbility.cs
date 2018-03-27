@@ -35,10 +35,8 @@ public class RedirectAbility : BaseAbility
 
     protected override void PlaceOnGrid(Vector2 _screenPosition)
     {
-        Debug.Log("HALLO");
-        Vector2Int _screenToGridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
-        NodeObject _nodeObject = LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _screenToGridPosition);
-        Debug.Log(_screenToGridPosition);
+        Vector2Int _gridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
+        NodeObject _nodeObject = LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _gridPosition);
     }
 
     public override void OnClick()

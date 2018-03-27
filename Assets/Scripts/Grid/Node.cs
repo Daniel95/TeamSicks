@@ -39,4 +39,11 @@ public class Node : MonoBehaviour
         }
     }
 
+    private void OnGUI()
+    {
+        if(!LevelGrid.Instance.DebugMode) { return; }
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        GUI.TextField(new Rect(screenPosition.x - 20, Screen.height - screenPosition.y - 10, 40, 20), gridPosition.ToString());
+    }
+
 }

@@ -80,3 +80,4 @@ MonoBehaviour:
   widthStep: 6
   heightStep: 3.52
   nodePrefab: {fileID: 1162036337916642, guid: fc8af6e212141784c8556b5fa01ee295, type: 2}
+  debugMode: 0

@@ -1,17 +1,25 @@
 fileFormatVersion: 2
-guid: 115139e646ff54e4bb64f41e206f1a5b
-timeCreated: 1521547254
+guid: c7b5a37c0eaff214280d759e124b7617
+timeCreated: 1522146419
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: spr_enemy_walk_0
-    21300002: spr_enemy_walk_1
-    21300004: spr_enemy_walk_2
-    21300006: spr_enemy_walk_3
-    21300008: spr_enemy_walk_4
-    21300010: spr_enemy_walk_5
-    21300012: spr_enemy_walk_6
-    21300014: spr_enemy_walk_7
+    21300000: spr_enemy_walk1_0
+    21300002: spr_enemy_walk1_1
+    21300004: spr_enemy_walk1_2
+    21300006: spr_enemy_walk1_3
+    21300008: spr_enemy_walk1_4
+    21300010: spr_enemy_walk1_5
+    21300012: spr_enemy_walk1_6
+    21300014: spr_enemy_walk1_7
+    21300016: spr_enemy_walk1_8
+    21300018: spr_enemy_walk1_9
+    21300020: spr_enemy_walk1_10
+    21300022: spr_enemy_walk1_11
+    21300024: spr_enemy_walk1_12
+    21300026: spr_enemy_walk1_13
+    21300028: spr_enemy_walk1_14
+    21300030: spr_enemy_walk1_15
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -88,7 +96,77 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spr_enemy_walk_0
+      name: spr_enemy_walk1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 750
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_1
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 750
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_2
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 750
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_3
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 750
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_4
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 750
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_5
       rect:
         serializedVersion: 2
         x: 0
@@ -102,7 +180,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_1
+      name: spr_enemy_walk1_6
       rect:
         serializedVersion: 2
         x: 250
@@ -116,7 +194,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_2
+      name: spr_enemy_walk1_7
       rect:
         serializedVersion: 2
         x: 500
@@ -130,7 +208,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_3
+      name: spr_enemy_walk1_8
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 500
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_9
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 500
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_10
       rect:
         serializedVersion: 2
         x: 0
@@ -144,7 +250,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_4
+      name: spr_enemy_walk1_11
       rect:
         serializedVersion: 2
         x: 250
@@ -158,7 +264,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_5
+      name: spr_enemy_walk1_12
       rect:
         serializedVersion: 2
         x: 500
@@ -172,11 +278,11 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_6
+      name: spr_enemy_walk1_13
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 750
+        y: 250
         width: 250
         height: 250
       alignment: 0
@@ -186,10 +292,24 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_enemy_walk_7
+      name: spr_enemy_walk1_14
       rect:
         serializedVersion: 2
-        x: 250
+        x: 1000
+        y: 250
+        width: 250
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spr_enemy_walk1_15
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 0
         width: 250
         height: 250

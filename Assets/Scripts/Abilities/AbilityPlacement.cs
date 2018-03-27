@@ -9,6 +9,8 @@ public class AbilityPlacement : MonoBehaviour
 
     public static Action<int> OnInteractedEvent;
 
+    public static Action OnEnableButtons;
+
     private GameObject targetAbilityGameObject;
     private Transform abilityHolderParent;
 
@@ -81,6 +83,7 @@ public class AbilityPlacement : MonoBehaviour
         {
             UIAbilityHolders[i].SetActive(true);
         }
+        OnEnableButtons();
     }
 
     public void DisableUIHolderGameobject()

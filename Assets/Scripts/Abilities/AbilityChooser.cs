@@ -52,11 +52,11 @@ public class AbilityChooser : MonoBehaviour {
 
     void OnEnable()
     {
-        EndTurnButton.PlayerTurnStartedEvent += NewAbilities;
+        AbilityPlacement.OnEnableButtons += NewAbilities;
     }
 
     void OnDisable()
     {
-        EndTurnButton.PlayerTurnStartedEvent -= NewAbilities;
+        AbilityPlacement.OnEnableButtons -= NewAbilities;
     }
 }

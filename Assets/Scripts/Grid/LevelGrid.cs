@@ -139,19 +139,22 @@ public class LevelGrid : MonoBehaviour
 
     public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
     {
-        Vector2 _offset = (Vector2)GetSize() / 2;
-        Vector2 _localPosition = _worldPosition + transform.position;
-        Vector2 _unroundedGridPosition = VectorHelper.Divide(_localPosition, Step);
-        Vector2 _roundedGridPosition = VectorHelper.Round(_unroundedGridPosition - _offset);
-        Vector2Int _gridPosition = new Vector2Int((int)_unroundedGridPosition.x, Levels.GetLevelSize(loadedLevelGridNumber).y + (int)_unroundedGridPosition.y - 1);
+        Vector3 _localPosition = transform.InverseTransformPoint(_worldPosition);
+        Vector2Int _gridPosition = LocalToGridPosition(_localPosition);
+        return _gridPosition;
+    }
 
+    private Vector2Int LocalToGridPosition(Vector3 _localPosition)
+    {
+        Vector2 _unroundedGridPosition = VectorHelper.Divide((Vector2)_localPosition, Step);
+        Vector2 _roundedGridPosition = VectorHelper.Round(_unroundedGridPosition);
+        Vector2Int _gridPosition = new Vector2Int((int)_roundedGridPosition.x, (int)_roundedGridPosition.y);
         return _gridPosition;
     }
 
     public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
     {
-        Vector2 _offset = (Vector2)GetSize() / 2;
-        Vector3 _localPosition = VectorHelper.Multiply(_gridPosition - _offset, Step);
+        Vector3 _localPosition = VectorHelper.Multiply(_gridPosition, Step);
         Vector3 _calculateWorldPos = _localPosition + transform.position;
         Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
 

@@ -10,7 +10,20 @@ public class LevelGrid : MonoBehaviour
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
-	public Vector2 Step { get { return new Vector2(widthStep, heightStep); } }
+    public Vector2 Step
+    {
+        get
+        {
+            return new Vector2(widthStep, heightStep);
+        }
+    }
+    public bool DebugMode
+    {
+        get
+        {
+            return debugMode;
+        }
+    }
 
     private static LevelGrid instance;
 
@@ -18,6 +31,7 @@ public class LevelGrid : MonoBehaviour
     [Space(5)] [SerializeField] private float widthStep;
     [Space(5)] [SerializeField] private float heightStep;
     [Space(5)] [SerializeField] private GameObject nodePrefab;
+    [Space(5)] [SerializeField] private bool debugMode;
 
     private Dictionary<Vector2Int, Node> nodeGrid = new Dictionary<Vector2Int, Node>();
     private int loadedLevelGridNumber;
@@ -33,7 +47,7 @@ public class LevelGrid : MonoBehaviour
         SpawnNodeGrid(_layout, _width, _height);
         SetSpriteIndex();
 
-        if(LevelGridLoadedEvent != null)
+        if (LevelGridLoadedEvent != null)
         {
             LevelGridLoadedEvent();
         }
@@ -55,7 +69,7 @@ public class LevelGrid : MonoBehaviour
 
     public Node GetNode(Vector2Int _gridPosition)
     {
-        if(!nodeGrid.ContainsKey(_gridPosition))
+        if (!nodeGrid.ContainsKey(_gridPosition))
         {
             Debug.LogError("Nodegrid does not contain gridposition " + _gridPosition);
             return null;
@@ -70,7 +84,7 @@ public class LevelGrid : MonoBehaviour
 
     public bool Contains(Vector2Int _gridPosition, NodeObjectType _nodeObjectType)
     {
-        if(!nodeGrid.ContainsKey(_gridPosition)) { return false; }
+        if (!nodeGrid.ContainsKey(_gridPosition)) { return false; }
         Node _node = nodeGrid[_gridPosition];
 
         bool _nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
@@ -108,32 +122,34 @@ public class LevelGrid : MonoBehaviour
         return _containsImpassableNodeObject;
     }
 
-	public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
-	{
-		Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
-		Vector2Int _gridPosition = WorldToGridPosition(_worldPosition);
+    public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
+    {
+        Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
+        Vector2Int _gridPosition = WorldToGridPosition(_worldPosition);
 
-		return _gridPosition;
-	}
+        return _gridPosition;
+    }
 
-	public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
-	{
-		Vector2 _roundedWorldPosition = VectorHelper.Divide((Vector2)_worldPosition, Step);
-		_roundedWorldPosition = VectorHelper.Round(_roundedWorldPosition);
-
-		Vector2Int gridPosition = new Vector2Int((int)_roundedWorldPosition.x, (int)_roundedWorldPosition.y);
-		return gridPosition;
-	}
-
-	public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
-	{
+    public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
+    {
         Vector2 _offset = (Vector2)GetSize() / 2;
-        Vector3 _localPosition = VectorHelper.Multiply((_gridPosition - _offset), Step);
-        Vector3 _calculateWorldPos = _localPosition + transform.position;
-		Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
+        Vector2 _localPosition = _worldPosition + transform.position;
+        Vector2 _unroundedGridPosition = VectorHelper.Divide(_localPosition, Step);
+        Vector2 _roundedGridPosition = VectorHelper.Round(_unroundedGridPosition - _offset);
+        Vector2Int _gridPosition = new Vector2Int((int)_unroundedGridPosition.x, Levels.GetLevelSize(loadedLevelGridNumber).y + (int)_unroundedGridPosition.y - 1);
 
-		return _worldPosition;
-	}
+        return _gridPosition;
+    }
+
+    public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
+    {
+        Vector2 _offset = (Vector2)GetSize() / 2;
+        Vector3 _localPosition = VectorHelper.Multiply(_gridPosition - _offset, Step);
+        Vector3 _calculateWorldPos = _localPosition + transform.position;
+        Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
+
+        return _worldPosition;
+    }
 
     public NodeObject AddNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
     {
@@ -225,7 +241,8 @@ public class LevelGrid : MonoBehaviour
     {
         NodeObjectEditorEntry _nodeObjectEditorEntry = nodeObjectEntries.Find(x => x.NodeObjectType == _nodeObjectType);
 
-        if(_nodeObjectEditorEntry == null) {
+        if (_nodeObjectEditorEntry == null)
+        {
             Debug.LogError("NodeObjectEditorEntry with nodeObjectType " + _nodeObjectType + " does not exist.");
             return new NodeObjectEditorEntry();
         }

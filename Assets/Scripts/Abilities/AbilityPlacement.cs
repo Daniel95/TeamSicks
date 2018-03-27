@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class AbilityPlacement : MonoBehaviour
 {
 
+    public static Action<int> OnInteractedEvent;
+
     private GameObject targetAbilityGameObject;
     private Transform abilityHolderParent;
 
@@ -15,7 +17,11 @@ public class AbilityPlacement : MonoBehaviour
 
     private bool isInteracting = false;
 
-    public static Action<int> OnInteractedEvent;
+
+    [SerializeField]
+    private List<Button> UIAbilityButtons;
+    [SerializeField]
+    private Button EndTurnButton;
 
 
     void Update ()
@@ -44,6 +50,7 @@ public class AbilityPlacement : MonoBehaviour
             isInteracting = true;
             abilityHolderParent = _gameObject.transform.parent;
             targetAbilityGameObject.transform.parent = targetAbilityGameObject.transform.root;
+            DisableEndTurnButton();
         }
         else
         {
@@ -59,7 +66,34 @@ public class AbilityPlacement : MonoBehaviour
             previousButtonGameObject.transform.parent = abilityHolderParent;
             previousButtonGameObject.transform.position = startPositionVector2;
             isInteracting = false;
+            EnableEndTurnButton();
         }
+    }
+
+    private void DisableUIButtons()
+    {
+        for (int i = 0; i < UIAbilityButtons.Count; i++)
+        {
+            UIAbilityButtons[i].enabled = false;
+        }
+    }
+
+    private void EnableUIButtons()
+    {
+        for (int i = 0; i < UIAbilityButtons.Count; i++)
+        {
+            UIAbilityButtons[i].enabled = true;
+        }
+    }
+
+    private void DisableEndTurnButton()
+    {
+        EndTurnButton.enabled = false;
+    }
+
+    private void EnableEndTurnButton()
+    {
+        EndTurnButton.enabled = true;
     }
 
     public void SetIndex(int _index)
@@ -71,11 +105,15 @@ public class AbilityPlacement : MonoBehaviour
     {
         InputBase.TapInputEvent += OnTapped;
         RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
+        RedirectAbility.PlacedOnGridEvent += DisableUIButtons;
+        EnemyNodeObject.TurnCompletedEvent += EnableUIButtons;
     }
 
     private void OnDisable()
     {
         InputBase.TapInputEvent -= OnTapped;
         RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
+        RedirectAbility.PlacedOnGridEvent -= DisableUIButtons;
+        EnemyNodeObject.TurnCompletedEvent -= EnableUIButtons;
     }
 }

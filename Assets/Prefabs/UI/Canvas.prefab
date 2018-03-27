@@ -915,6 +915,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e408d4d3a53d045abb77390576fdc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIAbilityButtons:
+  - {fileID: 114445763121723406}
+  - {fileID: 114671677235444916}
+  - {fileID: 114883962194567794}
+  EndTurnButton: {fileID: 114785268029139412}
 --- !u!114 &114778045938655626
 MonoBehaviour:
   m_ObjectHideFlags: 1

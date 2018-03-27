@@ -369,6 +369,12 @@ Transform:
   m_Father: {fileID: 600574044}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &170281217 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114883962194567794, guid: 1e43aa28ed76ac247935fe89677aa549,
+    type: 2}
+  m_PrefabInternal: {fileID: 1474590886}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &224507555
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +481,7 @@ Transform:
   - {fileID: 928044405}
   - {fileID: 600574044}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &291000774
 GameObject:
@@ -1352,7 +1358,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4701472148446444, guid: 4bee09b5eebff1a4fa31c1eca32a3b72, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4bee09b5eebff1a4fa31c1eca32a3b72, type: 2}
@@ -1396,8 +1402,14 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1029445143 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114445763121723406, guid: 1e43aa28ed76ac247935fe89677aa549,
+    type: 2}
+  m_PrefabInternal: {fileID: 1474590886}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1043093808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,7 +1520,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4409973019947022, guid: d412fdae9ad2491409339aced03fe83b, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d412fdae9ad2491409339aced03fe83b, type: 2}
@@ -2208,6 +2220,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114744712511419470, guid: 1e43aa28ed76ac247935fe89677aa549,
+        type: 2}
+      propertyPath: UIAbilityButtons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 224544786327681210, guid: 1e43aa28ed76ac247935fe89677aa549,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -2298,6 +2315,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114744712511419470, guid: 1e43aa28ed76ac247935fe89677aa549,
+        type: 2}
+      propertyPath: UIAbilityButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1029445143}
+    - target: {fileID: 114744712511419470, guid: 1e43aa28ed76ac247935fe89677aa549,
+        type: 2}
+      propertyPath: UIAbilityButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1844679554}
+    - target: {fileID: 114744712511419470, guid: 1e43aa28ed76ac247935fe89677aa549,
+        type: 2}
+      propertyPath: UIAbilityButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 170281217}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1e43aa28ed76ac247935fe89677aa549, type: 2}
   m_IsPrefabParent: 0
@@ -2776,7 +2808,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4206788754713678, guid: a8c55b58447aa1049b2eef09ad577a91, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a8c55b58447aa1049b2eef09ad577a91, type: 2}
@@ -3219,6 +3251,12 @@ Transform:
   m_Father: {fileID: 9749795}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1844679554 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114671677235444916, guid: 1e43aa28ed76ac247935fe89677aa549,
+    type: 2}
+  m_PrefabInternal: {fileID: 1474590886}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1921205475
 GameObject:
   m_ObjectHideFlags: 0

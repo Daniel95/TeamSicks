@@ -1,19 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RedirectAbility : BaseAbility
 {
+    public static Action PlacedOnGridEvent;
 
     private const int MIN_MOVE_AMOUNT = 1;
     private const int MAX_MOVE_AMOUNT = 4;
+
     private DirectionType directionType;
+    private int moveAmount;
+    private Sprite sprite;
+
+    private int currentIndex;
 
     public override void OnGenerate()
 	{
-	    float _moveAmount = Random.Range(MIN_MOVE_AMOUNT, MAX_MOVE_AMOUNT);
+	    moveAmount = Random.Range(MIN_MOVE_AMOUNT, MAX_MOVE_AMOUNT);
 
-	    UIText = "" + _moveAmount;
+	    UIText = "" + moveAmount;
 
 	    int _randomDirection = Random.Range((int)DirectionType.Up, (int)DirectionType.Left + 1);
 
@@ -21,28 +29,50 @@ public class RedirectAbility : BaseAbility
 	    {
             case (int)DirectionType.Up:
                 UIImage = Resources.Load<Sprite>("RedirectUp");
+                sprite = UIImage;
+                directionType = DirectionType.Up;
                 break;
 	        case (int)DirectionType.Down:
                 UIImage = Resources.Load<Sprite>("RedirectDown");
+	            sprite = UIImage;
+                directionType = DirectionType.Down;
                 break;
 	        case (int)DirectionType.Left:
                 UIImage = Resources.Load<Sprite>("RedirectLeft");
+	            sprite = UIImage;
+                directionType = DirectionType.Left;
                 break;
 	    }
 
         base.OnGenerate();
 	}
 
-    protected override void PlaceOnGrid(Vector2 _screenPosition)
+    public override void SetIndex(int _index)
     {
-        Debug.Log("HALLO");
-        Vector2Int _screenToGridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
-        NodeObject _nodeObject = LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _screenToGridPosition);
-        Debug.Log(_screenToGridPosition);
+        currentIndex = _index;
     }
 
-    public override void OnClick()
-	{
-		base.OnClick();
-	}	
+    protected override void PlaceOnGrid(Vector2 _screenPosition)
+    {
+        if (currentIndex == UIIndex)
+        {
+            Vector2Int _screenToGridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
+            NodeObject _nodeObject =
+                LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _screenToGridPosition);
+            RedirectAbilityNodeObject _redirectAbilityNodeObject = (RedirectAbilityNodeObject) _nodeObject;
+
+            _redirectAbilityNodeObject.RedirectDirectionType = directionType;
+            _redirectAbilityNodeObject.MoveAmount = moveAmount;
+            _redirectAbilityNodeObject.NodeObjectSprite = sprite;
+
+            if (PlacedOnGridEvent != null)
+            {
+                PlacedOnGridEvent();
+            }
+            
+            currentIndex = 0;
+
+            OnDestroy();
+        }
+    }
 }

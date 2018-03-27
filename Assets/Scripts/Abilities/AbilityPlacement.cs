@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +15,10 @@ public class AbilityPlacement : MonoBehaviour
 
     private bool isInteracting = false;
 
+    public static Action<int> OnInteractedEvent;
 
-    
-	void Update ()
+
+    void Update ()
 	{
 	    if (targetAbilityGameObject != null)
 	    {
@@ -29,7 +31,6 @@ public class AbilityPlacement : MonoBehaviour
         if (isInteracting)
         {
             LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
-            //LevelGrid.Instance.AddNodeObject();
         }
     }
 
@@ -44,7 +45,15 @@ public class AbilityPlacement : MonoBehaviour
             abilityHolderParent = _gameObject.transform.parent;
             targetAbilityGameObject.transform.parent = targetAbilityGameObject.transform.root;
         }
-        else if(targetAbilityGameObject != null)
+        else
+        {
+            RemoveAbilityFromCursor();
+        }
+    }
+
+    private void RemoveAbilityFromCursor()
+    {
+        if (targetAbilityGameObject != null)
         {
             targetAbilityGameObject = null;
             previousButtonGameObject.transform.parent = abilityHolderParent;
@@ -53,13 +62,20 @@ public class AbilityPlacement : MonoBehaviour
         }
     }
 
+    public void SetIndex(int _index)
+    {
+        OnInteractedEvent(_index);
+    }
+
     private void OnEnable()
     {
         InputBase.TapInputEvent += OnTapped;
+        RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
     }
 
     private void OnDisable()
     {
         InputBase.TapInputEvent -= OnTapped;
+        RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
     }
 }

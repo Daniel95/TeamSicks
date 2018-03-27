@@ -13,7 +13,7 @@ public class Levels
     //Enemy = 6,
 
    private static Level[] levels =
-    {
+   {
         //LEVEL 1
         new Level
         {

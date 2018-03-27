@@ -100,7 +100,7 @@ public class InputMobile : InputBase
                     {
                         if(TapInputEvent != null)
                         {
-                            TapInputEvent();
+                            TapInputEvent(Input.GetTouch(0).position);
                         }
                     }
 

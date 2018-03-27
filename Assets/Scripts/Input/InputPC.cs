@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class InputPC : InputBase {
 
-    [SerializeField] private KeyCode tapInput = KeyCode.Space;
+    [SerializeField] private KeyCode tapInput = KeyCode.Mouse0;
     [SerializeField] private KeyCode dragInput = KeyCode.Mouse0;
 
     private float startDownTime;
@@ -25,9 +25,9 @@ public class InputPC : InputBase {
         Vector2 _mouseStartPosition = new Vector2();
 
         while (true) {
-            if (Input.GetKeyDown(tapInput)) {
+            if (Input.GetKeyDown(tapInput) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (TapInputEvent != null) {
-                    TapInputEvent();
+                    TapInputEvent(Input.mousePosition);
                 }
             }
 

@@ -10,6 +10,7 @@ public class RedirectAbility : BaseAbility
 
     private const int MIN_MOVE_AMOUNT = 1;
     private const int MAX_MOVE_AMOUNT = 4;
+    private Vector2Int gridPosition;
 
     private DirectionType directionType;
     private int moveAmount;
@@ -58,6 +59,13 @@ public class RedirectAbility : BaseAbility
         if (currentIndex != UIIndex) { return; }
         if (!LevelGrid.Instance.NodeGrid.ContainsKey(_gridPosition)) { return; }
         if (LevelGrid.Instance.IsImpassable(_gridPosition)) { return; }
+
+        Node _node = LevelGrid.Instance.GetNode(_gridPosition);
+        bool _containsEndpoint = _node.NodeObjects.Exists(x => x.NodeObjectType == NodeObjectType.EndPoint);
+        if (_containsEndpoint) { return; }
+
+        bool _containsAbility = _node.NodeObjects.Exists(x => x.NodeObjectType == NodeObjectType.RedirectAbility);
+        if (_containsAbility) { return; }
 
         NodeObject _nodeObject =
             LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _gridPosition);

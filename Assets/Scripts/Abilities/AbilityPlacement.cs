@@ -20,8 +20,13 @@ public class AbilityPlacement : MonoBehaviour
 
     [SerializeField]
     private List<Button> UIAbilityButtons;
+
     [SerializeField]
-    private Button EndTurnButton;
+    private List<GameObject> UIAbilityHolders;
+
+
+    [SerializeField]
+    private Button endTurnButton;
 
 
     void Update ()
@@ -70,7 +75,23 @@ public class AbilityPlacement : MonoBehaviour
         }
     }
 
-    private void DisableUIButtons()
+    public void EnableUIHolderGameobject()
+    {
+        for (int i = 0; i < UIAbilityHolders.Count; i++)
+        {
+            UIAbilityHolders[i].SetActive(true);
+        }
+    }
+
+    public void DisableUIHolderGameobject()
+    {
+        for (int i = 0; i < UIAbilityHolders.Count; i++)
+        {
+            UIAbilityHolders[i].SetActive(false);
+        }
+    }
+
+    public void DisableUIButtons()
     {
         for (int i = 0; i < UIAbilityButtons.Count; i++)
         {
@@ -78,7 +99,7 @@ public class AbilityPlacement : MonoBehaviour
         }
     }
 
-    private void EnableUIButtons()
+    public void EnableUIButtons()
     {
         for (int i = 0; i < UIAbilityButtons.Count; i++)
         {
@@ -88,12 +109,12 @@ public class AbilityPlacement : MonoBehaviour
 
     private void DisableEndTurnButton()
     {
-        EndTurnButton.enabled = false;
+        endTurnButton.enabled = false;
     }
 
     private void EnableEndTurnButton()
     {
-        EndTurnButton.enabled = true;
+        endTurnButton.enabled = true;
     }
 
     public void SetIndex(int _index)
@@ -106,7 +127,10 @@ public class AbilityPlacement : MonoBehaviour
         InputBase.TapInputEvent += OnTapped;
         RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent += DisableUIButtons;
-        EnemyNodeObject.TurnCompletedEvent += EnableUIButtons;
+        RedirectAbility.PlacedOnGridEvent += DisableUIHolderGameobject;
+        EndTurnButton.PlayerTurnStartedEvent += EnableUIButtons;
+        EndTurnButton.PlayerTurnStartedEvent += EnableUIHolderGameobject;
+
     }
 
     private void OnDisable()
@@ -114,6 +138,8 @@ public class AbilityPlacement : MonoBehaviour
         InputBase.TapInputEvent -= OnTapped;
         RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent -= DisableUIButtons;
-        EnemyNodeObject.TurnCompletedEvent -= EnableUIButtons;
+        RedirectAbility.PlacedOnGridEvent -= DisableUIHolderGameobject;
+        EndTurnButton.PlayerTurnStartedEvent -= EnableUIButtons;
+        EndTurnButton.PlayerTurnStartedEvent -= EnableUIHolderGameobject;
     }
 }

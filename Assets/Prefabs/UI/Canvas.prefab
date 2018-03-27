@@ -919,7 +919,11 @@ MonoBehaviour:
   - {fileID: 114445763121723406}
   - {fileID: 114671677235444916}
   - {fileID: 114883962194567794}
-  EndTurnButton: {fileID: 114785268029139412}
+  UIAbilityHolders:
+  - {fileID: 1107314551740968}
+  - {fileID: 1689140301349148}
+  - {fileID: 1799501337332464}
+  endTurnButton: {fileID: 114785268029139412}
 --- !u!114 &114778045938655626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -988,6 +992,28 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 114152510748955626}
         m_MethodName: ClickStartButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114744712511419470}
+        m_MethodName: DisableUIButtons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114744712511419470}
+        m_MethodName: DisableUIHolderGameobject
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

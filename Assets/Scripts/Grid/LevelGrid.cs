@@ -10,6 +10,13 @@ public class LevelGrid : MonoBehaviour
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
+    public Dictionary<Vector2Int, Node> NodeGrid
+    {
+        get
+        {
+            return _nodeNodeGrid;
+        }
+    }
     public Vector2 Step
     {
         get
@@ -33,7 +40,7 @@ public class LevelGrid : MonoBehaviour
     [Space(5)] [SerializeField] private GameObject nodePrefab;
     [Space(5)] [SerializeField] private bool debugMode;
 
-    private Dictionary<Vector2Int, Node> nodeGrid = new Dictionary<Vector2Int, Node>();
+    private Dictionary<Vector2Int, Node> _nodeNodeGrid = new Dictionary<Vector2Int, Node>();
     private int loadedLevelGridNumber;
 
     public void LoadLevelGrid(int _levelNumber)
@@ -55,9 +62,9 @@ public class LevelGrid : MonoBehaviour
 
     public Vector2Int GetNodePosition(Node _searchNode)
     {
-        foreach (Vector2Int _position in nodeGrid.Keys)
+        foreach (Vector2Int _position in _nodeNodeGrid.Keys)
         {
-            if (nodeGrid[_position] == _searchNode)
+            if (_nodeNodeGrid[_position] == _searchNode)
             {
                 return _position;
             }
@@ -69,23 +76,23 @@ public class LevelGrid : MonoBehaviour
 
     public Node GetNode(Vector2Int _gridPosition)
     {
-        if (!nodeGrid.ContainsKey(_gridPosition))
+        if (!_nodeNodeGrid.ContainsKey(_gridPosition))
         {
             Debug.LogError("Nodegrid does not contain gridposition " + _gridPosition);
             return null;
         }
-        return nodeGrid[_gridPosition];
+        return _nodeNodeGrid[_gridPosition];
     }
 
     public bool Contains(Vector2Int _gridPosition)
     {
-        return nodeGrid.ContainsKey(_gridPosition);
+        return _nodeNodeGrid.ContainsKey(_gridPosition);
     }
 
     public bool Contains(Vector2Int _gridPosition, NodeObjectType _nodeObjectType)
     {
-        if (!nodeGrid.ContainsKey(_gridPosition)) { return false; }
-        Node _node = nodeGrid[_gridPosition];
+        if (!_nodeNodeGrid.ContainsKey(_gridPosition)) { return false; }
+        Node _node = _nodeNodeGrid[_gridPosition];
 
         bool _nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
         return _nodeObjectTypeExists;
@@ -115,8 +122,8 @@ public class LevelGrid : MonoBehaviour
 
     public bool IsImpassable(Vector2Int _gridPosition)
     {
-        if (!nodeGrid.ContainsKey(_gridPosition)) { return false; }
-        Node _node = nodeGrid[_gridPosition];
+        if (!_nodeNodeGrid.ContainsKey(_gridPosition)) { return false; }
+        Node _node = _nodeNodeGrid[_gridPosition];
 
         bool _containsImpassableNodeObject = _node.NodeObjects.Exists(x => x.Impassable);
         return _containsImpassableNodeObject;
@@ -203,14 +210,14 @@ public class LevelGrid : MonoBehaviour
 
         Node _node = _nodeGameObject.GetComponent<Node>();
         _node.GridPosition = _gridPosition;
-        nodeGrid.Add(_gridPosition, _node);
+        _nodeNodeGrid.Add(_gridPosition, _node);
 
         return _node;
     }
 
     private void SpawnNodeGrid(Dictionary<Vector2Int, List<NodeObjectType>> _layout, int _width, int _height)
     {
-        nodeGrid = new Dictionary<Vector2Int, Node>();
+        _nodeNodeGrid = new Dictionary<Vector2Int, Node>();
 
         foreach (KeyValuePair<Vector2Int, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
@@ -224,7 +231,7 @@ public class LevelGrid : MonoBehaviour
 
     private void SetSpriteIndex()
     {
-        foreach (Node _node in nodeGrid.Values)
+        foreach (Node _node in _nodeNodeGrid.Values)
         {
             for (int i = 0; i < _node.NodeObjects.Count; i++)
             {

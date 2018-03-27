@@ -65,7 +65,10 @@ public class EnemyNodeObject : NodeObject
         Moving = false;
         StopCoroutine(followPathCoroutine);
         followPathCoroutine = null;
-        CoroutineHelper.Delay(0.1f, () => { followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted)); });
+        CoroutineHelper.Delay(0.1f, () =>
+        {
+            followPathCoroutine = StartCoroutine(FollowPath(_path, OnFollowPathCompleted));
+        });
     }
 
     private void StartTurnMovement()
@@ -83,8 +86,17 @@ public class EnemyNodeObject : NodeObject
 
     private IEnumerator FollowPath(List<Vector2Int> _path, Action _onFollowPathCompletedEvent = null)
     {
-        Moving = true;
+        if (_path.Count <= 0)
+        {
+            Moving = false;
+            if (_onFollowPathCompletedEvent != null)
+            {
+                _onFollowPathCompletedEvent();
+            }
+            yield break;
+        }
 
+        Moving = true;
         int _pathIndex = 0;
         Vector2Int _targetGridPosition = _path[_pathIndex];
         Vector2 _worldPositionTarget = LevelGrid.Instance.GridToWorldPosition(_path[_pathIndex]);

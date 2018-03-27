@@ -54,25 +54,26 @@ public class RedirectAbility : BaseAbility
 
     protected override void PlaceOnGrid(Vector2 _screenPosition)
     {
-        if (currentIndex == UIIndex)
+        Vector2Int _gridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
+        if (currentIndex != UIIndex) { return; }
+        if (!LevelGrid.Instance.NodeGrid.ContainsKey(_gridPosition)) { return; }
+        if (LevelGrid.Instance.IsImpassable(_gridPosition)) { return; }
+
+        NodeObject _nodeObject =
+            LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _gridPosition);
+        RedirectAbilityNodeObject _redirectAbilityNodeObject = (RedirectAbilityNodeObject) _nodeObject;
+
+        _redirectAbilityNodeObject.RedirectDirectionType = directionType;
+        _redirectAbilityNodeObject.MoveAmount = moveAmount;
+        _redirectAbilityNodeObject.NodeObjectSprite = sprite;
+
+        if (PlacedOnGridEvent != null)
         {
-            Vector2Int _screenToGridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
-            NodeObject _nodeObject =
-                LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _screenToGridPosition);
-            RedirectAbilityNodeObject _redirectAbilityNodeObject = (RedirectAbilityNodeObject) _nodeObject;
-
-            _redirectAbilityNodeObject.RedirectDirectionType = directionType;
-            _redirectAbilityNodeObject.MoveAmount = moveAmount;
-            _redirectAbilityNodeObject.NodeObjectSprite = sprite;
-
-            if (PlacedOnGridEvent != null)
-            {
-                PlacedOnGridEvent();
-            }
-            
-            currentIndex = 0;
-
-            OnDestroy();
+            PlacedOnGridEvent();
         }
+            
+        currentIndex = 0;
+
+        OnDestroy();
     }
 }

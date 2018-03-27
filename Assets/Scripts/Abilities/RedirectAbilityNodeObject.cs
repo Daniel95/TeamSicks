@@ -53,16 +53,23 @@ public class RedirectAbilityNodeObject : NodeObject
     private void OnNodeObjectAdded(NodeObjectType _nodeObjectType)
     {
         if (_nodeObjectType != NodeObjectType.Enemy) { return; }
+        RedirectEnemy();
+    }
 
+    private void RedirectEnemy()
+    {
         NodeObject _nodeObject = ParentNode.NodeObjects.Find(x => x.NodeObjectType == NodeObjectType.Enemy);
         EnemyNodeObject _enemyNodeObject = (EnemyNodeObject)_nodeObject;
 
         _enemyNodeObject.ActivateAbility(redirectDirection, moveAmount);
 
-        Destroy(this);
+        Destroy(gameObject);
     }
 
+    private void RemoveAbilityFromNode()
+    {
 
+    }
 
     private void Start()
     {

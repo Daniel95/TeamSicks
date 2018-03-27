@@ -10,6 +10,8 @@ public class EnemyNodeObject : NodeObject
 
     public static List<EnemyNodeObject> EnemyNodeObjects = new List<EnemyNodeObject>();
 
+    public int MovesPerTurn { get { return movesPerTurn; } }
+
     private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
     private bool Moving { get { return animator.GetBool(walkingAnimatorBoolName); } set { animator.SetBool(walkingAnimatorBoolName, value); } }
 

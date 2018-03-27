@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AbilityPlacement : MonoBehaviour
 {
+
+    public static Action<int> OnInteractedEvent;
 
     private GameObject targetAbilityGameObject;
     private Transform abilityHolderParent;
@@ -15,8 +18,13 @@ public class AbilityPlacement : MonoBehaviour
     private bool isInteracting = false;
 
 
-    
-	void Update ()
+    [SerializeField]
+    private List<Button> UIAbilityButtons;
+    [SerializeField]
+    private Button EndTurnButton;
+
+
+    void Update ()
 	{
 	    if (targetAbilityGameObject != null)
 	    {
@@ -29,7 +37,6 @@ public class AbilityPlacement : MonoBehaviour
         if (isInteracting)
         {
             LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
-            //LevelGrid.Instance.AddNodeObject();
         }
     }
 
@@ -43,23 +50,70 @@ public class AbilityPlacement : MonoBehaviour
             isInteracting = true;
             abilityHolderParent = _gameObject.transform.parent;
             targetAbilityGameObject.transform.parent = targetAbilityGameObject.transform.root;
+            DisableEndTurnButton();
         }
-        else if(targetAbilityGameObject != null)
+        else
+        {
+            RemoveAbilityFromCursor();
+        }
+    }
+
+    private void RemoveAbilityFromCursor()
+    {
+        if (targetAbilityGameObject != null)
         {
             targetAbilityGameObject = null;
             previousButtonGameObject.transform.parent = abilityHolderParent;
             previousButtonGameObject.transform.position = startPositionVector2;
             isInteracting = false;
+            EnableEndTurnButton();
         }
+    }
+
+    private void DisableUIButtons()
+    {
+        for (int i = 0; i < UIAbilityButtons.Count; i++)
+        {
+            UIAbilityButtons[i].enabled = false;
+        }
+    }
+
+    private void EnableUIButtons()
+    {
+        for (int i = 0; i < UIAbilityButtons.Count; i++)
+        {
+            UIAbilityButtons[i].enabled = true;
+        }
+    }
+
+    private void DisableEndTurnButton()
+    {
+        EndTurnButton.enabled = false;
+    }
+
+    private void EnableEndTurnButton()
+    {
+        EndTurnButton.enabled = true;
+    }
+
+    public void SetIndex(int _index)
+    {
+        OnInteractedEvent(_index);
     }
 
     private void OnEnable()
     {
         InputBase.TapInputEvent += OnTapped;
+        RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
+        RedirectAbility.PlacedOnGridEvent += DisableUIButtons;
+        EnemyNodeObject.TurnCompletedEvent += EnableUIButtons;
     }
 
     private void OnDisable()
     {
         InputBase.TapInputEvent -= OnTapped;
+        RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
+        RedirectAbility.PlacedOnGridEvent -= DisableUIButtons;
+        EnemyNodeObject.TurnCompletedEvent -= EnableUIButtons;
     }
 }

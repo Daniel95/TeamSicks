@@ -4,8 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(DisplayAbilities))]
 public class AbilityChooser : MonoBehaviour {
 
-    private int totalNewAbilities = 3;
+    private const int TOTAL_NEW_ABILITIES = 3;
     DisplayAbilities displayAbilities;
+
+    BaseAbility[] baseAbilities = new BaseAbility[TOTAL_NEW_ABILITIES];
 
     void Awake()
     {
@@ -14,13 +16,37 @@ public class AbilityChooser : MonoBehaviour {
 
     void NewAbilities()
     {
-        List<BaseAbility> baseAbilities = new List<BaseAbility>();
-        for (int i = 0; i < totalNewAbilities; i++)
+        for (int i = 0; i < baseAbilities.Length; i++)
         {
-            baseAbilities.Add(AbilityPool.Instance.GetRandomAbility());
+            if (baseAbilities[i] != null)
+            {
+                baseAbilities[i].OnDestroy();
+            }
+            baseAbilities[i] = (GetRandomAbility());
+            baseAbilities[i].UIIndexGetSet = i;
         }
 
-        displayAbilities.UpdateAbilities(baseAbilities.ToArray());
+        displayAbilities.UpdateAbilities(baseAbilities);
+    }
+
+    public BaseAbility GetRandomAbility()
+    {
+
+        int _random = Random.Range(0, 2);
+        BaseAbility _baseAbility;
+
+        if (_random == 0)
+        {
+            _baseAbility = new RedirectAbility();
+        }
+        else
+        {
+            _baseAbility = new StunAbility();
+        }
+
+        _baseAbility.OnGenerate();
+
+        return _baseAbility;
     }
 
     void OnEnable()

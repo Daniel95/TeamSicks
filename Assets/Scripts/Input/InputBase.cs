@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InputBase : MonoBehaviour {
 
-    public enum TouchStates { Holding, Dragging, Tapped, None }
+    public enum TouchStates { Holding, Dragging, TouchDown, None }
 
     public static Action<Vector2> DownInputEvent;
     public static Action<Vector2> UpInputEvent;
@@ -15,7 +15,7 @@ public class InputBase : MonoBehaviour {
     public static Action<Vector2> ReleaseInDirectionInputEvent;
 
     [SerializeField] protected float DragTreshhold = 0.1f;
-    [SerializeField] protected float TimebeforeTappedExpired = 0.15f;
+    [SerializeField] protected float TimeBeforeTappedExpired = 0.15f;
 
     protected TouchStates TouchState = TouchStates.None;
     protected Coroutine InputUpdateCoroutine;

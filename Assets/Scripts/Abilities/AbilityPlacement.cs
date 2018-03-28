@@ -17,9 +17,6 @@ public class AbilityPlacement : MonoBehaviour
     private Vector2 startPositionVector2;
     private GameObject previousButtonGameObject;
 
-    private bool isInteracting = false;
-
-
     [SerializeField]
     private List<Button> UIAbilityButtons;
 
@@ -39,14 +36,6 @@ public class AbilityPlacement : MonoBehaviour
 	    }
 	}
 
-    private void OnTapInputEvent(Vector2 _screenPosition)
-    {
-        if (isInteracting)
-        {
-            LevelGrid.Instance.ScreenToGridPosition(_screenPosition);
-        }
-    }
-
     public void Interact(GameObject _gameObject)
     {
         if (targetAbilityGameObject == null)
@@ -54,7 +43,6 @@ public class AbilityPlacement : MonoBehaviour
             startPositionVector2 = _gameObject.transform.position;
             previousButtonGameObject = _gameObject;
             targetAbilityGameObject = _gameObject;
-            isInteracting = true;
             abilityHolderParent = _gameObject.transform.parent;
             targetAbilityGameObject.transform.parent = targetAbilityGameObject.transform.root;
             DisableEndTurnButton();
@@ -72,7 +60,6 @@ public class AbilityPlacement : MonoBehaviour
             targetAbilityGameObject = null;
             previousButtonGameObject.transform.parent = abilityHolderParent;
             previousButtonGameObject.transform.position = startPositionVector2;
-            isInteracting = false;
             EnableEndTurnButton();
         }
     }
@@ -127,18 +114,15 @@ public class AbilityPlacement : MonoBehaviour
 
     private void OnEnable()
     {
-        InputBase.TapInputEvent += OnTapInputEvent;
         RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent += DisableUIButtons;
         RedirectAbility.PlacedOnGridEvent += DisableUIHolderGameobject;
         EndTurnButton.PlayerTurnStartedEvent += EnableUIButtons;
         EndTurnButton.PlayerTurnStartedEvent += EnableUIHolderGameobject;
-
     }
 
     private void OnDisable()
     {
-        InputBase.TapInputEvent -= OnTapInputEvent;
         RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent -= DisableUIButtons;
         RedirectAbility.PlacedOnGridEvent -= DisableUIHolderGameobject;

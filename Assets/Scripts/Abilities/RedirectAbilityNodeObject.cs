@@ -58,13 +58,12 @@ public class RedirectAbilityNodeObject : NodeObject
 
     private void RedirectEnemy()
     {
-        NodeObject _nodeObject = ParentNode.NodeObjects.Find(x => x.NodeObjectType == NodeObjectType.Enemy);
+		NodeObject _nodeObject = ParentNode.NodeObjects.Find(x => x.NodeObjectType == NodeObjectType.Enemy);
         EnemyNodeObject _enemyNodeObject = (EnemyNodeObject)_nodeObject;
 
         _enemyNodeObject.ActivateAbility(redirectDirection, moveAmount);
-
-        Destroy(gameObject);
-    }
+		LevelGrid.Instance.RemoveNodeObject(NodeObjectType, GridPosition);
+	}
 
     private void RemoveAbilityFromNode()
     {

@@ -195,7 +195,23 @@ public class LevelGrid : MonoBehaviour
         return _nodeObject;
     }
 
-    private static LevelGrid GetInstance()
+	public void RemoveNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
+	{
+		if (Contains(_gridPosition))
+		{
+			Node _node = GetNode(_gridPosition);
+			NodeObject _nodeObject = _node.NodeObjects.Find(x => x.NodeObjectType == _nodeObjectType);
+			if(_nodeObject == null)
+			{
+				Debug.LogError(_nodeObjectType + " doesn't exist in " + _gridPosition);
+				return;
+			}
+			_node.RemoveNodeObject(_nodeObject);
+			Destroy(_nodeObject.gameObject);
+		}
+	}
+
+	private static LevelGrid GetInstance()
     {
         if (instance == null)
         {

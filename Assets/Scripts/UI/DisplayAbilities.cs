@@ -15,7 +15,6 @@ public class DisplayAbilities : MonoBehaviour
             Image[] _holderSprite = abilityButtons[i].GetComponentsInChildren<Image>();
             Text[] _holderText = abilityButtons[i].GetComponentsInChildren<Text>();
 
-
             _holderText[0].text = _abilities[i].UITextGetter();
             _holderSprite[2].sprite = _abilities[i].UIImageGetter();
             _holderSprite[2].color = Color.white;

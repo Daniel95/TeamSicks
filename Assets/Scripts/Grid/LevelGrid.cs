@@ -208,7 +208,13 @@ public class LevelGrid : MonoBehaviour
 			}
 			_node.RemoveNodeObject(_nodeObject);
 			Destroy(_nodeObject.gameObject);
-		}
+
+            if (_node.NodeObjects.Count == 0)
+            {
+                Destroy(_node.gameObject);
+                _nodeNodeGrid.Remove(_gridPosition);
+            }
+        }
 	}
 
 	private static LevelGrid GetInstance()

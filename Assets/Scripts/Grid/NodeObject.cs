@@ -19,13 +19,4 @@ public class NodeObject : MonoBehaviour
         _node.AddNodeObject(this);
     }
 
-    private void OnDestroy()
-    {
-        parentNode.RemoveNodeObject(this);
-        if(parentNode.NodeObjects.Count == 0)
-        {
-            Destroy(parentNode);
-        }
-    }
-
 }

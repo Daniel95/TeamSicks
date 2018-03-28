@@ -16,7 +16,7 @@ public class RedirectAbility : BaseAbility
     private int moveAmount;
     private Sprite sprite;
 
-    private int currentIndex;
+    private int currentIndex = -1;
 
     public override void OnGenerate()
 	{

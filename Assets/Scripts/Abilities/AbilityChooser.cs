@@ -14,7 +14,7 @@ public class AbilityChooser : MonoBehaviour {
         displayAbilities = GetComponent<DisplayAbilities>();
     }
 
-	void NewAbilities()
+    void NewAbilities()
     {
         for (int i = 0; i < baseAbilities.Length; i++)
         {

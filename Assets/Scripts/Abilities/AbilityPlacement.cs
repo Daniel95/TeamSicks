@@ -28,13 +28,8 @@ public class AbilityPlacement : MonoBehaviour
     [SerializeField]
     private Button endTurnButton;
 
-	private void Start()
-	{
-		EnableUIButtons();
-		EnableUIHolderGameobject();
-	}
 
-	void Update ()
+    void Update ()
 	{
 	    if (targetAbilityGameObject != null)
 	    {
@@ -134,8 +129,8 @@ public class AbilityPlacement : MonoBehaviour
         RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent += DisableUIButtons;
         RedirectAbility.PlacedOnGridEvent += DisableUIHolderGameobject;
-        EnemyNodeObject.TurnCompletedEvent += EnableUIButtons;
-		EnemyNodeObject.TurnCompletedEvent += EnableUIHolderGameobject;
+        EndTurnButton.PlayerTurnStartedEvent += EnableUIButtons;
+        EndTurnButton.PlayerTurnStartedEvent += EnableUIHolderGameobject;
 
     }
 
@@ -145,8 +140,8 @@ public class AbilityPlacement : MonoBehaviour
         RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent -= DisableUIButtons;
         RedirectAbility.PlacedOnGridEvent -= DisableUIHolderGameobject;
-		EnemyNodeObject.TurnCompletedEvent -= EnableUIButtons;
-		EnemyNodeObject.TurnCompletedEvent -= EnableUIHolderGameobject;
+        EndTurnButton.PlayerTurnStartedEvent -= EnableUIButtons;
+        EndTurnButton.PlayerTurnStartedEvent -= EnableUIHolderGameobject;
     }
 
 }

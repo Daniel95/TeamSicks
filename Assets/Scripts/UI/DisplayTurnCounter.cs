@@ -66,13 +66,13 @@ public class DisplayTurnCounter : MonoBehaviour
 
     private void OnEnable()
     {
-		BaseAbility.AbilityPlacedEvent += UpdateTurnCounter;
+        EndTurnButton.PlayerTurnCompletedEvent += UpdateTurnCounter;
         LevelGrid.LevelGridLoadedEvent += CalculateTurns;
     }
 
     private void OnDisable()
     {
-		BaseAbility.AbilityPlacedEvent -= UpdateTurnCounter;
+        EndTurnButton.PlayerTurnCompletedEvent -= UpdateTurnCounter;
         LevelGrid.LevelGridLoadedEvent += CalculateTurns;
     }
 

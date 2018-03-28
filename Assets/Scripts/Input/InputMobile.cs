@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InputMobile : InputBase
-{ 
+{
 
     public void ResetTouched()
     {
@@ -30,24 +30,30 @@ public class InputMobile : InputBase
                 TouchState = TouchStates.Tapped;
                 _startTouchPosition = _lastTouchPosition = Input.GetTouch(0).position;
                 _touchDownTime = Time.time;
+
+                if(DownInputEvent != null)
+                {
+                    DownInputEvent(_startTouchPosition);
+                }
             }
 
             if (TouchState != TouchStates.None)
             {
                 if (Input.GetTouch(0).phase != TouchPhase.Ended)
                 {
+                    Vector2 _currentTouchPosition = Input.GetTouch(0).position;
+
                     float timePassedSinceTouchDown = Time.time - _touchDownTime;
                     if (timePassedSinceTouchDown > TimebeforeTappedExpired)
                     {
                         if (TouchState == TouchStates.Tapped)
                         {
-                            if(TappedExpiredInputEvent != null)
+                            if (TappedExpiredInputEvent != null)
                             {
                                 TappedExpiredInputEvent();
                             }
                         }
 
-                        Vector2 _currentTouchPosition = Input.GetTouch(0).position;
                         float _distance = Vector2.Distance(_currentTouchPosition, _startTouchPosition);
 
                         if (_distance > DragTreshhold)
@@ -56,24 +62,25 @@ public class InputMobile : InputBase
 
                             Vector2 _delta = _currentTouchPosition - _lastTouchPosition;
 
-                            if (DraggingInputEvent != null ) {
+                            if (DraggingInputEvent != null)
+                            {
                                 DraggingInputEvent(_delta);
                             }
                         }
-                        else if (timePassedSinceTouchDown > TimebeforeTappedExpired && TouchState != TouchStates.Holding)
+                        else
                         {
                             if (TouchState == TouchStates.Dragging)
                             {
-                                if(CancelDragInputEvent != null)
+                                if (CancelDragInputEvent != null)
                                 {
                                     CancelDragInputEvent();
                                 }
                             }
 
                             TouchState = TouchStates.Holding;
-                            if(HoldingInputEvent != null)
+                            if (HoldingInputEvent != null)
                             {
-                                HoldingInputEvent();
+                                HoldingInputEvent(Input.GetTouch(0).position);
                             }
                         }
 
@@ -82,26 +89,26 @@ public class InputMobile : InputBase
                 }
                 else
                 {
-                    if(ReleaseInputEvent != null)
+                    if (UpInputEvent != null)
                     {
-                        ReleaseInputEvent();
+                        UpInputEvent(Input.GetTouch(0).position);
                     }
 
-                    if (TouchState == TouchStates.Dragging)
+                    if (TouchState == TouchStates.Tapped)
+                    {
+                        if (DownInputEvent != null)
+                        {
+                            DownInputEvent(Input.GetTouch(0).position);
+                        }
+                    }
+                    else if (TouchState == TouchStates.Dragging)
                     {
                         Vector2 direction = (Input.GetTouch(0).position - _startTouchPosition).normalized;
-                        if(ReleaseInDirectionInputEvent != null)
+                        if (ReleaseInDirectionInputEvent != null)
                         {
                             ReleaseInDirectionInputEvent(direction);
                         }
 
-                    }
-                    else if (TouchState == TouchStates.Tapped)
-                    {
-                        if(TapInputEvent != null)
-                        {
-                            TapInputEvent(Input.GetTouch(0).position);
-                        }
                     }
 
                     TouchState = TouchStates.None;

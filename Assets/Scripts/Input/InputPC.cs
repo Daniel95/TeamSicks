@@ -2,7 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputPC : InputBase {
+public class InputPC : InputBase
+{
 
     [SerializeField] private KeyCode tapInput = KeyCode.Mouse0;
     [SerializeField] private KeyCode dragInput = KeyCode.Mouse0;
@@ -10,7 +11,8 @@ public class InputPC : InputBase {
     private float startDownTime;
     private Coroutine inputUpdateCoroutine;
 
-    public void ResetTouched() {
+    public void ResetTouched()
+    {
         CancelDragInputEvent();
     }
 
@@ -20,37 +22,45 @@ public class InputPC : InputBase {
         InputUpdateCoroutine = StartCoroutine(InputUpdate());
     }
 
-    private IEnumerator InputUpdate() {
+    private IEnumerator InputUpdate()
+    {
         Vector2 _lastInputPosition = new Vector2();
         Vector2 _mouseStartPosition = new Vector2();
 
-        while (true) {
-            if (Input.GetKeyDown(tapInput) && !EventSystem.current.IsPointerOverGameObject()) {
-                if (TapInputEvent != null) {
-                    TapInputEvent(Input.mousePosition);
-                }
-            }
-
-            if (Input.GetKeyDown(dragInput) && !EventSystem.current.IsPointerOverGameObject()) {
+        while (true)
+        {
+            if (Input.GetKeyDown(dragInput) && !EventSystem.current.IsPointerOverGameObject())
+            {
                 TouchState = TouchStates.Tapped;
                 _mouseStartPosition = _lastInputPosition = Input.mousePosition;
                 startDownTime = Time.time;
+
+                if (DownInputEvent != null)
+                {
+                    DownInputEvent(_mouseStartPosition);
+                }
             }
 
-            if (TouchState != TouchStates.None) {
-                if (!Input.GetKeyUp(dragInput)) {
-                    if (Time.time - startDownTime > TimebeforeTappedExpired) {
-                        if (TouchState == TouchStates.Tapped) {
-                            if(TappedExpiredInputEvent != null)
+            if (TouchState != TouchStates.None)
+            {
+                if (!Input.GetKeyUp(dragInput))
+                {
+                    Vector2 _currentMousePosition = Input.mousePosition;
+
+                    if (Time.time - startDownTime > TimebeforeTappedExpired)
+                    {
+                        if (TouchState == TouchStates.Tapped)
+                        {
+                            if (TappedExpiredInputEvent != null)
                             {
                                 TappedExpiredInputEvent();
                             }
                         }
 
-                        Vector2 _currentMousePosition = Input.mousePosition;
                         float _distance = Vector2.Distance(_currentMousePosition, _mouseStartPosition);
 
-                        if (_distance > DragTreshhold) {
+                        if (_distance > DragTreshhold)
+                        {
                             TouchState = TouchStates.Dragging;
 
                             Vector2 _delta = _currentMousePosition - _lastInputPosition;
@@ -58,41 +68,51 @@ public class InputPC : InputBase {
                             {
                                 DraggingInputEvent(_delta);
                             }
-                        } else if (TouchState != TouchStates.Holding) {
-                            if (TouchState == TouchStates.Dragging) {
-                                if(CancelDragInputEvent != null)
+                        }
+                        else 
+                        {
+                            if (TouchState == TouchStates.Dragging)
+                            {
+
+                                if (CancelDragInputEvent != null)
                                 {
                                     CancelDragInputEvent();
                                 }
                             }
 
                             TouchState = TouchStates.Holding;
-                            if(HoldingInputEvent != null)
+
+                            if (HoldingInputEvent != null)
                             {
-                                HoldingInputEvent();
+                                HoldingInputEvent(_currentMousePosition);
                             }
                         }
 
                         _lastInputPosition = _currentMousePosition;
                     }
-                } else { 
-
-                    if(ReleaseInputEvent != null)
+                }
+                else
+                {
+                    if (UpInputEvent != null)
                     {
-                        ReleaseInputEvent();
+                        UpInputEvent(Input.mousePosition);
                     }
 
-                    if (TouchState != TouchStates.Holding) {
+                    if (TouchState == TouchStates.Tapped)
+                    {
+                        if (TapInputEvent != null)
+                        {
+                            TapInputEvent(Input.mousePosition);
+                        }
+                    }
+                    else if (TouchState != TouchStates.Holding)
+                    {
+                        Vector2 _direction = ((Vector2)Input.mousePosition - _lastInputPosition).normalized;
 
-                        Vector2 _currentInputPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        Vector2 _direction = (_currentInputPosition - _lastInputPosition).normalized;
-
-                        if(ReleaseInDirectionInputEvent != null)
+                        if (ReleaseInDirectionInputEvent != null)
                         {
                             ReleaseInDirectionInputEvent(_direction);
                         }
-
-                        _lastInputPosition = _currentInputPosition;
                     }
 
                     TouchState = TouchStates.None;
@@ -105,7 +125,7 @@ public class InputPC : InputBase {
 
     private void Awake()
     {
-        if(!PlatformHelper.PlatformIsMobile)
+        if (!PlatformHelper.PlatformIsMobile)
         {
             EnableInput(true);
         }

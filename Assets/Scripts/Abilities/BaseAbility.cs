@@ -26,13 +26,13 @@ public class BaseAbility
 
 	public virtual void OnGenerate()
 	{
-	    InputBase.TapInputEvent += PlaceOnGrid;
+	    InputBase.DownInputEvent += PlaceOnGrid;
 	    AbilityPlacement.OnInteractedEvent += SetIndex;
 	}
 
     public virtual void OnDestroy()
     {
-        InputBase.TapInputEvent -= PlaceOnGrid;
+        InputBase.DownInputEvent -= PlaceOnGrid;
         AbilityPlacement.OnInteractedEvent -= SetIndex;
     }
 

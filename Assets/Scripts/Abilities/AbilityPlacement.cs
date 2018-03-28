@@ -39,7 +39,7 @@ public class AbilityPlacement : MonoBehaviour
 	    }
 	}
 
-    private void OnTapped(Vector2 _screenPosition)
+    private void OnTapInputEvent(Vector2 _screenPosition)
     {
         if (isInteracting)
         {
@@ -127,7 +127,7 @@ public class AbilityPlacement : MonoBehaviour
 
     private void OnEnable()
     {
-        InputBase.TapInputEvent += OnTapped;
+        InputBase.TapInputEvent += OnTapInputEvent;
         RedirectAbility.PlacedOnGridEvent += RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent += DisableUIButtons;
         RedirectAbility.PlacedOnGridEvent += DisableUIHolderGameobject;
@@ -138,11 +138,12 @@ public class AbilityPlacement : MonoBehaviour
 
     private void OnDisable()
     {
-        InputBase.TapInputEvent -= OnTapped;
+        InputBase.TapInputEvent -= OnTapInputEvent;
         RedirectAbility.PlacedOnGridEvent -= RemoveAbilityFromCursor;
         RedirectAbility.PlacedOnGridEvent -= DisableUIButtons;
         RedirectAbility.PlacedOnGridEvent -= DisableUIHolderGameobject;
         EndTurnButton.PlayerTurnStartedEvent -= EnableUIButtons;
         EndTurnButton.PlayerTurnStartedEvent -= EnableUIHolderGameobject;
     }
+
 }

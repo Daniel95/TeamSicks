@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 609383292}
   - component: {fileID: 609383294}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Credits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -564,7 +564,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOW TO PLAY
+  m_Text: HOE SPEEL IK
 --- !u!222 &841976935
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -805,7 +805,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PLAY
+  m_Text: SPEEL
 --- !u!222 &1568709376
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -941,7 +941,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: EXIT
+  m_Text: 'CREDITS
+
+'
 --- !u!222 &1669999452
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -961,7 +963,7 @@ GameObject:
   - component: {fileID: 1786706841}
   - component: {fileID: 1786706840}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1094,7 +1096,7 @@ GameObject:
   - component: {fileID: 1877128381}
   - component: {fileID: 1877128383}
   m_Layer: 5
-  m_Name: Button
+  m_Name: HowToPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

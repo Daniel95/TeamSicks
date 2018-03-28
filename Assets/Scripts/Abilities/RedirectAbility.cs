@@ -16,7 +16,7 @@ public class RedirectAbility : BaseAbility
     private int moveAmount;
     private Sprite sprite;
 
-    private int currentIndex;
+    private int currentIndex = -1;
 
     public override void OnGenerate()
 	{
@@ -24,24 +24,29 @@ public class RedirectAbility : BaseAbility
 
 	    UIText = "" + moveAmount;
 
-	    int _randomDirection = Random.Range((int)DirectionType.Up, (int)DirectionType.Left + 1);
+	    int _randomDirection = Random.Range((int)DirectionType.Up, (int)DirectionType.Right + 1);
 
 	    switch (_randomDirection)
 	    {
             case (int)DirectionType.Up:
-                UIImage = Resources.Load<Sprite>("RedirectUp");
+                UIImage = Resources.Load<Sprite>("arrow_up");
                 sprite = UIImage;
                 directionType = DirectionType.Up;
                 break;
 	        case (int)DirectionType.Down:
-                UIImage = Resources.Load<Sprite>("RedirectDown");
+                UIImage = Resources.Load<Sprite>("arrow_down");
 	            sprite = UIImage;
                 directionType = DirectionType.Down;
                 break;
 	        case (int)DirectionType.Left:
-                UIImage = Resources.Load<Sprite>("RedirectLeft");
+                UIImage = Resources.Load<Sprite>("arrow_left");
 	            sprite = UIImage;
                 directionType = DirectionType.Left;
+                break;
+	        case (int)DirectionType.Right:
+                UIImage = Resources.Load<Sprite>("arrow_right");
+	            sprite = UIImage;
+                directionType = DirectionType.Right;
                 break;
 	    }
 

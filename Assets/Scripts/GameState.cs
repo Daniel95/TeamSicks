@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class GameState : MonoBehaviour {
 
+    [SerializeField]
+    GameObject winUI, loseUI;
+
     private void OnReachedEndpoint()
     {
         Debug.Log("LOSE");
+        loseUI.SetActive(true);
     }
 
     private void OnTurnsOverEvent()
     {
+        winUI.SetActive(true);
         Debug.Log("WIN");
     }
 

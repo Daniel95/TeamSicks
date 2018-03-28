@@ -26,7 +26,6 @@ public class AbilityChooser : MonoBehaviour {
             baseAbilities[i].UIIndexGetSet = i;
         }
 
-
         displayAbilities.UpdateAbilities(baseAbilities);
     }
 

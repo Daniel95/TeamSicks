@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class AbilityPlacement : MonoBehaviour
 {
-
     public static Action<int> OnInteractedEvent;
 
     public static Action OnEnableButtons;
@@ -18,7 +17,6 @@ public class AbilityPlacement : MonoBehaviour
     private GameObject previousButtonGameObject;
 
     private bool isInteracting = false;
-
 
     [SerializeField]
     private List<Button> UIAbilityButtons;

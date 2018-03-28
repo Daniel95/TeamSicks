@@ -204,13 +204,13 @@ public class EnemyNodeObject : NodeObject
 
     private void OnEnable()
     {
-        EndTurnButton.PlayerTurnCompletedEvent += StartTurnMovement;
+        BaseAbility.AbilityPlacedEvent += StartTurnMovement;
         LevelGrid.LevelGridLoadedEvent += ChooseEndpoint;
     }
 
     private void OnDisable()
     {
-        EndTurnButton.PlayerTurnCompletedEvent -= StartTurnMovement;
+		BaseAbility.AbilityPlacedEvent -= StartTurnMovement;
         LevelGrid.LevelGridLoadedEvent -= ChooseEndpoint;
     }
 

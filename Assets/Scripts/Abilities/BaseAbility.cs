@@ -9,6 +9,8 @@ public class BaseAbility
     protected String UIText;
     protected Sprite UIImage;
 
+	public static Action AbilityPlacedEvent;
+
     protected int UIIndex;
 
     public int UIIndexGetSet
@@ -22,7 +24,6 @@ public class BaseAbility
             UIIndex = value;
         }
     }
-
 
 	public virtual void OnGenerate()
 	{
@@ -56,8 +57,23 @@ public class BaseAbility
         return UIImage;
     }
 
+	private void Start()
+	{
+		CallAbilityPlacedEvent();
+	}
+
+	public void CallAbilityPlacedEvent()
+	{
+		
+	}
+
 	protected virtual void PlaceOnGrid(Vector2 _screenPosition)
 	{
-
+		//EndTurnButton.Instance.ClickStartButton();
+		if (AbilityPlacedEvent != null)
+		{
+			Debug.Log("PlaceOnGrid"); 
+			AbilityPlacedEvent();
+		}
 	}
 }

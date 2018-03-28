@@ -3,18 +3,19 @@ using UnityEngine;
 
 public class InputBase : MonoBehaviour {
 
-    public enum TouchStates { Holding, Dragging, Tapped, None }
+    public enum TouchStates { Holding, Dragging, TouchDown, None }
 
-    public static Action CancelDragInputEvent;
-    public static Action<Vector2> DraggingInputEvent;
-    public static Action HoldingInputEvent;
-    public static Action TapInputEvent;
-    public static Action<Vector2> ReleaseInDirectionInputEvent;
-    public static Action ReleaseInputEvent;
+    public static Action<Vector2> DownInputEvent;
+    public static Action<Vector2> UpInputEvent;
+    public static Action<Vector2> TapInputEvent;
     public static Action TappedExpiredInputEvent;
+    public static Action<Vector2> DraggingInputEvent;
+    public static Action CancelDragInputEvent;
+    public static Action<Vector2> HoldingInputEvent;
+    public static Action<Vector2> ReleaseInDirectionInputEvent;
 
     [SerializeField] protected float DragTreshhold = 0.1f;
-    [SerializeField] protected float TimebeforeTappedExpired = 0.15f;
+    [SerializeField] protected float TimeBeforeTappedExpired = 0.15f;
 
     protected TouchStates TouchState = TouchStates.None;
     protected Coroutine InputUpdateCoroutine;

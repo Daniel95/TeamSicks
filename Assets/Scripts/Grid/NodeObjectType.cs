@@ -8,4 +8,5 @@
     Player = 5,
     Enemy = 6,
     RedirectAbility = 7,
+    StunAbility = 8,
 }

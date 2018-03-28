@@ -2,15 +2,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputPC : InputBase {
+public class InputPC : InputBase
+{
 
-    [SerializeField] private KeyCode tapInput = KeyCode.Space;
-    [SerializeField] private KeyCode dragInput = KeyCode.Mouse0;
+    [SerializeField] private KeyCode input = KeyCode.Mouse0;
 
     private float startDownTime;
     private Coroutine inputUpdateCoroutine;
 
-    public void ResetTouched() {
+    public void ResetTouched()
+    {
         CancelDragInputEvent();
     }
 
@@ -20,79 +21,97 @@ public class InputPC : InputBase {
         InputUpdateCoroutine = StartCoroutine(InputUpdate());
     }
 
-    private IEnumerator InputUpdate() {
+    private IEnumerator InputUpdate()
+    {
         Vector2 _lastInputPosition = new Vector2();
         Vector2 _mouseStartPosition = new Vector2();
 
-        while (true) {
-            if (Input.GetKeyDown(tapInput)) {
-                if (TapInputEvent != null) {
-                    TapInputEvent();
+        while (true)
+        {
+            if (Input.GetKeyDown(input) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                TouchState = TouchStates.TouchDown;
+                _mouseStartPosition = _lastInputPosition = Input.mousePosition;
+                startDownTime = Time.time;
+
+                if (DownInputEvent != null)
+                {
+                    DownInputEvent(_mouseStartPosition);
                 }
             }
 
-            if (Input.GetKeyDown(dragInput) && !EventSystem.current.IsPointerOverGameObject()) {
-                TouchState = TouchStates.Tapped;
-                _mouseStartPosition = _lastInputPosition = Input.mousePosition;
-                startDownTime = Time.time;
-            }
+            if (TouchState != TouchStates.None)
+            {
+                if (!Input.GetKeyUp(input))
+                {
+                    Vector2 _currentMousePosition = Input.mousePosition;
 
-            if (TouchState != TouchStates.None) {
-                if (!Input.GetKeyUp(dragInput)) {
-                    if (Time.time - startDownTime > TimebeforeTappedExpired) {
-                        if (TouchState == TouchStates.Tapped) {
-                            if(TappedExpiredInputEvent != null)
+                    if (TouchState == TouchStates.TouchDown)
+                    { 
+                        if (Time.time - startDownTime > TimeBeforeTappedExpired)
+                        {
+                            if (TappedExpiredInputEvent != null)
                             {
                                 TappedExpiredInputEvent();
                             }
                         }
+                    }
 
-                        Vector2 _currentMousePosition = Input.mousePosition;
-                        float _distance = Vector2.Distance(_currentMousePosition, _mouseStartPosition);
+                    float _distance = Vector2.Distance(_currentMousePosition, _mouseStartPosition);
+                    if (_distance > DragTreshhold)
+                    {
+                        TouchState = TouchStates.Dragging;
 
-                        if (_distance > DragTreshhold) {
-                            TouchState = TouchStates.Dragging;
-
-                            Vector2 _delta = _currentMousePosition - _lastInputPosition;
-                            if (DraggingInputEvent != null)
+                        Vector2 _delta = _currentMousePosition - _lastInputPosition;
+                        if (DraggingInputEvent != null)
+                        {
+                            DraggingInputEvent(_delta);
+                        }
+                    }
+                    else 
+                    {
+                        if (TouchState == TouchStates.Dragging)
+                        {
+                            if (CancelDragInputEvent != null)
                             {
-                                DraggingInputEvent(_delta);
-                            }
-                        } else if (TouchState != TouchStates.Holding) {
-                            if (TouchState == TouchStates.Dragging) {
-                                if(CancelDragInputEvent != null)
-                                {
-                                    CancelDragInputEvent();
-                                }
-                            }
-
-                            TouchState = TouchStates.Holding;
-                            if(HoldingInputEvent != null)
-                            {
-                                HoldingInputEvent();
+                                CancelDragInputEvent();
                             }
                         }
+                        else if(TouchState != TouchStates.TouchDown)
+                        {
+                            TouchState = TouchStates.Holding;
 
-                        _lastInputPosition = _currentMousePosition;
+                            if (HoldingInputEvent != null)
+                            {
+                                HoldingInputEvent(_currentMousePosition);
+                            }
+                        }
                     }
-                } else { 
 
-                    if(ReleaseInputEvent != null)
+                    _lastInputPosition = _currentMousePosition;
+                }
+                else
+                {
+                    if (UpInputEvent != null)
                     {
-                        ReleaseInputEvent();
+                        UpInputEvent(Input.mousePosition);
                     }
 
-                    if (TouchState != TouchStates.Holding) {
+                    if (TouchState == TouchStates.TouchDown)
+                    {
+                        if (TapInputEvent != null)
+                        {
+                            TapInputEvent(Input.mousePosition);
+                        }
+                    }
+                    else if (TouchState != TouchStates.Holding)
+                    {
+                        Vector2 _direction = ((Vector2)Input.mousePosition - _lastInputPosition).normalized;
 
-                        Vector2 _currentInputPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        Vector2 _direction = (_currentInputPosition - _lastInputPosition).normalized;
-
-                        if(ReleaseInDirectionInputEvent != null)
+                        if (ReleaseInDirectionInputEvent != null)
                         {
                             ReleaseInDirectionInputEvent(_direction);
                         }
-
-                        _lastInputPosition = _currentInputPosition;
                     }
 
                     TouchState = TouchStates.None;
@@ -105,7 +124,7 @@ public class InputPC : InputBase {
 
     private void Awake()
     {
-        if(!PlatformHelper.PlatformIsMobile)
+        if (!PlatformHelper.PlatformIsMobile)
         {
             EnableInput(true);
         }

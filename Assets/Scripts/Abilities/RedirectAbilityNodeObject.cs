@@ -1,30 +1,79 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RedirectAbilityNodeObject : NodeObject
 {
+    [SerializeField]
+    private SpriteRenderer nodeObjectSpriteRenderer;
+
+    [SerializeField]
+    private TextMesh nodeObjectTextMesh;
+
+    public DirectionType RedirectDirectionType
+    {
+        get
+        {
+            return redirectDirection;
+        }
+        set
+        {
+            redirectDirection = value;
+        }
+    }
+
+    public Sprite NodeObjectSprite
+    {
+        get
+        {
+            return nodeObjectSpriteRenderer.sprite;
+        }
+        set
+        {
+            nodeObjectSpriteRenderer.sprite = value;
+        }
+    }
+
+    public int MoveAmount
+    {
+        get
+        {
+            return moveAmount;
+        }
+        set
+        {
+            nodeObjectTextMesh.text = "" + value;
+            moveAmount = value;
+        }
+    }
+
+    private DirectionType redirectDirection;
+    private int moveAmount;
 
     private void OnNodeObjectAdded(NodeObjectType _nodeObjectType)
     {
         if (_nodeObjectType != NodeObjectType.Enemy) { return; }
+        RedirectEnemy();
+    }
 
-        NodeObject _nodeObject = ParentNode.NodeObjects.Find(x => x.NodeObjectType == NodeObjectType.Enemy);
+    private void RedirectEnemy()
+    {
+		NodeObject _nodeObject = ParentNode.NodeObjects.Find(x => x.NodeObjectType == NodeObjectType.Enemy);
         EnemyNodeObject _enemyNodeObject = (EnemyNodeObject)_nodeObject;
 
-        //TEMP HACK
-        int directionTypesLength = Enum.GetNames(typeof(DirectionType)).Length;
-        DirectionType _directionType = DirectionType.Left;//(DirectionType)UnityEngine.Random.Range(0, directionTypesLength);
-        int _moveCount = UnityEngine.Random.Range(2, 4);
-        //TEMP HACK
+        _enemyNodeObject.ActivateAbility(redirectDirection, moveAmount);
+		LevelGrid.Instance.RemoveNodeObject(NodeObjectType, GridPosition);
+	}
 
-        _enemyNodeObject.ActivateAbility(_directionType, _moveCount);
+    private void RemoveAbilityFromNode()
+    {
 
-        Destroy(this);
     }
 
     private void Start()
     {
         ParentNode.NodeObjectAddedEvent += OnNodeObjectAdded;
+        transform.GetComponentInChildren<MeshRenderer>().sortingLayerID = SortingLayer.NameToID("Ability");
     }
 
     private void OnDestroy()

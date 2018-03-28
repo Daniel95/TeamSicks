@@ -10,7 +10,27 @@ public class LevelGrid : MonoBehaviour
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
-	public Vector2 Step { get { return new Vector2(widthStep, heightStep); } }
+    public Dictionary<Vector2Int, Node> NodeGrid
+    {
+        get
+        {
+            return _nodeNodeGrid;
+        }
+    }
+    public Vector2 Step
+    {
+        get
+        {
+            return new Vector2(widthStep, heightStep);
+        }
+    }
+    public bool DebugMode
+    {
+        get
+        {
+            return debugMode;
+        }
+    }
 
     private static LevelGrid instance;
 
@@ -18,8 +38,9 @@ public class LevelGrid : MonoBehaviour
     [Space(5)] [SerializeField] private float widthStep;
     [Space(5)] [SerializeField] private float heightStep;
     [Space(5)] [SerializeField] private GameObject nodePrefab;
+    [Space(5)] [SerializeField] private bool debugMode;
 
-    private Dictionary<Vector2Int, Node> nodeGrid = new Dictionary<Vector2Int, Node>();
+    private Dictionary<Vector2Int, Node> _nodeNodeGrid = new Dictionary<Vector2Int, Node>();
     private int loadedLevelGridNumber;
 
     public void LoadLevelGrid(int _levelNumber)
@@ -33,7 +54,7 @@ public class LevelGrid : MonoBehaviour
         SpawnNodeGrid(_layout, _width, _height);
         SetSpriteIndex();
 
-        if(LevelGridLoadedEvent != null)
+        if (LevelGridLoadedEvent != null)
         {
             LevelGridLoadedEvent();
         }
@@ -41,9 +62,9 @@ public class LevelGrid : MonoBehaviour
 
     public Vector2Int GetNodePosition(Node _searchNode)
     {
-        foreach (Vector2Int _position in nodeGrid.Keys)
+        foreach (Vector2Int _position in _nodeNodeGrid.Keys)
         {
-            if (nodeGrid[_position] == _searchNode)
+            if (_nodeNodeGrid[_position] == _searchNode)
             {
                 return _position;
             }
@@ -55,23 +76,23 @@ public class LevelGrid : MonoBehaviour
 
     public Node GetNode(Vector2Int _gridPosition)
     {
-        if(!nodeGrid.ContainsKey(_gridPosition))
+        if (!_nodeNodeGrid.ContainsKey(_gridPosition))
         {
             Debug.LogError("Nodegrid does not contain gridposition " + _gridPosition);
             return null;
         }
-        return nodeGrid[_gridPosition];
+        return _nodeNodeGrid[_gridPosition];
     }
 
     public bool Contains(Vector2Int _gridPosition)
     {
-        return nodeGrid.ContainsKey(_gridPosition);
+        return _nodeNodeGrid.ContainsKey(_gridPosition);
     }
 
     public bool Contains(Vector2Int _gridPosition, NodeObjectType _nodeObjectType)
     {
-        if(!nodeGrid.ContainsKey(_gridPosition)) { return false; }
-        Node _node = nodeGrid[_gridPosition];
+        if (!_nodeNodeGrid.ContainsKey(_gridPosition)) { return false; }
+        Node _node = _nodeNodeGrid[_gridPosition];
 
         bool _nodeObjectTypeExists = _node.NodeObjects.Exists(x => x.NodeObjectType == _nodeObjectType);
         return _nodeObjectTypeExists;
@@ -101,39 +122,44 @@ public class LevelGrid : MonoBehaviour
 
     public bool IsImpassable(Vector2Int _gridPosition)
     {
-        if (!nodeGrid.ContainsKey(_gridPosition)) { return false; }
-        Node _node = nodeGrid[_gridPosition];
+        if (!_nodeNodeGrid.ContainsKey(_gridPosition)) { return false; }
+        Node _node = _nodeNodeGrid[_gridPosition];
 
         bool _containsImpassableNodeObject = _node.NodeObjects.Exists(x => x.Impassable);
         return _containsImpassableNodeObject;
     }
 
-	public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
-	{
-		Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
-		Vector2Int _gridPosition = WorldToGridPosition(_worldPosition);
+    public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
+    {
+        Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
+        Vector2Int _gridPosition = WorldToGridPosition(_worldPosition);
 
-		return _gridPosition;
-	}
+        return _gridPosition;
+    }
 
-	public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
-	{
-		Vector2 _roundedWorldPosition = VectorHelper.Divide((Vector2)_worldPosition, Step);
-		_roundedWorldPosition = VectorHelper.Round(_roundedWorldPosition);
+    public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
+    {
+        Vector3 _localPosition = transform.InverseTransformPoint(_worldPosition);
+        Vector2Int _gridPosition = LocalToGridPosition(_localPosition);
+        return _gridPosition;
+    }
 
-		Vector2Int gridPosition = new Vector2Int((int)_roundedWorldPosition.x, (int)_roundedWorldPosition.y);
-		return gridPosition;
-	}
+    private Vector2Int LocalToGridPosition(Vector3 _localPosition)
+    {
+        Vector2 _unroundedGridPosition = VectorHelper.Divide((Vector2)_localPosition, Step);
+        Vector2 _roundedGridPosition = VectorHelper.Round(_unroundedGridPosition);
+        Vector2Int _gridPosition = new Vector2Int((int)_roundedGridPosition.x, (int)_roundedGridPosition.y);
+        return _gridPosition;
+    }
 
-	public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
-	{
-        Vector2 _offset = (Vector2)GetSize() / 2;
-        Vector3 _localPosition = VectorHelper.Multiply((_gridPosition - _offset), Step);
+    public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
+    {
+        Vector3 _localPosition = VectorHelper.Multiply(_gridPosition, Step);
         Vector3 _calculateWorldPos = _localPosition + transform.position;
-		Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
+        Vector3 _worldPosition = new Vector3(_calculateWorldPos.x, _calculateWorldPos.y);
 
-		return _worldPosition;
-	}
+        return _worldPosition;
+    }
 
     public NodeObject AddNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
     {
@@ -160,16 +186,38 @@ public class LevelGrid : MonoBehaviour
             return null;
         }
 
-        _node.AddNodeObject(_nodeObject);
-
         _nodeObject.ParentNode = _node;
         _nodeObject.NodeObjectType = _nodeObjectType;
         _nodeObject.Impassable = _nodeObjectEditorEntry.Impassable;
 
+        _node.AddNodeObject(_nodeObject);
+
         return _nodeObject;
     }
 
-    private static LevelGrid GetInstance()
+	public void RemoveNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
+	{
+		if (Contains(_gridPosition))
+		{
+			Node _node = GetNode(_gridPosition);
+			NodeObject _nodeObject = _node.NodeObjects.Find(x => x.NodeObjectType == _nodeObjectType);
+			if(_nodeObject == null)
+			{
+				Debug.LogError(_nodeObjectType + " doesn't exist in " + _gridPosition);
+				return;
+			}
+			_node.RemoveNodeObject(_nodeObject);
+			Destroy(_nodeObject.gameObject);
+
+            if (_node.NodeObjects.Count == 0)
+            {
+                Destroy(_node.gameObject);
+                _nodeNodeGrid.Remove(_gridPosition);
+            }
+        }
+	}
+
+	private static LevelGrid GetInstance()
     {
         if (instance == null)
         {
@@ -187,14 +235,14 @@ public class LevelGrid : MonoBehaviour
 
         Node _node = _nodeGameObject.GetComponent<Node>();
         _node.GridPosition = _gridPosition;
-        nodeGrid.Add(_gridPosition, _node);
+        _nodeNodeGrid.Add(_gridPosition, _node);
 
         return _node;
     }
 
     private void SpawnNodeGrid(Dictionary<Vector2Int, List<NodeObjectType>> _layout, int _width, int _height)
     {
-        nodeGrid = new Dictionary<Vector2Int, Node>();
+        _nodeNodeGrid = new Dictionary<Vector2Int, Node>();
 
         foreach (KeyValuePair<Vector2Int, List<NodeObjectType>> _nodeObjectByGridPosition in _layout)
         {
@@ -208,7 +256,7 @@ public class LevelGrid : MonoBehaviour
 
     private void SetSpriteIndex()
     {
-        foreach (Node _node in nodeGrid.Values)
+        foreach (Node _node in _nodeNodeGrid.Values)
         {
             for (int i = 0; i < _node.NodeObjects.Count; i++)
             {
@@ -225,7 +273,8 @@ public class LevelGrid : MonoBehaviour
     {
         NodeObjectEditorEntry _nodeObjectEditorEntry = nodeObjectEntries.Find(x => x.NodeObjectType == _nodeObjectType);
 
-        if(_nodeObjectEditorEntry == null) {
+        if (_nodeObjectEditorEntry == null)
+        {
             Debug.LogError("NodeObjectEditorEntry with nodeObjectType " + _nodeObjectType + " does not exist.");
             return new NodeObjectEditorEntry();
         }

@@ -564,7 +564,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOE SPEEL IK
+  m_Text: UITLEG
 --- !u!222 &841976935
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ public class LoadScene : MonoBehaviour {
 
     public void Load()
     {
-        //We use the old function because the scenemanager doesnt function properly on mobile
         SceneManager.LoadScene("Main");
     }
 }

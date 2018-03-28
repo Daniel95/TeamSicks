@@ -60,6 +60,7 @@ public class Node : MonoBehaviour
         nodeObjects.Remove(_nodeObject);
         if (NodeObjectRemovedEvent != null)
         {
+            Debug.Log("node object removed " + _nodeObject.NodeObjectType);
             NodeObjectRemovedEvent(_nodeObject.NodeObjectType);
         }
     }

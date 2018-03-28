@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PathNodeObject : NodeObject
@@ -27,7 +26,7 @@ public class PathNodeObject : NodeObject
     void OnNodeObjectRemoved(NodeObjectType _nodeObjectType)
     {
         bool _containsNodeObjectType = abilityNodeObjectTypes.Exists(x => x == _nodeObjectType);
-        if (!_containsNodeObjectType)
+        if (_containsNodeObjectType)
         {
             pathNodeObjectSpriteRenderer.sprite = normalPathSprite;
             pathNodeObjectSpriteRenderer.color = normalPathColor;
@@ -46,6 +45,5 @@ public class PathNodeObject : NodeObject
         ParentNode.NodeObjectAddedEvent -= OnNodeObjectAdded;
         ParentNode.NodeObjectRemovedEvent -= OnNodeObjectRemoved;
     }
-
 
 }

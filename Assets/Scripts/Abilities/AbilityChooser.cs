@@ -32,7 +32,7 @@ public class AbilityChooser : MonoBehaviour {
     public BaseAbility GetRandomAbility()
     {
 
-        int _random = Random.Range(0, 2);
+        int _random = Random.Range(0, 0);
         BaseAbility _baseAbility;
 
         if (_random == 0)

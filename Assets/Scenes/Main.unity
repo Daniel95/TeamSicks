@@ -135,6 +135,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: Menu
+--- !u!1 &709598400 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1769907672451708, guid: 1e43aa28ed76ac247935fe89677aa549,
+    type: 2}
+  m_PrefabInternal: {fileID: 1474590886}
 --- !u!1 &870713227 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1524172216644344, guid: 1e43aa28ed76ac247935fe89677aa549,
@@ -638,7 +643,7 @@ Prefab:
         type: 2}
       propertyPath: winUI
       value: 
-      objectReference: {fileID: 312801859}
+      objectReference: {fileID: 709598400}
     - target: {fileID: 114051840676096830, guid: a8c55b58447aa1049b2eef09ad577a91,
         type: 2}
       propertyPath: loseUI

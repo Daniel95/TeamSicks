@@ -72,9 +72,10 @@ public class RedirectAbility : BaseAbility
         bool _containsAbility = _node.NodeObjects.Exists(x => x.NodeObjectType == NodeObjectType.RedirectAbility);
         if (_containsAbility) { return; }
 
-        NodeObject _nodeObject =
+        NodeObject _redirectNodeObject =
             LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _gridPosition);
-        RedirectAbilityNodeObject _redirectAbilityNodeObject = (RedirectAbilityNodeObject) _nodeObject;
+
+        RedirectAbilityNodeObject _redirectAbilityNodeObject = (RedirectAbilityNodeObject) _redirectNodeObject;
 
         _redirectAbilityNodeObject.RedirectDirectionType = directionType;
         _redirectAbilityNodeObject.MoveAmount = moveAmount;
@@ -85,7 +86,7 @@ public class RedirectAbility : BaseAbility
             PlacedOnGridEvent();
         }
             
-        currentIndex = 0;
+        currentIndex = -1;
 
         OnDestroy();
     }

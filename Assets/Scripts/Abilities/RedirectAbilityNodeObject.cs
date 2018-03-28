@@ -74,6 +74,7 @@ public class RedirectAbilityNodeObject : NodeObject
     private void Start()
     {
         ParentNode.NodeObjectAddedEvent += OnNodeObjectAdded;
+        transform.GetComponentInChildren<MeshRenderer>().sortingLayerID = SortingLayer.NameToID("Ability");
     }
 
     private void OnDestroy()

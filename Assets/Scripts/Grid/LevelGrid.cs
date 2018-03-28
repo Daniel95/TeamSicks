@@ -186,11 +186,11 @@ public class LevelGrid : MonoBehaviour
             return null;
         }
 
-        _node.AddNodeObject(_nodeObject);
-
         _nodeObject.ParentNode = _node;
         _nodeObject.NodeObjectType = _nodeObjectType;
         _nodeObject.Impassable = _nodeObjectEditorEntry.Impassable;
+
+        _node.AddNodeObject(_nodeObject);
 
         return _nodeObject;
     }

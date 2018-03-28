@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FlexibleInput.unity
+    path: Assets/Scenes/Menu.unity
+    guid: f06b647deae0a5f44ab36e49d1ea0361
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
     guid: 38f537a40e485fd4e97da8af72b3bb1a

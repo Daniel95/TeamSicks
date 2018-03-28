@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 public class InputPC : InputBase
 {
 
-    [SerializeField] private KeyCode tapInput = KeyCode.Mouse0;
-    [SerializeField] private KeyCode dragInput = KeyCode.Mouse0;
+    [SerializeField] private KeyCode input = KeyCode.Mouse0;
 
     private float startDownTime;
     private Coroutine inputUpdateCoroutine;
@@ -29,9 +28,9 @@ public class InputPC : InputBase
 
         while (true)
         {
-            if (Input.GetKeyDown(dragInput) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetKeyDown(input) && !EventSystem.current.IsPointerOverGameObject())
             {
-                TouchState = TouchStates.Tapped;
+                TouchState = TouchStates.TouchDown;
                 _mouseStartPosition = _lastInputPosition = Input.mousePosition;
                 startDownTime = Time.time;
 
@@ -43,43 +42,43 @@ public class InputPC : InputBase
 
             if (TouchState != TouchStates.None)
             {
-                if (!Input.GetKeyUp(dragInput))
+                if (!Input.GetKeyUp(input))
                 {
                     Vector2 _currentMousePosition = Input.mousePosition;
 
-                    if (Time.time - startDownTime > TimebeforeTappedExpired)
-                    {
-                        if (TouchState == TouchStates.Tapped)
+                    if (TouchState == TouchStates.TouchDown)
+                    { 
+                        if (Time.time - startDownTime > TimeBeforeTappedExpired)
                         {
                             if (TappedExpiredInputEvent != null)
                             {
                                 TappedExpiredInputEvent();
                             }
                         }
+                    }
 
-                        float _distance = Vector2.Distance(_currentMousePosition, _mouseStartPosition);
+                    float _distance = Vector2.Distance(_currentMousePosition, _mouseStartPosition);
+                    if (_distance > DragTreshhold)
+                    {
+                        TouchState = TouchStates.Dragging;
 
-                        if (_distance > DragTreshhold)
+                        Vector2 _delta = _currentMousePosition - _lastInputPosition;
+                        if (DraggingInputEvent != null)
                         {
-                            TouchState = TouchStates.Dragging;
-
-                            Vector2 _delta = _currentMousePosition - _lastInputPosition;
-                            if (DraggingInputEvent != null)
+                            DraggingInputEvent(_delta);
+                        }
+                    }
+                    else 
+                    {
+                        if (TouchState == TouchStates.Dragging)
+                        {
+                            if (CancelDragInputEvent != null)
                             {
-                                DraggingInputEvent(_delta);
+                                CancelDragInputEvent();
                             }
                         }
-                        else 
+                        else if(TouchState != TouchStates.TouchDown)
                         {
-                            if (TouchState == TouchStates.Dragging)
-                            {
-
-                                if (CancelDragInputEvent != null)
-                                {
-                                    CancelDragInputEvent();
-                                }
-                            }
-
                             TouchState = TouchStates.Holding;
 
                             if (HoldingInputEvent != null)
@@ -87,9 +86,9 @@ public class InputPC : InputBase
                                 HoldingInputEvent(_currentMousePosition);
                             }
                         }
-
-                        _lastInputPosition = _currentMousePosition;
                     }
+
+                    _lastInputPosition = _currentMousePosition;
                 }
                 else
                 {
@@ -98,7 +97,7 @@ public class InputPC : InputBase
                         UpInputEvent(Input.mousePosition);
                     }
 
-                    if (TouchState == TouchStates.Tapped)
+                    if (TouchState == TouchStates.TouchDown)
                     {
                         if (TapInputEvent != null)
                         {

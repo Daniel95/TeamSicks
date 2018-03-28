@@ -70,7 +70,7 @@ public class RedirectAbility : BaseAbility
         if (_containsEndpoint) { return; }
 
         bool _containsAbility = _node.NodeObjects.Exists(x => x.NodeObjectType == NodeObjectType.RedirectAbility);
-        if (_containsAbility) { return; }
+		if (_containsAbility) { return; }
 
         NodeObject _redirectNodeObject =
             LevelGrid.Instance.AddNodeObject(NodeObjectType.RedirectAbility, _gridPosition);
@@ -89,5 +89,5 @@ public class RedirectAbility : BaseAbility
         currentIndex = -1;
 
         OnDestroy();
-    }
+	}
 }

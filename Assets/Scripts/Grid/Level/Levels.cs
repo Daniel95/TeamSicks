@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Levels contains information about all levels, logic to retrieve the level layout.
+/// </summary>
 public class Levels
 {
 
@@ -76,6 +79,11 @@ public class Levels
 
     };
 
+    /// <summary>
+    /// Returns the size of the level specified by the levelNumber.
+    /// </summary>
+    /// <param name="_levelNumber"></param>
+    /// <returns></returns>
     public static Vector2Int GetLevelSize(int _levelNumber)
     {
         Level _level = GetLevel(_levelNumber);
@@ -83,6 +91,11 @@ public class Levels
         return _size;
     }
 
+    /// <summary>
+    /// Returns if the level specified by the levelNumber exists.
+    /// </summary>
+    /// <param name="_levelNumber"></param>
+    /// <returns></returns>
     public static bool LevelExists(int _levelNumber)
     {
         int levelIndex = _levelNumber - 1;
@@ -90,6 +103,13 @@ public class Levels
         return levelExists;
     }
 
+    /// <summary>
+    /// Returns the level layout specified by the levelNumber, also has an out parameters so the widht and height can be saved.
+    /// </summary>
+    /// <param name="_levelNumber"></param>
+    /// <param name="_width"></param>
+    /// <param name="_height"></param>
+    /// <returns></returns>
     public static Dictionary<Vector2Int, List<NodeObjectType>> GetLevelLayout(int _levelNumber, out int _width, out int _height)
     {
         Dictionary<Vector2Int, List<NodeObjectType>> _levelLayout = new Dictionary<Vector2Int, List<NodeObjectType>>();

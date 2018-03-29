@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Input pc handles mobile input logic and the input events of InputBase
+/// </summary>
 public class InputPC : InputBase
 {
 
@@ -10,11 +13,9 @@ public class InputPC : InputBase
     private float startDownTime;
     private Coroutine inputUpdateCoroutine;
 
-    public void ResetTouched()
-    {
-        CancelDragInputEvent();
-    }
-
+    /// <summary>
+    /// Start the pc input loop.
+    /// </summary>
     protected override void StartInputUpdate()
     {
         base.StartInputUpdate();

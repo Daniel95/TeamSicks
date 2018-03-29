@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 /// <summary>
 /// No usings in code, always import usings above class
 /// Remove unused usings
 /// </summary>
-
 public class CodeConventions : MonoBehaviour 
 {
 
@@ -33,9 +31,13 @@ public class CodeConventions : MonoBehaviour
         }
     }
 
+
     private static CodeConventions instance;
 
     private const string CONST_TEST = "TEST123";
+
+    [SerializeField] private int serializeFieldTest;
+
     private int privateTest;
 
     /// <summary>

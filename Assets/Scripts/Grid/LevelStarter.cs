@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+
+/// <summary>
+/// Calls a method LevelGrid whichs loads a level of a specified levelnumber.
+/// </summary>
 public class LevelStarter : MonoBehaviour
 {
 

@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityToolbag;
 
+/// <summary>
+/// LevelGrid contains the logic used to spawn and manage the grid.
+/// The LevelGrid uses Nodes to manage which GameObjects are at a grid position.
+/// </summary>
 public class LevelGrid : MonoBehaviour
 {
 
+    /// <summary>
+    /// The LevelGridLoadedEvent is triggered when the LevelGrid is done generating and spawning the grid.
+    /// </summary>
     public static Action LevelGridLoadedEvent;
 
     public static LevelGrid Instance { get { return GetInstance(); } }
 
+    /// <summary>
+    /// Returns the Nodes which are linked to a gridpositions.
+    /// </summary>
     public Dictionary<Vector2Int, Node> NodeGrid
     {
         get
@@ -17,6 +27,10 @@ public class LevelGrid : MonoBehaviour
             return _nodeNodeGrid;
         }
     }
+
+    /// <summary>
+    /// Step is used to indicate the amount of space between Nodes.
+    /// </summary>
     public Vector2 Step
     {
         get
@@ -24,6 +38,10 @@ public class LevelGrid : MonoBehaviour
             return new Vector2(widthStep, heightStep);
         }
     }
+
+    /// <summary>
+    /// When DebugMode is on the nodes display on which gridposition they are placed.
+    /// </summary>
     public bool DebugMode
     {
         get
@@ -43,6 +61,10 @@ public class LevelGrid : MonoBehaviour
     private Dictionary<Vector2Int, Node> _nodeNodeGrid = new Dictionary<Vector2Int, Node>();
     private int loadedLevelGridNumber;
 
+    /// <summary>
+    /// Loads the Level specified by the levelNumber.
+    /// </summary>
+    /// <param name="_levelNumber"></param>
     public void LoadLevelGrid(int _levelNumber)
     {
         loadedLevelGridNumber = _levelNumber;
@@ -60,20 +82,11 @@ public class LevelGrid : MonoBehaviour
         }
     }
 
-    public Vector2Int GetNodePosition(Node _searchNode)
-    {
-        foreach (Vector2Int _position in _nodeNodeGrid.Keys)
-        {
-            if (_nodeNodeGrid[_position] == _searchNode)
-            {
-                return _position;
-            }
-        }
-
-        Debug.LogError("Node " + _searchNode.name + " does not exists in grid");
-        return new Vector2Int(0, 0);
-    }
-
+    /// <summary>
+    /// Returns the node at the specified gridposition.
+    /// </summary>
+    /// <param name="_gridPosition"></param>
+    /// <returns></returns>
     public Node GetNode(Vector2Int _gridPosition)
     {
         if (!_nodeNodeGrid.ContainsKey(_gridPosition))
@@ -84,11 +97,22 @@ public class LevelGrid : MonoBehaviour
         return _nodeNodeGrid[_gridPosition];
     }
 
+    /// <summary>
+    /// Chech there exists a node at the specified gridposition.
+    /// </summary>
+    /// <param name="_gridPosition"></param>
+    /// <returns></returns>
     public bool Contains(Vector2Int _gridPosition)
     {
         return _nodeNodeGrid.ContainsKey(_gridPosition);
     }
 
+    /// <summary>
+    /// Chech there exists a node at the specified gridposition with the specified NodeObjectType.
+    /// </summary>
+    /// <param name="_gridPosition"></param>
+    /// <param name="_nodeObjectType"></param>
+    /// <returns></returns>
     public bool Contains(Vector2Int _gridPosition, NodeObjectType _nodeObjectType)
     {
         if (!_nodeNodeGrid.ContainsKey(_gridPosition)) { return false; }
@@ -98,12 +122,20 @@ public class LevelGrid : MonoBehaviour
         return _nodeObjectTypeExists;
     }
 
+    /// <summary>
+    /// Returns the total size of the grid that is currently spawned.
+    /// </summary>
+    /// <returns></returns>
     public Vector2Int GetSize()
     {
         Vector2Int _getSize = Levels.GetLevelSize(loadedLevelGridNumber);
         return _getSize;
     }
 
+    /// <summary>
+    /// Returns a map which indicate which positions are passable or impassable.
+    /// </summary>
+    /// <returns></returns>
     public int[,] GetImpassableMap()
     {
         Vector2Int _size = Levels.GetLevelSize(loadedLevelGridNumber);
@@ -120,6 +152,11 @@ public class LevelGrid : MonoBehaviour
         return _impassableMap;
     }
 
+    /// <summary>
+    /// Returns if the specified gridposition is impassable or not.
+    /// </summary>
+    /// <param name="_gridPosition"></param>
+    /// <returns></returns>
     public bool IsImpassable(Vector2Int _gridPosition)
     {
         if (!_nodeNodeGrid.ContainsKey(_gridPosition)) { return false; }
@@ -129,6 +166,11 @@ public class LevelGrid : MonoBehaviour
         return _containsImpassableNodeObject;
     }
 
+    /// <summary>
+    /// Transforms the specified screenposition to a gridposition.
+    /// </summary>
+    /// <param name="_screenPosition"></param>
+    /// <returns></returns>
     public Vector2Int ScreenToGridPosition(Vector2 _screenPosition)
     {
         Vector3 _worldPosition = Camera.main.ScreenToWorldPoint(_screenPosition);
@@ -137,6 +179,11 @@ public class LevelGrid : MonoBehaviour
         return _gridPosition;
     }
 
+    /// <summary>
+    /// Transforms the specified worldposition to a gridposition.
+    /// </summary>
+    /// <param name="_worldPosition"></param>
+    /// <returns></returns>
     public Vector2Int WorldToGridPosition(Vector3 _worldPosition)
     {
         Vector3 _localPosition = transform.InverseTransformPoint(_worldPosition);
@@ -144,7 +191,12 @@ public class LevelGrid : MonoBehaviour
         return _gridPosition;
     }
 
-    private Vector2Int LocalToGridPosition(Vector3 _localPosition)
+    /// <summary>
+    /// Transforms the specified grid localposition to a gridposition.
+    /// </summary>
+    /// <param name="_localPosition"></param>
+    /// <returns></returns>
+    public Vector2Int LocalToGridPosition(Vector3 _localPosition)
     {
         Vector2 _unroundedGridPosition = VectorHelper.Divide((Vector2)_localPosition, Step);
         Vector2 _roundedGridPosition = VectorHelper.Round(_unroundedGridPosition);
@@ -152,6 +204,11 @@ public class LevelGrid : MonoBehaviour
         return _gridPosition;
     }
 
+    /// <summary>
+    /// Transforms the specified gridposition to a worldposition.
+    /// </summary>
+    /// <param name="_gridPosition"></param>
+    /// <returns></returns>
     public Vector3 GridToWorldPosition(Vector2Int _gridPosition)
     {
         Vector3 _localPosition = VectorHelper.Multiply(_gridPosition, Step);
@@ -161,6 +218,12 @@ public class LevelGrid : MonoBehaviour
         return _worldPosition;
     }
 
+    /// <summary>
+    /// Adds a NodeObject of a specified NodeObjectType to the grid at the specified gridposition.
+    /// </summary>
+    /// <param name="_nodeObjectType"></param>
+    /// <param name="_gridPosition"></param>
+    /// <returns></returns>
     public NodeObject AddNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
     {
         if (!Contains(_gridPosition))
@@ -195,6 +258,11 @@ public class LevelGrid : MonoBehaviour
         return _nodeObject;
     }
 
+    /// <summary>
+    /// Removes a NodeObject of the specified NodeObjectType at the specified gridposition
+    /// </summary>
+    /// <param name="_nodeObjectType"></param>
+    /// <param name="_gridPosition"></param>
 	public void RemoveNodeObject(NodeObjectType _nodeObjectType, Vector2Int _gridPosition)
 	{
 		if (Contains(_gridPosition))

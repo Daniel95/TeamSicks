@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Contains info about the GameObjects which are placed at a gridposition.
+/// </summary>
 public class Node : MonoBehaviour
 {
     //Use for layering
@@ -14,25 +17,40 @@ public class Node : MonoBehaviour
     private Vector2Int gridPosition;
     private List<NodeObject> nodeObjects = new List<NodeObject>();
 
+    /// <summary>
+    /// Add a NodeObject from this Node.
+    /// Manages the renderer order, and the transform of the new NodeObject.
+    /// </summary>
+    /// <param name="_nodeObject"></param>
     public void AddNodeObject(NodeObject _nodeObject)
     {
         _nodeObject.ParentNode = this;
         _nodeObject.transform.parent = transform;
         NodeObjects.Add(_nodeObject);
         
-        //NodeObjects.IndexOf(_nodeObject);
         int _index = GetLayer((int)_nodeObject.NodeObjectType);
-        _nodeObject.gameObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = /*(1000 - 10 * NodeObjects[_index].ParentNode.GridPosition.y) +*/ 1000 * _index;
-        
-        //End layering
+        _nodeObject.gameObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1000 * _index;
 
         if (NodeObjectAddedEvent != null)
         {
             NodeObjectAddedEvent(_nodeObject.NodeObjectType);
         }
     }
+
+    /// <summary>
+    /// Remove a NodeObject from this Node.
+    /// </summary>
+    /// <param name="_nodeObject"></param>
+    public void RemoveNodeObject(NodeObject _nodeObject)
+    {
+        nodeObjects.Remove(_nodeObject);
+        if (NodeObjectRemovedEvent != null)
+        {
+            NodeObjectRemovedEvent(_nodeObject.NodeObjectType);
+        }
+    }
     
-    int GetLayer(int _nodeObjectTypeInt)
+    private int GetLayer(int _nodeObjectTypeInt)
     {
         switch (_nodeObjectTypeInt)
         {
@@ -52,15 +70,6 @@ public class Node : MonoBehaviour
                 return 5;
             default:
                 return 0;
-        }
-    }
-
-    public void RemoveNodeObject(NodeObject _nodeObject)
-    {
-        nodeObjects.Remove(_nodeObject);
-        if (NodeObjectRemovedEvent != null)
-        {
-            NodeObjectRemovedEvent(_nodeObject.NodeObjectType);
         }
     }
 

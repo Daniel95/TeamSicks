@@ -1,11 +1,16 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
-using System;
+using UnityEngine.UI;
 
+/// <summary>
+/// Manages the turn counter.
+/// </summary>
 public class DisplayTurnCounter : MonoBehaviour
 {
+    /// <summary>
+    /// The TurnsOverEvent is trigger when there are no turns left.
+    /// </summary>
     public static Action TurnsOverEvent;
 
     public static DisplayTurnCounter Instance { get { return GetInstance(); } }
@@ -17,6 +22,9 @@ public class DisplayTurnCounter : MonoBehaviour
 
     private int turnsLeftValue = 0;
 
+    /// <summary>
+    /// Decreases the turnsLeftValue and updates turn counter display
+    /// </summary>
     public void UpdateTurnCounter()
     {
         turnsLeftValue--;

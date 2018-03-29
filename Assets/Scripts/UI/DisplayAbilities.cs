@@ -1,13 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the visual aspects of the ability buttons
+/// </summary>
 public class DisplayAbilities : MonoBehaviour
 {
-    [SerializeField]
-    Button[] abilityButtons;
 
+    [SerializeField] private Button[] abilityButtons;
+
+    /// <summary>
+    /// Updates the visuals of the ability ui buttons
+    /// </summary>
+    /// <param name="_abilities"></param>
     public void UpdateAbilities(BaseAbility[] _abilities)
     {
         for (int i = 0; i < abilityButtons.Length; i++)
@@ -20,4 +25,5 @@ public class DisplayAbilities : MonoBehaviour
             _holderSprite[2].color = Color.white;
         }
     }
+
 }

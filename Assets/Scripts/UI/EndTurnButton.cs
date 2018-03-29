@@ -2,10 +2,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the button that is used to end the players turn.
+/// </summary>
 [RequireComponent(typeof(Button))]
 public class EndTurnButton : MonoBehaviour
 {
+    /// <summary>
+    /// The PlayerTurnCompletedEvent is trigger when the EndTurnButton is pressed.
+    /// </summary>
 	public static Action PlayerTurnCompletedEvent;
+    /// <summary>
+    /// The PlayerTurnStartedEvent is trigger when the enemy has completed its turn.
+    /// </summary>
     public static Action PlayerTurnStartedEvent;
 
     public static EndTurnButton Instance { get { return GetInstance(); } }
@@ -14,11 +23,9 @@ public class EndTurnButton : MonoBehaviour
 
     [SerializeField] private Button startMoveButton;
 
-    private void Start()
-    {
-        CallPlayerTurnStartedEvent();
-    }
-
+    /// <summary>
+    /// The logic that should be executed when the EndTurnButton is pressed.
+    /// </summary>
 	public void ClickStartButton()
 	{
 		if (PlayerTurnCompletedEvent != null)
@@ -28,9 +35,18 @@ public class EndTurnButton : MonoBehaviour
         SetInteractable(false);
     }
 
+    /// <summary>
+    /// Toggles the interactable state of the EndTurnButton
+    /// </summary>
+    /// <param name="_interactable"></param>
     public void SetInteractable(bool _interactable)
 	{
         startMoveButton.interactable = _interactable;
+    }
+
+    private void Start()
+    {
+        CallPlayerTurnStartedEvent();
     }
 
     private static EndTurnButton GetInstance()

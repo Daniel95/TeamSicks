@@ -2,14 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Input mobile handles mobile input logic and the input events of InputBase
+/// </summary>
 public class InputMobile : InputBase
 {
 
-    public void ResetTouched()
-    {
-        CancelDragInputEvent();
-    }
-
+    /// <summary>
+    /// Starts the mobile input loop.
+    /// </summary>
     protected override void StartInputUpdate()
     {
         base.StartInputUpdate();

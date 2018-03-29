@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The NodeObject that the enemy can walk upon.
+/// </summary>
 public class PathNodeObject : NodeObject
 {
 
@@ -13,7 +16,7 @@ public class PathNodeObject : NodeObject
     [SerializeField] private Sprite abilityPathSprite;
     [SerializeField] private Color abilityPathColor;
 
-    void OnNodeObjectAdded(NodeObjectType _nodeObjectType)
+    private void OnNodeObjectAdded(NodeObjectType _nodeObjectType)
     {
         bool _containsNodeObjectType = abilityNodeObjectTypes.Exists(x => x == _nodeObjectType);
         if (_containsNodeObjectType)
@@ -23,7 +26,7 @@ public class PathNodeObject : NodeObject
         }
     }
 
-    void OnNodeObjectRemoved(NodeObjectType _nodeObjectType)
+    private void OnNodeObjectRemoved(NodeObjectType _nodeObjectType)
     {
         bool _containsNodeObjectType = abilityNodeObjectTypes.Exists(x => x == _nodeObjectType);
         if (_containsNodeObjectType)

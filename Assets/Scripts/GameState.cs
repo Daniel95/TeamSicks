@@ -1,22 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Manages the game lose and win state.
+/// </summary>
 public class GameState : MonoBehaviour {
 
-    [SerializeField]
-    GameObject winUI, loseUI;
+    [SerializeField] private GameObject winUI, loseUI;
 
     private void OnReachedEndpoint()
     {
-        Debug.Log("LOSE");
         loseUI.SetActive(true);
     }
 
     private void OnTurnsOverEvent()
     {
         winUI.SetActive(true);
-        Debug.Log("WIN");
     }
 
     private void OnEnable()

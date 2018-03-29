@@ -1,15 +1,10 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
+/// <summary>
+/// RedirectAbilityNodeObject places the node sprite and the node text on the right grid position and deletes the image when the enemy walks over it.
+/// </summary>
 public class RedirectAbilityNodeObject : NodeObject
 {
-    [SerializeField]
-    private SpriteRenderer nodeObjectSpriteRenderer;
-
-    [SerializeField]
-    private TextMesh nodeObjectTextMesh;
-
     public DirectionType RedirectDirectionType
     {
         get
@@ -47,7 +42,11 @@ public class RedirectAbilityNodeObject : NodeObject
         }
     }
 
-    private DirectionType redirectDirection;
+	[SerializeField] private SpriteRenderer nodeObjectSpriteRenderer;
+
+	[SerializeField] private TextMesh nodeObjectTextMesh;
+
+	private DirectionType redirectDirection;
     private int moveAmount;
 
     private void OnNodeObjectAdded(NodeObjectType _nodeObjectType)
@@ -80,5 +79,4 @@ public class RedirectAbilityNodeObject : NodeObject
     {
         ParentNode.NodeObjectAddedEvent -= OnNodeObjectAdded;
     }
-
 }

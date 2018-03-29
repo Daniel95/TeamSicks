@@ -11,6 +11,10 @@ public class NodeObject : MonoBehaviour
     private Node parentNode;
     private bool impassable;
 
+    /// <summary>
+    /// Update the gridpositions of this 
+    /// </summary>
+    /// <param name="_position"></param>
     public void UpdateGridPosition(Vector2Int _position)
     {
         parentNode.RemoveNodeObject(this);

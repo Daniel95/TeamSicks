@@ -39,7 +39,7 @@ public class CodeConventions : MonoBehaviour
     private int privateTest;
 
     /// <summary>
-    ///  No comments in code, only above the class
+    ///  No comments in code, only above the method
     /// </summary>
     public void PublicExample()
     {

@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/// <summary>
+/// RedirectAbility places the ability on the grid & generates the different directions the player can use. 
+/// </summary>
 public class RedirectAbility : BaseAbility
 {
     public static Action PlacedOnGridEvent;
@@ -18,6 +19,9 @@ public class RedirectAbility : BaseAbility
 
     private int currentIndex = -1;
 
+	/// <summary>
+	/// OnGenerate() generates the different directions with a random amount. After it calls base.Generate from the BaseAbility class.
+	/// </summary>
     public override void OnGenerate()
 	{
 	    moveAmount = Random.Range(MIN_MOVE_AMOUNT, MAX_MOVE_AMOUNT);
@@ -49,15 +53,22 @@ public class RedirectAbility : BaseAbility
                 directionType = DirectionType.Right;
                 break;
 	    }
-
         base.OnGenerate();
 	}
 
+	/// <summary>
+	/// SetIndex(int) sets the currentIndex to _index<int>
+	/// </summary>
+	/// <param name="_index"></param>
     public override void SetIndex(int _index)
     {
         currentIndex = _index;
     }
 
+	/// <summary>
+	/// PlaceOnGrid(Vector2) Places the redirectAbility on the grid while checking different conditions.
+	/// </summary>
+	/// <param name="_screenPosition"></param>
     protected override void PlaceOnGrid(Vector2 _screenPosition)
     {
         Vector2Int _gridPosition = LevelGrid.Instance.ScreenToGridPosition(_screenPosition);

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// EnemyNodeObject Handles animations, updates his position, checks if the enemy is done with his turn, uses A* to movearound
+/// </summary>
 public class EnemyNodeObject : NodeObject
 {
 	public static Action ReachedEndpointEvent;
@@ -12,19 +15,24 @@ public class EnemyNodeObject : NodeObject
 
     public int MovesPerTurn { get { return movesPerTurn; } }
 
-    private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
+	[SerializeField] private int movesPerTurn = 3;
+	[SerializeField] private float moveSpeed = 0.01f;
+
+	[SerializeField] private Animator animator;
+	[SerializeField] private string walkingAnimatorBoolName = "Moving";
+
+	private bool ReachedEndpoint { get { return GridPosition == endPoint;  } }
     private bool Moving { get { return animator.GetBool(walkingAnimatorBoolName); } set { animator.SetBool(walkingAnimatorBoolName, value); } }
-
-    [SerializeField] private int movesPerTurn = 3;
-    [SerializeField] private float moveSpeed = 0.01f;
-
-    [SerializeField] private Animator animator;
-    [SerializeField] private string walkingAnimatorBoolName = "Moving";
 
     private Vector2Int endPoint;
     private Coroutine followPathCoroutine;
     private float animatorTransformStartXScale;
 
+	/// <summary>
+	/// ActivateAbility(DirectionType, Int) checks if the enemy was hit by a redirectAbility, if so update the path and start the the FollowPath coroutine
+	/// </summary>
+	/// <param name="_directionType"></param>
+	/// <param name="_moveCount"></param>
     public void ActivateAbility(DirectionType _directionType , int _moveCount)
 	{
         Vector2Int _direction = new Vector2Int();
@@ -48,7 +56,6 @@ public class EnemyNodeObject : NodeObject
         }
 
         List<Vector2Int> _path = new List<Vector2Int>();
-
         Vector2Int startGridPosition = GridPosition;
 
         for (int i = 1; i < _moveCount + 1; i++)
@@ -140,7 +147,6 @@ public class EnemyNodeObject : NodeObject
                     animator.transform.localScale = new Vector2(animatorTransformStartXScale, animator.transform.localScale.y);
                 }
             }
-
             yield return new WaitForFixedUpdate();
         }
 
@@ -189,7 +195,6 @@ public class EnemyNodeObject : NodeObject
         endPoint = endpointNodeObject.GridPosition;
     }
 
-
     private void Awake()
     {
         if(animator == null)
@@ -213,5 +218,4 @@ public class EnemyNodeObject : NodeObject
         EndTurnButton.PlayerTurnCompletedEvent -= StartTurnMovement;
         LevelGrid.LevelGridLoadedEvent -= ChooseEndpoint;
     }
-
 }

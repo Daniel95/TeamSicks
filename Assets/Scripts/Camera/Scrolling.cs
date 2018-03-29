@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// This script is used on the camera to add the ability to scroll through the level
+/// </summary>
 public class Scrolling : MonoBehaviour
 {
-
-    /// <summary>
-    /// This script is used on the camera to add the ability to scroll through the level
-    /// </summary>
-
     [SerializeField] private float scrollSpeed = 1;
 
     private float maxXBound;
@@ -35,7 +33,6 @@ public class Scrolling : MonoBehaviour
         {
             transform.Translate(new Vector2(_xTranslation, 0));
         }
-
     }
 
     private void OnEnable()
@@ -49,5 +46,4 @@ public class Scrolling : MonoBehaviour
         LevelGrid.LevelGridLoadedEvent -= Initialise;
         InputBase.DraggingInputEvent -= ScrollCamera;
     }
-
 }
